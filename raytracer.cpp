@@ -1,8 +1,8 @@
 /*=========================================================================
 
- Final Project
+ ECE 6122 Final Project
  Author: Theodore J. LaGrow
- Date: 12/9/16
+ Date: 3/28/2018
  This is the final project, put up or shut up.
  
  =========================================================================*/
@@ -273,7 +273,7 @@ void render(const std::vector<Sphere> &spheres)
     }
     /* Save result to a pmm image!                                                       
        This method of saving works for mac, but you need to save to .ppm for window/linux */
-    std::ofstream ppm("./TJs_25plus_point_image.ppm", std::ios::out | std::ios::binary);
+    std::ofstream ppm("./sphere_primitive_example.ppm", std::ios::out | std::ios::binary);
     ppm << "P6\n" << width << " " << height << "\n255\n";
     for (unsigned i = 0; i < width * height; ++i) {
         ppm << (unsigned char)(std::min(float(1), image[i].x) * 255) <<
