@@ -293,7 +293,7 @@ int main(int argc, char **argv)
     /* Step on up! You've come to see the show! */
     std::vector<Sphere> spheres;
     
-    /* Sphere order: position, radius, surface color, reflectivity, transparency, emission color */
+    /* Sphere order: position(x,y,z), radius, surface color(r,g,b), reflectivity, transparency, emission color */
 
     /* *huge* base sphere, I went with neon green to show the light coming back up on the other spheres */
     spheres.push_back(Sphere(Vector3f( 0.0, -60004, -20), 60000, Vector3f(0.22, 1.00, 0.07), 0, 0.0));
