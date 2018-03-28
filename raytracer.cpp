@@ -21,7 +21,7 @@
 /* Variable tp help control maximum recursion depth.  Important for speed.
    Without a k-d tree or some type of time improvement, I usually don't go
    over 35. */
-#define MAX_RAY_DEPTH 35
+#define MAX_RAY_DEPTH 25
 
 /* constructor */
 template <typename Tvalue>
@@ -255,7 +255,8 @@ Vector3f trace(
 
 void render(const std::vector<Sphere> &spheres)
 {
-    unsigned width = 1920, height = 1080;
+    //unsigned width = 3840, height = 2160; /* 16:9 aspect ratio, 4K image */
+    unsigned width = 3240, height = 1080; /* 3:1 aspect ratio */
     Vector3f *image = new Vector3f[width * height], *pixel = image;
     float invertedWidth = 1 / float(width), invertedHeight = 1 / float(height);
     float fov = 30, aspectRatio = width / float(height);
@@ -270,15 +271,16 @@ void render(const std::vector<Sphere> &spheres)
             *pixel = trace(Vector3f(0), rayDirection, spheres, 0);
         }
     }
-    /* Save result to a png image! */
-    std::ofstream png("./TJs_25plus_point_image.png", std::ios::out | std::ios::binary);
-    png << "P6\n" << width << " " << height << "\n255\n";
+    /* Save result to a pmm image!                                                       
+       This method of saving works for mac, but you need to save to .ppm for window/linux */
+    std::ofstream ppm("./TJs_25plus_point_image.ppm", std::ios::out | std::ios::binary);
+    ppm << "P6\n" << width << " " << height << "\n255\n";
     for (unsigned i = 0; i < width * height; ++i) {
-        png << (unsigned char)(std::min(float(1), image[i].x) * 255) <<
+        ppm << (unsigned char)(std::min(float(1), image[i].x) * 255) <<
                (unsigned char)(std::min(float(1), image[i].y) * 255) <<
                (unsigned char)(std::min(float(1), image[i].z) * 255);
     }
-    png.close();
+    ppm.close();
     delete [] image;
 }
 
