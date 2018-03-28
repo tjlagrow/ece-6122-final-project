@@ -7,7 +7,7 @@
 int main(int argc, char **argv)
 {
 	ProgramConfig cfg;
-	ArgParser::parse_args(argc, argv, cfg);
+	ArgParser::parse_args(argc, argv, &cfg);
 
 	// Choose the broadphase algorithm
 	// http://www.bulletphysics.org/mediawiki-1.5.8/index.php/Broadphase
@@ -54,6 +54,8 @@ int main(int argc, char **argv)
 		printf("%f\n", trans.getOrigin().getY());
 	}
 
+	// Clean up all the bullet memory
+
 	world->removeRigidBody(sphereRigidBody);
 	delete sphereRigidBody->getMotionState();
 	delete sphereRigidBody;
@@ -65,7 +67,6 @@ int main(int argc, char **argv)
 	delete sphereShape;
 	delete groundShape;
 
-	// Clean up all the bullet memory
 	delete world;
 	delete solver;
 	delete dispatcher;
