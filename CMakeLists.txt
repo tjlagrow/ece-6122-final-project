@@ -53,7 +53,7 @@ link_libraries(${FREEIMAGE_LIBRARIES})
 set (SRC_DIR "src")
 file (GLOB SOURCES ${SRC_DIR}/*.c ${SRC_DIR}/*.cpp ${SRC_DIR}/*.h)
 
-add_executable(${PROJECT_NAME} ${SOURCES} src/ProgramConfig.h src/ArgParser.h)
+add_executable(${PROJECT_NAME} ${SOURCES}) 
 
 target_link_libraries(${PROJECT_NAME}
     ${GLEW_LIBRARIES}

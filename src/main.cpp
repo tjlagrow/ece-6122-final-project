@@ -1,77 +1,109 @@
 #include "ArgParser.h"
+#include "Window.h"
+#include "PhysicsEngine.h"
+#include "Shader.h"
+#include "Camera.h"
 #include <iostream>
-#include <btBulletCollisionCommon.h>
-#include <btBulletDynamicsCommon.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform.hpp>
 
+#define VERTEX_PATH    "../shaders/vertex.glsl"
+#define FRAGMENT_PATH  "../shaders/fragment.glsl"
 
+static int width = 640;
+static int height = 480;
+static const char *title = "ECE6122 Final Project";
+
+/**
+ * Main program entry point
+ * @param argc Number of command-line arguments
+ * @param argv Command line arguments array
+ * @return Returns 0 on success, else error
+ */
 int main(int argc, char **argv)
 {
 	ProgramConfig cfg;
 	ArgParser::parse_args(argc, argv, &cfg);
 
-	// Choose the broadphase algorithm
-	// http://www.bulletphysics.org/mediawiki-1.5.8/index.php/Broadphase
-	btBroadphaseInterface *broadphase = new btDbvtBroadphase();
+	Window window(title, width, height);
 
-	// The collision configuration allows you to fine tune the algorithms used for the full (not broadphase)
-	// collision detection. http://www.bulletphysics.org/mediawiki-1.5.8/index.php/Collision_Things
-	btDefaultCollisionConfiguration *colConfig = new btDefaultCollisionConfiguration();
-	btCollisionDispatcher *dispatcher = new btCollisionDispatcher(colConfig);
+	Shader shader(VERTEX_PATH, FRAGMENT_PATH);
+	shader.enable();
 
-	// We also need a "solver". This is what causes the objects to interact properly, taking into account gravity,
-	// game logic supplied forces, collisions, and hinge constraints. It does a good job as long as you don't push
-	// it to extremes, and is one of the bottlenecks in any high performance simulation. There are parallel versions
-	// available for some threading models.
-	btSequentialImpulseConstraintSolver *solver = new btSequentialImpulseConstraintSolver();
+	GLfloat vertices[] = {
+		+0.0f, +0.0f, +1.0f,  1.0f, 0.0f, 0.0f, 1.0f, // back  lower left
+		+1.0f, +0.0f, +1.0f,  1.0f, 0.0f, 0.0f, 1.0f, // back  lower right
+		+1.0f, +1.0f, +1.0f,  0.0f, 1.0f, 0.0f, 1.0f, // back  upper right
+		+0.0f, +1.0f, +1.0f,  0.0f, 1.0f, 0.0f, 1.0f, // back  upper left
+		+0.0f, +0.0f, +0.0f,  0.0f, 0.0f, 1.0f, 1.0f, // front lower left
+		+1.0f, +0.0f, +0.0f,  0.0f, 0.0f, 1.0f, 1.0f, // front lower right
+		+1.0f, +1.0f, +0.0f,  1.0f, 1.0f, 0.0f, 1.0f, // front upper right
+		+0.0f, +1.0f, +0.0f,  1.0f, 1.0f, 0.0f, 1.0f, // front upper left
+	};
+	GLuint indices[] = {
+		0, 1, 2,
+		2, 3, 0,
+		4, 5, 6,
+		6, 7, 4,
+		1, 5, 6,
+		6, 2, 1,
+		0, 4, 7,
+		7, 3, 0
 
-	// Instantiate the dynamics world
-	btDiscreteDynamicsWorld *world = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, colConfig);
+	};
 
-	// Choose Y-axis to be up
-	world->setGravity(btVector3(0, -10, 0));
+	GLuint vao, vbo, ibo;
 
-	btCollisionShape *groundShape = new btStaticPlaneShape(btVector3(0, 1, 0), 1);
-	btCollisionShape *sphereShape = new btSphereShape(1);
+	glGenVertexArrays(1, &vao);
+	glGenBuffers(1, &vbo);
+	glGenBuffers(1, &ibo);
 
-	btDefaultMotionState *groundMotionState =new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
-	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(0, groundMotionState, groundShape, btVector3(0, 0, 0));
-	btRigidBody *groundRigidBody = new btRigidBody(groundRigidBodyCI);
-	world->addRigidBody(groundRigidBody);
+	glBindVertexArray(vao);
 
-	btDefaultMotionState *sphereMotionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 50, 0)));
-	btScalar sphereMass = 1;
-	btVector3 sphereInertia(0, 0, 0);
-	sphereShape->calculateLocalInertia(sphereMass, sphereInertia);
-	btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(sphereMass, sphereMotionState, sphereShape, sphereInertia);
-	btRigidBody *sphereRigidBody = new btRigidBody(sphereRigidBodyCI);
-	world->addRigidBody(sphereRigidBody);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7*sizeof(GLfloat), 0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7*sizeof(GLfloat), (void *)(3*sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
 
-	for (int i = 0; i < 300; i++)
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+//	PhysicsEngine engine;
+//	engine.simple_ball_drop();
+
+	size_t indices_to_draw = sizeof(indices)/sizeof(GLuint);
+	float aspect = (float)width / (float)height;
+	Camera cam(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+	glm::mat4 projectionMatrix = glm::perspective(60.0f, aspect, 0.1f, 10.0f);
+	glm::mat4 fullTransforms[] =
 	{
-		world->stepSimulation(1/60.0f, 10);
-		btTransform trans;
-		sphereRigidBody->getMotionState()->getWorldTransform(trans);
-		printf("%f\n", trans.getOrigin().getY());
+		projectionMatrix * cam.get_view() * glm::translate(glm::vec3(-1.0f, 0.0f, -3.0f)) * glm::rotate(36.0f, glm::vec3(1.0f, 0.0f, 0.0f)),
+		projectionMatrix * cam.get_view() * glm::translate(glm::vec3(+1.0f, 0.0f, -3.8f)) * glm::rotate(126.0f, glm::vec3(0.0f, 1.0f, 0.0f)),
+	};
+
+
+	while (! window.should_close())
+	{
+		window.clear();
+
+		window.get_cursor_pos();
+
+		shader.setUniformMat4("transform_matrix", fullTransforms[0]);
+		glDrawElements(GL_TRIANGLES, indices_to_draw, GL_UNSIGNED_INT, 0);
+
+		shader.setUniformMat4("transform_matrix", fullTransforms[1]);
+		glDrawElements(GL_TRIANGLES, indices_to_draw, GL_UNSIGNED_INT, 0);
+
+		window.update();
 	}
 
-	// Clean up all the bullet memory
-
-	world->removeRigidBody(sphereRigidBody);
-	delete sphereRigidBody->getMotionState();
-	delete sphereRigidBody;
-
-	world->removeRigidBody(groundRigidBody);
-	delete groundRigidBody->getMotionState();
-	delete groundRigidBody;
-
-	delete sphereShape;
-	delete groundShape;
-
-	delete world;
-	delete solver;
-	delete dispatcher;
-	delete colConfig;
-	delete broadphase;
+	shader.disable();
+	glDeleteBuffers(1, &vbo);
+	glDeleteVertexArrays(1, &vao);
 
 	return (0);
 }
