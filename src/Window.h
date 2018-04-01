@@ -13,6 +13,7 @@ public:
 
 	void clear();
 	void update();
+	double get_time();
 
 	bool should_close() const;
 
@@ -25,7 +26,7 @@ private:
 	GLFWwindow *m_window;
 	int m_width;
 	int m_height;
-	glm::vec2 m_cursor_pos;
+	glm::dvec2 m_cursor_pos;
 
 	static void cb_cursor_enter(GLFWwindow *window, int entered);
 	static void cb_cursor_pos(GLFWwindow *window, double xpos, double ypos);

@@ -41,7 +41,7 @@ void Shader::disable() const
 }
 
 /**
- * TODO
+ * Specify the value of a uniform variable for the current program object
  * @param name TODO
  * @param val TODO
  */
@@ -51,7 +51,7 @@ void Shader::setUniform1f(const GLchar *name, const float val)
 }
 
 /**
- * TODO
+ * Specify the value of a uniform variable for the current program object
  * @param name TODO
  * @param val TODO
  */
@@ -61,7 +61,7 @@ void Shader::setUniform1i(const GLchar *name, const int val)
 }
 
 /**
- * TODO
+ * Specify the value of a uniform variable for the current program object
  * @param name TODO
  * @param val TODO
  */
@@ -71,7 +71,7 @@ void Shader::setUniform2f(const GLchar *name, const glm::vec2 &val)
 }
 
 /**
- * TODO
+ * Specify the value of a uniform variable for the current program object
  * @param name TODO
  * @param val TODO
  */
@@ -81,7 +81,7 @@ void Shader::setUniform3f(const GLchar *name, const glm::vec3 &val)
 }
 
 /**
- * TODO
+ * Specify the value of a uniform variable for the current program object
  * @param name TODO
  * @param val TODO
  */
@@ -95,7 +95,17 @@ void Shader::setUniform4f(const GLchar *name, const glm::vec4 &val)
 }
 
 /**
- * TODO
+ * Specify the value of a uniform variable for the current program object
+ * @param name TODO
+ * @param val TODO
+ */
+void Shader::setUniform4fv(const GLchar *name, GLsizei count, const GLfloat *val)
+{
+	glUniform4fv(getUniformLocation(name), count, val);
+}
+
+/**
+ * Specify the value of a uniform variable for the current program object
  * @param name TODO
  * @param val TODO
  */
@@ -109,8 +119,9 @@ void Shader::setUniformMat4(const GLchar *name, const glm::mat4& val)
 }
 
 /**
- * TODO
- * @return TODO
+ * Read in the two shaders passed to the constructor, compile them,
+ * and link them together in a shader program
+ * @return Returns the shader program ID on success, else 0
  */
 GLuint Shader::load()
 {
@@ -166,13 +177,14 @@ GLuint Shader::load()
 	glDetachShader(program, vertex_shader);
 	glDetachShader(program, fragment_shader);
 
-	return program;
+	return (program);
 }
 
 /**
- * TODO
- * @param name TODO
- * @return TODO
+ * Returns the location of a uniform variable for the active shader program
+ * @param name Points to a null terminated string containing the name
+ * of the uniform variable whose location is to be queried
+ * @return Returns the location of the uniform variable on success, else -1 or error
  */
 GLint Shader::getUniformLocation(const GLchar *name)
 {
@@ -181,9 +193,21 @@ GLint Shader::getUniformLocation(const GLchar *name)
 }
 
 /**
- * TODO
- * @param filepath TODO
- * @return TODO
+ * Returns the location of an attribute variable
+ * @param name Points to a null terminated string containing the name
+ * of the attribute variable whose location is to be queried
+ * @return Returns the location of the attribute variable on success, else -1 or error
+ */
+GLint Shader::getAttribLocation(const char *name)
+{
+	return glGetAttribLocation(m_id, name);
+}
+
+/**
+ * Returns the contents of the file at the specified path
+ * @param filepath The path of the file to read
+ * @return Returns the contents of the file on success,
+ * else an empty string on error
  */
 std::string read_file(const char *filepath)
 {

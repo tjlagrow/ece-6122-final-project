@@ -47,8 +47,12 @@ Window::Window(const char *title, int width, int height)
 
 	printf("OpenGL Version: %s\n", glGetString(GL_VERSION));
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
+
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	// The window has been created successfully at this point,
@@ -144,8 +148,8 @@ void Window::cb_cursor_pos(GLFWwindow *window, double xpos, double ypos)
 {
 	Window *w = (Window *)glfwGetWindowUserPointer(window);
 
-	w->m_cursor_pos.x = (float)xpos;
-	w->m_cursor_pos.y = (float)ypos;
+	w->m_cursor_pos.x = xpos;
+	w->m_cursor_pos.y = ypos;
 }
 
 /**
@@ -197,5 +201,10 @@ void Window::cb_window_size(GLFWwindow *window, int width, int height)
 	glViewport(0, 0, width, height);
 	w->m_width = width;
 	w->m_height = height;
+}
+
+double Window::get_time()
+{
+	return glfwGetTime();
 }
 

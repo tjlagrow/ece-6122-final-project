@@ -5,10 +5,10 @@ in vec4 vcol;
 
 out vec4 fcol;
 
-uniform mat4 transform_matrix;
+uniform mat4 mvp;
 
 void main()
 {
-    gl_Position = transform_matrix * vec4(vpos, 1.0);
+    gl_Position = mvp * vec4(vpos, 1.0);
     fcol = vcol;
 }

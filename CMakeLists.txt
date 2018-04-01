@@ -25,6 +25,9 @@ link_libraries(${OPENGL_LIBRARIES})
 find_package(Bullet REQUIRED)
 include_directories(${BULLET_INCLUDE_DIRS})
 
+find_package(Freetype REQUIRED)
+include_directories(${FREETYPE_INCLUDE_DIRS})
+
 # Set the CMAKE_MODULE_PATH to the cmake-modules/ directory.
 # This directory contains custom *.cmake files we need for
 # compiling things outside the normal reach of cmake.
@@ -61,4 +64,5 @@ target_link_libraries(${PROJECT_NAME}
     ${GLFW3_LIBRARIES}
     ${FREEIMAGE_LIBRARIES}
     ${BULLET_LIBRARIES}
+    ${FREETYPE_LIBRARIES}
 )
