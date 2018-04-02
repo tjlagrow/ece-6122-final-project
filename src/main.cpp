@@ -37,7 +37,6 @@ static GLuint indices[] =
 	0, 1, 5,  5, 4, 0, // bottom
 };
 
-
 /**
  * Main program entry point
  * @param argc Number of command-line arguments
@@ -114,11 +113,8 @@ int main(int argc, char **argv)
 		glBindVertexArray(0);
 		shader1.disable();
 
-		font.begin();
-		float sx = (float)window.get_width();
-		float sy = (float)window.get_height();
-		font.write("hello world", -1 + 8*sx, 1 - 50*sy, window.get_width(), window.get_height());
-		font.end();
+		font.write("This is sample text", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+
 
 		window.update();
 	}

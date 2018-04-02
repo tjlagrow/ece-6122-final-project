@@ -14,6 +14,7 @@ public:
 	void enable() const;
 	void disable() const;
 
+	GLuint get_id() const { return m_id; }
 	GLint getAttribLocation(const char *name);
 
 	void setUniform1f(const GLchar *name, const float val);

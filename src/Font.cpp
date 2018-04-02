@@ -1,115 +1,141 @@
-//
-// Created by rory on 4/1/18.
-//
-
 #include "Font.h"
+#include <map>
+
+struct Character
+{
+	GLuint TextureID;
+	glm::ivec2 Size;
+	glm::ivec2 Bearing;
+	GLuint Advance;
+};
+
+static std::map<GLchar, Character> characters;
+static glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
 
 Font::Font(const char *vertex_path, const char *fragment_path, const char *ttf_path)
 {
 	GLuint loc;
+	FT_Library ft;
+	FT_Face face;
 
-	m_shader = new Shader(vertex_path, fragment_path);
-
-	if (FT_Init_FreeType(&m_ft))
+	if (FT_Init_FreeType(&ft))
 		throw "Could not initialize Freetype";
 
-	if (FT_New_Face(m_ft, ttf_path, 0, &m_face))
+	if (FT_New_Face(ft, ttf_path, 0, &face))
 		throw "Could not open Freetype font";
-	FT_Set_Pixel_Sizes(m_face, 0, 48);
 
-	if (FT_Load_Char(m_face, 'X', FT_LOAD_RENDER))
-		throw "Could not load character";
+	FT_Set_Pixel_Sizes(face, 0, 48);
 
+	// Disable byte-alignment restriction
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	for (GLubyte c = 0; c < 128; c++)
+	{
+		if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+			throw "Could not load character";
+
+		GLuint texture;
+		glGenTextures(1, &texture);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glTexImage2D(
+			GL_TEXTURE_2D,
+			0,
+			GL_RED,
+			face->glyph->bitmap.width,
+			face->glyph->bitmap.rows,
+			0,
+			GL_RED,
+			GL_UNSIGNED_BYTE,
+			face->glyph->bitmap.buffer
+		);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		Character character =
+		{
+			texture,
+			glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+			glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+			face->glyph->advance.x
+		};
+		characters.insert(std::pair<GLchar, Character>(c, character));
+	}
+
+	FT_Done_Face(face);
+	FT_Done_FreeType(ft);
+
+	m_shader = new Shader(vertex_path, fragment_path);
 	m_shader->enable();
-	m_shader->setUniform1i("sampler", 0);
 
 	glGenVertexArrays(1, &m_vao);
 	glGenBuffers(1, &m_vbo);
-	glGenTextures(1, &m_tbo);
-
 	glBindVertexArray(m_vao);
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_tbo);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-
-	loc = m_shader->getAttribLocation("vcoord");
-	glEnableVertexAttribArray(loc);
-	glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE, 0, 0);
-
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+
 	m_shader->disable();
 }
 
 Font::~Font()
 {
-	FT_Done_Face(m_face);
-	FT_Done_FreeType(m_ft);
 }
 
 void Font::begin() const
 {
-	m_shader->enable();
-	glBindVertexArray(m_vao);
 }
 
 void Font::end() const
 {
-	glBindVertexArray(0);
-	m_shader->disable();
 }
 
-void Font::write(const char *text, float x, float y, int width, int height)
+void Font::write(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color)
 {
-	static GLfloat yellow[4] = {1, 1, 0, 1};
-	m_shader->setUniform4fv("ucolor", 1, yellow);
-	float sx = 2.0f / width;
-	float sy = 2.0f / height;
+	// Activate corresponding render state
+	m_shader->enable();
+	glUniform3f(glGetUniformLocation(m_shader->get_id(), "textColor"), color.x, color.y, color.z);
+	glActiveTexture(GL_TEXTURE0);
+	glBindVertexArray(m_vao);
 
-	for (const char *p = text; *p; p++)
+	// Iterate through all characters
+	std::string::const_iterator c;
+	for (c = text.begin(); c != text.end(); c++)
 	{
-		if (FT_Load_Char(m_face, *p, FT_LOAD_RENDER))
-			continue;
+		Character ch = characters[*c];
 
-		glTexImage2D(
-			GL_TEXTURE_2D,
-			0,
-			GL_RED,
-			m_face->glyph->bitmap.width,
-			m_face->glyph->bitmap.rows,
-			0,
-			GL_RED,
-			GL_UNSIGNED_BYTE,
-			m_face->glyph->bitmap.buffer
-		);
+		GLfloat xpos = x + ch.Bearing.x * scale;
+		GLfloat ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
 
-		float x2 = x + m_face->glyph->bitmap_left * sx;
-		float y2 = -y - m_face->glyph->bitmap_top * sy;
-		float w = m_face->glyph->bitmap.width * sx;
-		float h = m_face->glyph->bitmap.rows * sy;
+		GLfloat w = ch.Size.x * scale;
+		GLfloat h = ch.Size.y * scale;
+		// Update VBO for each character
+		GLfloat vertices[6][4] = {
+			{ xpos,     ypos + h,   0.0, 0.0 },
+			{ xpos,     ypos,       0.0, 1.0 },
+			{ xpos + w, ypos,       1.0, 1.0 },
 
-		GLfloat box[4][4] =
-		{
-			{ x2,   -y2,   0, 0 },
-			{ x2+w, -y2,   1, 0 },
-			{ x2,   -y2-h, 0, 1 },
-			{ x2+w, -y2-h, 1, 1 },
+			{ xpos,     ypos + h,   0.0, 0.0 },
+			{ xpos + w, ypos,       1.0, 1.0 },
+			{ xpos + w, ypos + h,   1.0, 0.0 }
 		};
-
-		glBufferData(GL_ARRAY_BUFFER, sizeof(box), box, GL_DYNAMIC_DRAW);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-		x += (m_face->glyph->advance.x / 64) * sx;
-		y += (m_face->glyph->advance.y / 64) * sy;
+		// Render glyph texture over quad
+		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+		// Update content of VBO memory
+		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		// Render quad
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		// Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+		x += (ch.Advance >> 6) * scale; // Bitshift by 6 to get value in pixels (2^6 = 64)
 	}
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	m_shader->disable();
 }

@@ -3,6 +3,9 @@
 
 #include "Shader.h"
 #include <GL/glew.h>
+#include <glm/gtc/matrix_transform.hpp>
+#include <string>
+
 #include <freetype2/ft2build.h>
 #include FT_FREETYPE_H
 #include "Window.h"
@@ -19,7 +22,7 @@ public:
 
 	void begin() const;
 	void end() const;
-	void write(const char *text, float x, float y, int width, int height);
+	void write(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
 
 private:
 	GLuint m_vao;
@@ -28,8 +31,6 @@ private:
 
 	Shader *m_shader;
 
-	FT_Library m_ft;
-	FT_Face m_face;
 };
 
 
