@@ -17,6 +17,9 @@ public:
 	GLuint get_id() const { return m_id; }
 	GLint getAttribLocation(const char *name);
 
+	void enableVertexAttribArray(const GLchar *name);
+	void disableVertexAttribArray(const GLchar *name);
+
 	void setUniform1f(const GLchar *name, const float val);
 	void setUniform1i(const GLchar *name, const int val);
 	void setUniform2f(const GLchar *name, const glm::vec2& val);

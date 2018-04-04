@@ -204,6 +204,30 @@ GLint Shader::getAttribLocation(const char *name)
 }
 
 /**
+ * Enables a vertex attrib array
+ * @param name Points to a null terminated string containing the name
+ * of the attribute variable to enable
+ */
+void Shader::enableVertexAttribArray(const GLchar *name)
+{
+	GLint loc = getAttribLocation(name);
+	if (loc >= 0)
+		glEnableVertexAttribArray(loc);
+}
+
+/**
+ * Enables a vertex attrib array
+ * @param name Points to a null terminated string containing the name
+ * of the attribute variable to enable
+ */
+void Shader::disableVertexAttribArray(const GLchar *name)
+{
+	GLint loc = getAttribLocation(name);
+	if (loc >= 0)
+		glDisableVertexAttribArray(loc);
+}
+
+/**
  * Returns the contents of the file at the specified path
  * @param filepath The path of the file to read
  * @return Returns the contents of the file on success,

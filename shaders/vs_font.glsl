@@ -1,12 +1,10 @@
 #version 410
 
-in vec4 vcoord;
-out vec2 fcoord;
-
-uniform mat4 projection;
+attribute vec4 vcoord;
+varying vec2 texcoord;
 
 void main()
 {
-    gl_Position = projection * vec4(vcoord.xy, 0.0, 1.0);
-    fcoord = vcoord.zw;
+    gl_Position = vec4(vcoord.xy, 0.0, 1.0);
+    texcoord = vcoord.zw;
 }

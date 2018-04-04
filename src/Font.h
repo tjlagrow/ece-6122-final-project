@@ -5,10 +5,8 @@
 #include <GL/glew.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <string>
-
 #include <freetype2/ft2build.h>
 #include FT_FREETYPE_H
-#include "Window.h"
 
 #define VS_FONT_PATH  "../shaders/vs_font.glsl"
 #define FS_FONT_PATH  "../shaders/fs_font.glsl"
@@ -22,12 +20,15 @@ public:
 
 	void begin() const;
 	void end() const;
-	void write(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
+	void write(const char *text, float x, float y, float sx, float sy);
 
 private:
+	FT_Library m_ft;
+	FT_Face m_face;
+
 	GLuint m_vao;
 	GLuint m_vbo;
-	GLuint m_tbo;
+	GLuint m_tex;
 
 	Shader *m_shader;
 
