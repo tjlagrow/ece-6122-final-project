@@ -6,5 +6,5 @@ rm -rf \
 	CMakeFiles/ \
 	bin/ \
 	Makefile \
-	.idea/
-
+	.idea/ \
+	cmake_install.cmake
