@@ -50,8 +50,12 @@ int main(int argc, char **argv)
 
 	Window window(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+	TextWriter tw(VS_FONT_PATH, FS_FONT_PATH, TTF_PATH, 16);
+
 //	PhysicsEngine engine;
 //	engine.simple_ball_drop();
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Shader shader1(VS_CUBE_PATH, FS_CUBE_PATH);
 
@@ -82,7 +86,7 @@ int main(int argc, char **argv)
 	glBindVertexArray(0);
 	shader1.disable();
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	float aspect = (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT;
 	float fov = 45.0f;
@@ -90,8 +94,6 @@ int main(int argc, char **argv)
 	glm::mat4 vMatrix = glm::lookAt(glm::vec3(4.0f, 3.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	glm::mat4 mMatrix = glm::mat4(1.0f);
 	glm::mat4 mvpMatrix = pMatrix * vMatrix * mMatrix;
-
-	TextWriter tw(VS_FONT_PATH, FS_FONT_PATH, TTF_PATH, 16);
 
 	size_t frames = 0;
 	char frm_str[32] = "frames: 0";
