@@ -1,37 +1,33 @@
 #ifndef ECE_6122_FINAL_PROJECT_BATCHRENDERER_H
 #define ECE_6122_FINAL_PROJECT_BATCHRENDERER_H
 
+#include "Shape.h"
+#include "Renderer.h"
 
-#include "Shader.h"
-#include "Vertex.h"
-#include <GL/glew.h>
-#include <glm/glm.hpp>
+#define RENDERER_MAX_SHAPES      1000
+#define RENDERER_MAX_INDICES     10000
+#define RENDERER_VERTEX_BYTES    (sizeof(Vertex))
+#define RENDERER_BUFFER_BYTES    (10 * RENDERER_VERTEX_BYTES * RENDERER_MAX_SHAPES)
 
-class BatchRenderer
+#define SHADER_INDEX_POSITION    0
+#define SHADER_INDEX_COLOR       1
+
+class BatchRenderer : public Renderer
 {
 public:
-	BatchRenderer(GLsizei nbytes, GLuint *indices, GLuint nindices);
+	BatchRenderer();
 	~BatchRenderer();
 
-	void begin();
-	void end();
-	void submit();
-	void render();
-
-	void push(glm::mat4 matrix);
-	void pop();
+	void begin() override;
+	void end() override;
+	void submit(const Shape *shape) override;
+	void flush() override;
 
 private:
-	void init();
-
 	GLuint m_vao;
 	GLuint m_vbo;
 	GLuint m_ibo;
 	GLsizei m_index_count;
-	GLsizei m_nbytes;
-	Vertex *m_vertices;
-
-	Shader *m_shader;
 
 };
 

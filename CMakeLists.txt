@@ -54,7 +54,11 @@ link_libraries(${FREEIMAGE_LIBRARIES})
 
 # Gather up all the headers and sources in one variable: SOURCES
 set (SRC_DIR "src")
-file (GLOB SOURCES ${SRC_DIR}/*.c ${SRC_DIR}/*.cpp ${SRC_DIR}/*.h)
+set (SHAPE_DIR "${SRC_DIR}/shapes")
+file (GLOB SOURCES
+    ${SRC_DIR}/*.c ${SRC_DIR}/*.cpp ${SRC_DIR}/*.h
+    ${SHAPE_DIR}/*.c ${SHAPE_DIR}/*.cpp ${SHAPE_DIR}/*.h
+)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
