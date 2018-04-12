@@ -3,15 +3,15 @@
 #include <iostream>
 
 static std::vector<Vertex> vertices =
-{ //  X      Y      Z      R     G     B     A
-	{ { +0.0f, +0.0f, +1.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } }, // back  lower left
-	{ { +1.0f, +0.0f, +1.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } }, // back  lower right
-	{ { +1.0f, +1.0f, +1.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } }, // back  upper right
-	{ { +0.0f, +1.0f, +1.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } }, // back  upper left
-	{ { +0.0f, +0.0f, +0.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } }, // front lower left
-	{ { +1.0f, +0.0f, +0.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } }, // front lower right
-	{ { +1.0f, +1.0f, +0.0f }, { 1.0f, 1.0f, 0.0f, 1.0f } }, // front upper right
-	{ { +0.0f, +1.0f, +0.0f }, { 1.0f, 1.0f, 0.0f, 1.0f } }, // front upper left
+{ //      X      Y      Z      W         U     V         R     G     B     A
+	{ { +0.0f, +0.0f, +1.0f, +1.0f }, { 1.0f, 1.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } }, // back  lower left
+	{ { +1.0f, +0.0f, +1.0f, +1.0f }, { 1.0f, 1.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } }, // back  lower right
+	{ { +1.0f, +1.0f, +1.0f, +1.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } }, // back  upper right
+	{ { +0.0f, +1.0f, +1.0f, +1.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } }, // back  upper left
+	{ { +0.0f, +0.0f, +0.0f, +1.0f }, { 1.0f, 1.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } }, // front lower left
+	{ { +1.0f, +0.0f, +0.0f, +1.0f }, { 1.0f, 1.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } }, // front lower right
+	{ { +1.0f, +1.0f, +0.0f, +1.0f }, { 1.0f, 1.0f }, { 1.0f, 1.0f, 0.0f, 1.0f } }, // front upper right
+	{ { +0.0f, +1.0f, +0.0f, +1.0f }, { 1.0f, 1.0f }, { 1.0f, 1.0f, 0.0f, 1.0f } }, // front upper left
 };
 
 static std::vector<GLuint> indices =

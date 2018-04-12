@@ -70,14 +70,18 @@ int main(int argc, char **argv)
 		glm::vec3(0.0f, 1.0f, 0.0f)  // y-axis is up orientation
 	);
 	glm::mat4 mMatrix = glm::mat4(1.0f);
-	glm::mat4 mvpMatrix = pMatrix * vMatrix * mMatrix;
+	shader1.enable();
+	shader1.setUniformMat4("vpmat", pMatrix);
+	shader1.setUniformMat4("vvmat", vMatrix);
+	shader1.setUniformMat4("vmmat", mMatrix);
+	shader1.disable();
 
 	size_t frames = 0;
 	char frm_str[32] = "frames: 0";
 	char sec_str[32] = "secs:   0.000";
 	char fps_str[32] = "fps:    0.000";
 	double tnow = window.get_time();
-	double tprint = tnow + 1.0f;
+	double tnext = tnow + 1.0f;
 	float sx = 2.0f / window.get_width();
 	float sy = 2.0f / window.get_height();
 	glm::vec4 color_white(1.0f, 1.0f, 1.0f, 1.0f);
@@ -90,7 +94,7 @@ int main(int argc, char **argv)
 	{
 		window.clear();
 
-		if ((tnow = window.get_time()) > tprint)
+		if ((tnow = window.get_time()) > tnext)
 		{
 			memset(frm_str, 0, sizeof(frm_str));
 			memset(sec_str, 0, sizeof(sec_str));
@@ -98,16 +102,13 @@ int main(int argc, char **argv)
 			snprintf(frm_str, sizeof(frm_str)-1, "frames: %lu", frames);
 			snprintf(sec_str, sizeof(sec_str)-1, "secs:   %06.3f", tnow);
 			snprintf(fps_str, sizeof(fps_str)-1, "fps:    %06.3f", frames / tnow);
-			tprint = tnow + 1.0f;
+			tnext = tnow + 1.0f;
 		}
 
-		shader1.enable();
-		shader1.setUniformMat4("mvp", mvpMatrix);
 		layer1.render();
 //		glBindVertexArray(vao);
 //		glDrawElements(GL_TRIANGLES, cube.getNumIndices(), GL_UNSIGNED_INT, 0);
 //		glBindVertexArray(0);
-		shader1.disable();
 
 		tw.begin();
 		tw.write(frm_str, -0.99f, +0.95f, sx, sy, color_white);

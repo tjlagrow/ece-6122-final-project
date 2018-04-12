@@ -1,22 +1,34 @@
 #include "Renderer.h"
 
-
+/**
+ * Constructor
+ */
 Renderer::Renderer()
 {
 	m_transformations.push_back(glm::mat4());
 	m_back_transform = &m_transformations.back();
 }
 
+/**
+ * Destructor
+ */
 Renderer::~Renderer() { }
 
-void Renderer::begin()
-{
-}
+/**
+ * Begin the render with common initialization code here
+ */
+void Renderer::begin() { }
 
-void Renderer::end()
-{
-}
+/**
+ * End the render with common cleanup code here
+ */
+void Renderer::end() { }
 
+/**
+ * Pushes a transformation matrix
+ * @param matrix TODO
+ * @param override TODO
+ */
 void Renderer::push(glm::mat4 matrix, bool override)
 {
 	if (override)
@@ -27,8 +39,13 @@ void Renderer::push(glm::mat4 matrix, bool override)
 	m_back_transform = &m_transformations.back();
 }
 
+/**
+ * Pops a transformation matrix
+ */
 void Renderer::pop()
 {
-	m_transformations.push_back(glm::mat4());
+	if (m_transformations.size() > 1)
+		m_transformations.pop_back();
+
 	m_back_transform = &m_transformations.back();
 }

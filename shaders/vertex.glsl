@@ -1,17 +1,27 @@
 #version 410
 
-in vec3 vpos;
-in vec4 vcol;
+layout (location = 0) in vec4 vpos;
+layout (location = 1) in vec2 vuv;
+layout (location = 2) in vec4 vcol;
 
-out vec4 fcol;
+out DATA
+{
+    vec4 pos;
+    vec2 uv;
+    vec4 col;
+} vout;
 
-uniform mat4 mvp;
-uniform mat4 vpmat;
-uniform mat4 vvmat;
-uniform mat4 vmmat;
+uniform mat4 vpmat = mat4(1.0);
+uniform mat4 vvmat = mat4(1.0);
+uniform mat4 vmmat = mat4(1.0);
 
 void main()
 {
-    gl_Position = mvp * vec4(vpos, 1.0);
-    fcol = vcol;
+    vec4 pos = vpmat * vvmat * vmmat * vpos;
+
+    gl_Position = pos;
+
+    vout.pos = pos;
+    vout.uv = vuv;
+    vout.col = vcol;
 }

@@ -15,7 +15,7 @@ BatchRenderer::BatchRenderer() : m_index_count(0)
 
 	glVertexAttribPointer(
 		SHADER_INDEX_POSITION,
-		3,
+		4,
 		GL_FLOAT,
 		GL_FALSE,
 		sizeof(Vertex),
@@ -32,7 +32,7 @@ BatchRenderer::BatchRenderer() : m_index_count(0)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glGenBuffers(1, &m_ibo);
-	glBindBuffer(1, m_ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, RENDERER_MAX_INDICES, nullptr, GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
@@ -41,7 +41,6 @@ BatchRenderer::BatchRenderer() : m_index_count(0)
 
 BatchRenderer::~BatchRenderer()
 {
-	std::cout << __func__ << std::endl;
 	glDeleteBuffers(1, &m_ibo);
 	glDeleteBuffers(1, &m_vbo);
 	glDeleteVertexArrays(1, &m_vao);
@@ -69,12 +68,7 @@ void BatchRenderer::submit(const Shape *shape)
 	GLsizei verticesBytes = vertices.size() * sizeof(Vertex);
 	GLsizei indicesBytes = indices.size() * sizeof(GLuint);
 
-	std::cout << "verts count: " << vertices.size() << std::endl;
-	std::cout << "verts bytes: " << verticesBytes << std::endl;
-	std::cout << "inds count: " << indices.size() << std::endl;
-	std::cout << "inds bytes: " << indicesBytes << std::endl;
-
-//	for (unsigned int i = 0; i < vertices.size(); ++i)
+//	for (GLuint v : indices)
 //	{
 //		vertices[i].position =
 //			glm::vec3(*m_back_transform * glm::vec4(vertices[i].position, 1.0));
@@ -98,7 +92,7 @@ void BatchRenderer::flush()
 {
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-	glDrawElements(GL_TRIANGLES, m_index_count, GL_UNSIGNED_INT, NULL);
+	glDrawElements(GL_TRIANGLES, m_index_count, GL_UNSIGNED_INT, nullptr);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 

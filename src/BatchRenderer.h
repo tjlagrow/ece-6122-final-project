@@ -10,7 +10,8 @@
 #define RENDERER_BUFFER_BYTES    (10 * RENDERER_VERTEX_BYTES * RENDERER_MAX_SHAPES)
 
 #define SHADER_INDEX_POSITION    0
-#define SHADER_INDEX_COLOR       1
+#define SHADER_INDEX_UV          1
+#define SHADER_INDEX_COLOR       2
 
 class BatchRenderer : public Renderer
 {

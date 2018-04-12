@@ -1,7 +1,7 @@
 #ifndef ECE_6122_FINAL_PROJECT_TEXTURE_H
 #define ECE_6122_FINAL_PROJECT_TEXTURE_H
 
-#include "ImageLoader.h"
+#include "utils/ImageLoader.h"
 #include <GL/glew.h>
 #include <string>
 

@@ -1,10 +1,15 @@
 #version 410
 
-in vec4 fcol;
+layout (location = 0) out vec4 finalColor;
 
-out vec4 finalColor;
+in DATA
+{
+    vec4 pos;
+    vec2 uv;
+    vec4 col;
+} fin;
 
 void main()
 {
-    finalColor = fcol;
+    finalColor = fin.col;
 }
