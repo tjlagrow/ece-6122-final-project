@@ -25,7 +25,8 @@ void Renderer::begin() { }
 void Renderer::end() { }
 
 /**
- * Pushes a transformation matrix
+ * Pushes a transformation matrix. For more information, see:
+ * <https://www.youtube.com/watch?v=16GtFaXwMSo&index=17&list=PLlrATfBNZ98fqE45g3jZA_hLGUrD4bo6_>
  * @param matrix TODO
  * @param override TODO
  */
@@ -34,6 +35,7 @@ void Renderer::push(glm::mat4 matrix, bool override)
 	if (override)
 		m_transformations.push_back(matrix);
 	else
+		// For more information, see:
 		m_transformations.push_back(m_transformations.back() * matrix);
 
 	m_back_transform = &m_transformations.back();

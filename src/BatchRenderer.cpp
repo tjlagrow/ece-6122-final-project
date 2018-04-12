@@ -68,11 +68,10 @@ void BatchRenderer::submit(const Shape *shape)
 	GLsizei verticesBytes = vertices.size() * sizeof(Vertex);
 	GLsizei indicesBytes = indices.size() * sizeof(GLuint);
 
-//	for (GLuint v : indices)
-//	{
-//		vertices[i].position =
-//			glm::vec3(*m_back_transform * glm::vec4(vertices[i].position, 1.0));
-//	}
+	for (Vertex v : vertices)
+	{
+		v.position = *m_back_transform * v.position;
+	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, verticesBytes, vertices.data());
