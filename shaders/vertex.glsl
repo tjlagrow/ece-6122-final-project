@@ -6,6 +6,9 @@ in vec4 vcol;
 out vec4 fcol;
 
 uniform mat4 mvp;
+uniform mat4 vpmat;
+uniform mat4 vvmat;
+uniform mat4 vmmat;
 
 void main()
 {
