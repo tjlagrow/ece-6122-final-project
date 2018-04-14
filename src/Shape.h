@@ -15,16 +15,16 @@ public:
 	 * @param vertices TODO
 	 * @param indices TODO
 	 */
-	Shape(
-		std::vector<Vertex> &vertices,
-		std::vector<GLuint> &indices)
-		: m_vertices(vertices), m_indices(indices)
-	{ }
+	Shape(glm::mat4 model_transform) : m_model_transform(model_transform)
+	{
+	}
 
 	/**
 	 * Destructor
 	 */
-	~Shape() { }
+	~Shape()
+	{
+	}
 
 	/**
 	 * TODO
@@ -40,16 +40,26 @@ public:
 
 	inline const std::vector<Vertex> &getVertices() const { return m_vertices; }
 	inline const std::vector<GLuint> &getIndices() const { return m_indices; }
+	inline const glm::mat4 &getModelTransform() const { return m_model_transform; }
 
-protected:
+	inline void setVertices(const std::vector<Vertex> &vertices)
+	{
+		m_vertices = vertices;
+	}
+	inline void setIndices(const std::vector<GLuint> &indices)
+	{
+		m_indices = indices;
+	}
+	inline void setModelTransform(const glm::mat4 model_transform)
+	{
+		m_model_transform = model_transform;
+	}
 
-	/**
-	 * Constructor
-	 */
-	Shape() { }
-
+private:
 	std::vector<Vertex> m_vertices;
 	std::vector<GLuint> m_indices;
+
+	glm::mat4 m_model_transform;
 
 };
 

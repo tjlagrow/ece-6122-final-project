@@ -52,8 +52,8 @@ int main(int argc, char **argv)
 
 	Shader shader1(VS_CUBE_PATH, FS_CUBE_PATH);
 
-	Cube cube1(glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 2.0f)));
-	Cube cube2;
+	Cube cube1(glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 0.0f)));
+	Cube cube2(glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 0.0f)));
 
 	Layer layer1(&shader1);
 	layer1.add(&cube1);
@@ -72,8 +72,6 @@ int main(int argc, char **argv)
 		glm::vec3(0.0f, 0.0f, 0.0f), // where do you look
 		glm::vec3(0.0f, 1.0f, 0.0f)  // y-axis is up orientation
 	);
-	glm::mat4 mMatrix1 = glm::translate(glm::vec3(+0.0f, +0.0f, +2.0f));
-	glm::mat4 mMatrix2 = glm::translate(glm::vec3(+0.0f, +0.0f, -2.0f));
 
 	// Frames per second stuff
 	size_t frames = 0;
@@ -108,7 +106,6 @@ int main(int argc, char **argv)
 		shader1.enable();
 		shader1.setUniformMat4("vpmat", pMatrix);
 		shader1.setUniformMat4("vvmat", vMatrix);
-		shader1.setUniformMat4("vmmat", mMatrix2);
 		layer1.render();
 		shader1.disable();
 //		glBindVertexArray(vao);

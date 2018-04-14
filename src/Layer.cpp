@@ -7,7 +7,7 @@
  * @param shader TODO
  */
 Layer::Layer(Shader *shader)
-	: Layer(new BatchRenderer(), shader, glm::mat4())
+	: Layer(new BatchRenderer(), shader)
 {
 }
 
@@ -17,8 +17,8 @@ Layer::Layer(Shader *shader)
  * @param shader TODO
  * @param pmat TODO
  */
-Layer::Layer(Renderer *renderer, Shader *shader, const glm::mat4 &pmat)
-	: m_renderer(renderer), m_shader(shader), m_pmat(pmat)
+Layer::Layer(Renderer *renderer, Shader *shader)
+	: m_renderer(renderer), m_shader(shader)
 {
 //	m_shader->enable();
 //	m_shader->setUniformMat4("vpmat", m_pmat);
@@ -54,10 +54,12 @@ void Layer::render()
 	m_renderer->begin();
 
 	for (const Shape *shape : m_shapes)
+	{
+		m_shader->setUniformMat4("vmmat", shape->getModelTransform());
 		shape->submit(m_renderer);
+	}
 
 	m_renderer->end();
 	m_renderer->flush();
-
 	m_shader->disable();
 }
