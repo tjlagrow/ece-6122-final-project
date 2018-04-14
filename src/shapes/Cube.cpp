@@ -27,8 +27,22 @@ static std::vector<GLuint> indices =
 /**
  * Constructor
  */
-Cube::Cube() : Shape(vertices, indices)
+Cube::Cube()
 {
+	Cube(glm::mat4());
+}
+
+Cube::Cube(glm::mat4 model_transform) : Shape(vertices, indices)
+{
+	for (unsigned int i = 0; i < vertices.size(); ++i)
+	{
+		m_positions[i] = vertices[i].position;
+		m_uvs[i] = vertices[i].uv;
+		m_colors[i] = vertices[i].color;
+	}
+
+	for (Vertex v : vertices)
+		v.position = model_transform * v.position;
 }
 
 /**

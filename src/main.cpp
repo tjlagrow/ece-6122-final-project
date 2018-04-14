@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 
 	Shader shader1(VS_CUBE_PATH, FS_CUBE_PATH);
 
-	Cube cube1;
+	Cube cube1(glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 2.0f)));
 	Cube cube2;
 
 	Layer layer1(&shader1);
@@ -109,8 +109,8 @@ int main(int argc, char **argv)
 		shader1.setUniformMat4("vpmat", pMatrix);
 		shader1.setUniformMat4("vvmat", vMatrix);
 		shader1.setUniformMat4("vmmat", mMatrix2);
-		shader1.disable();
 		layer1.render();
+		shader1.disable();
 //		glBindVertexArray(vao);
 //		glDrawElements(GL_TRIANGLES, cube.getNumIndices(), GL_UNSIGNED_INT, 0);
 //		glBindVertexArray(0);
