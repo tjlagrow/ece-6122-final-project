@@ -2,66 +2,37 @@
 #define ECE_6122_FINAL_PROJECT_RENDERABLE_H
 
 #include "Vertex.h"
-#include "Renderer.h"
+#include "BatchRenderer.h"
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <vector>
 
+class BatchRenderer;
+
 class Shape
 {
 public:
-	/**
-	 * Constructor
-	 * @param vertices TODO
-	 * @param indices TODO
-	 */
-	Shape(glm::mat4 model_transform) : m_model_transform(model_transform)
-	{
-	}
+	Shape(glm::mat4 model_transform);
+	~Shape();
 
-	/**
-	 * Destructor
-	 */
-	~Shape()
-	{
-	}
+	void submit(BatchRenderer *renderer) const;
 
-	/**
-	 * TODO
-	 * @param renderer TODO
-	 */
-	void submit(Renderer *renderer) const
-	{
-		renderer->submit(this);
-	}
+	std::vector<Vertex> getVertices() const;
+	const std::vector<GLuint> &getIndices() const;
+	const glm::mat4 &getModelTransform() const;
 
-	inline GLuint getNumVertices() const { return m_vertices.size(); }
-	inline GLuint getNumIndices() const { return m_indices.size(); }
+	void setModelTransform(const glm::mat4 model_transform);
 
-	inline const std::vector<Vertex> &getVertices() const { return m_vertices; }
-	inline const std::vector<GLuint> &getIndices() const { return m_indices; }
-	inline const glm::mat4 &getModelTransform() const { return m_model_transform; }
-
-	inline void setVertices(const std::vector<Vertex> &vertices)
-	{
-		m_vertices = vertices;
-	}
-	inline void setIndices(const std::vector<GLuint> &indices)
-	{
-		m_indices = indices;
-	}
-	inline void setModelTransform(const glm::mat4 model_transform)
-	{
-		m_model_transform = model_transform;
-	}
-
-private:
+protected:
 	std::vector<Vertex> m_vertices;
 	std::vector<GLuint> m_indices;
 
 	glm::mat4 m_model_transform;
 
+private:
+
 };
+
 
 
 #endif //ECE_6122_FINAL_PROJECT_RENDERABLE_H

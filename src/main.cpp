@@ -20,9 +20,9 @@
 #define WINDOW_HEIGHT   600
 #define WINDOW_TITLE    "ECE6122 Final Project"
 
-static float camx = 4.0f;
-static float camy = 3.0f;
-static float camz = 3.0f;
+static float camx = 10.0f;
+static float camy = 10.0f;
+static float camz = 10.0f;
 
 ////////////////////////////////////////////////////////
 // END - GLOBAL VARIABLES FOR TEST ONLY
@@ -46,19 +46,24 @@ int main(int argc, char **argv)
 //	PhysicsEngine engine;
 //	engine.simple_ball_drop();
 
-////////////////////////////////////////////////////////
-// BEGIN - TODO ABSTRACT THIS STUFF
-////////////////////////////////////////////////////////
-
 	Shader shader1(VS_CUBE_PATH, FS_CUBE_PATH);
 
-	Cube cube1(glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 0.0f)));
-	Cube cube2(glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, 0.0f)));
+	Cube cube1(glm::translate(glm::mat4(), glm::vec3(+5.0f, +0.0f, +0.0f)));
+	Cube cube2(glm::translate(glm::mat4(), glm::vec3(-5.0f, +0.0f, +0.0f)));
+	Cube cube3(
+		glm::vec4(1.0f, 0.0f, 1.0f, 1.0f),
+		glm::translate(glm::mat4(), glm::vec3(+0.0f, +0.0f, +0.0f)));
 
 	Layer layer1(&shader1);
 	layer1.add(&cube1);
 	layer1.add(&cube2);
+	layer1.add(&cube3);
 
+////////////////////////////////////////////////////////
+// BEGIN - TODO ABSTRACT THIS STUFF
+////////////////////////////////////////////////////////
+
+	// Set up the Projection matrix
 	float aspect = (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT;
 	float fov = 45.0f;
 	glm::mat4 pMatrix = glm::perspective(
@@ -67,6 +72,8 @@ int main(int argc, char **argv)
 		0.1f,
 		100.f
 	);
+
+	// Set up the View matrix
 	glm::mat4 vMatrix = glm::lookAt(
 		glm::vec3(camx, camy, camz), // camera position
 		glm::vec3(0.0f, 0.0f, 0.0f), // where do you look
@@ -88,10 +95,24 @@ int main(int argc, char **argv)
 // END - TODO ABSTRACT THIS STUFF
 ////////////////////////////////////////////////////////
 
+	// Tell the vertex shader about the Projection and View matrices
+	// The shader is looking for the Projection, View, and Model matrices
+	// when it draws a vertex. The Projection and View matrices are handled
+	// here; the Model matrix is handled by the individual Shape objects
+	// (like is the constructor for Cube class)
+	shader1.enable();
+	shader1.setUniformMat4("vpmat", pMatrix);
+	shader1.setUniformMat4("vvmat", vMatrix);
+	shader1.disable();
+
 	while (! window.should_close())
 	{
+		// Clear the window's "back buffer" so
+		// we can begin drawing a new scene
 		window.clear();
 
+		// If time has elapsed, get the diagnostic text to
+		// overlay on the screen
 		if ((tnow = window.get_time()) > tnext)
 		{
 			memset(frm_str, 0, sizeof(frm_str));
@@ -103,24 +124,21 @@ int main(int argc, char **argv)
 			tnext = tnow + 1.0f;
 		}
 
-		shader1.enable();
-		shader1.setUniformMat4("vpmat", pMatrix);
-		shader1.setUniformMat4("vvmat", vMatrix);
+		// Draw layers here
 		layer1.render();
-		shader1.disable();
-//		glBindVertexArray(vao);
-//		glDrawElements(GL_TRIANGLES, cube.getNumIndices(), GL_UNSIGNED_INT, 0);
-//		glBindVertexArray(0);
 
+		// Draw text last so it is on top of the other layers
 		tw.begin();
 		tw.write(frm_str, -0.99f, +0.95f, sx, sy, color_white);
 		tw.write(sec_str, -0.99f, +0.90f, sx, sy, color_white);
 		tw.write(fps_str, -0.99f, +0.85f, sx, sy, color_white);
 		tw.end();
 
+		// Finally, update the window buffers to see what we've drawn
 		window.update();
 		frames++;
 	}
 
 	return (0);
 }
+

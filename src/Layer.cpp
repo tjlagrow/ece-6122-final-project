@@ -17,7 +17,7 @@ Layer::Layer(Shader *shader)
  * @param shader TODO
  * @param pmat TODO
  */
-Layer::Layer(Renderer *renderer, Shader *shader)
+Layer::Layer(BatchRenderer *renderer, Shader *shader)
 	: m_renderer(renderer), m_shader(shader)
 {
 //	m_shader->enable();
@@ -51,15 +51,13 @@ void Layer::add(Shape *shape)
 void Layer::render()
 {
 	m_shader->enable();
-	m_renderer->begin();
 
 	for (const Shape *shape : m_shapes)
 	{
-		m_shader->setUniformMat4("vmmat", shape->getModelTransform());
+//		m_shader->setUniformMat4("vmmat", shape->getModelTransform());
 		shape->submit(m_renderer);
 	}
 
-	m_renderer->end();
 	m_renderer->flush();
 	m_shader->disable();
 }

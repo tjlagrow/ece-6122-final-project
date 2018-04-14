@@ -13,11 +13,10 @@ out DATA
 
 uniform mat4 vpmat = mat4(1.0);
 uniform mat4 vvmat = mat4(1.0);
-uniform mat4 vmmat = mat4(1.0);
 
 void main()
 {
-    vec4 pos = vpmat * vvmat * vmmat * vpos;
+    vec4 pos = vpmat * vvmat * vpos;
 
     gl_Position = pos;
 

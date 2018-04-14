@@ -3,7 +3,7 @@
 
 
 #include "Shape.h"
-#include "Renderer.h"
+#include "BatchRenderer.h"
 #include "Shader.h"
 #include <glm/glm.hpp>
 
@@ -17,13 +17,11 @@ public:
 	virtual void render();
 
 protected:
-//	Layer(Renderer *renderer, Shader *shader, const glm::mat4 &pmat);
-	Layer(Renderer *renderer, Shader *shader);
+	Layer(BatchRenderer *renderer, Shader *shader);
 
-	Renderer *m_renderer;
+	BatchRenderer *m_renderer;
 	std::vector<Shape *> m_shapes;
 	Shader *m_shader;
-//	glm::mat4 m_pmat;
 };
 
 

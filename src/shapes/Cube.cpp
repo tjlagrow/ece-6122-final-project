@@ -9,7 +9,7 @@
  */
 Cube::Cube(glm::mat4 model_transform) : Shape(model_transform)
 {
-	this->setVertices(
+	m_vertices =
 	{ //      X      Y      Z      W         U     V         R     G     B     A
 		{ { +0.0f, +0.0f, +1.0f, +1.0f }, { 1.0f, 1.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } }, // back  lower left
 		{ { +1.0f, +0.0f, +1.0f, +1.0f }, { 1.0f, 1.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } }, // back  lower right
@@ -19,9 +19,9 @@ Cube::Cube(glm::mat4 model_transform) : Shape(model_transform)
 		{ { +1.0f, +0.0f, +0.0f, +1.0f }, { 1.0f, 1.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } }, // front lower right
 		{ { +1.0f, +1.0f, +0.0f, +1.0f }, { 1.0f, 1.0f }, { 1.0f, 1.0f, 0.0f, 1.0f } }, // front upper right
 		{ { +0.0f, +1.0f, +0.0f, +1.0f }, { 1.0f, 1.0f }, { 1.0f, 1.0f, 0.0f, 1.0f } }, // front upper left
-	});
+	};
 
-	this->setIndices(
+	m_indices =
 	{
 		0, 1, 2,  2, 3, 0, // back
 		4, 5, 6,  6, 7, 4, // front
@@ -29,7 +29,12 @@ Cube::Cube(glm::mat4 model_transform) : Shape(model_transform)
 		0, 4, 7,  7, 3, 0, // left
 		2, 3, 7,  7, 6, 2, // top
 		0, 1, 5,  5, 4, 0, // bottom
-	});
+	};
+}
+
+Cube::Cube(glm::vec4 color, glm::mat4 model_transform) : Cube(model_transform)
+{
+	setColor(color);
 }
 
 /**
@@ -37,4 +42,10 @@ Cube::Cube(glm::mat4 model_transform) : Shape(model_transform)
  */
 Cube::~Cube()
 {
+}
+
+void Cube::setColor(const glm::vec4 &color)
+{
+	for (int i = 0; i < m_vertices.size(); i++)
+		m_vertices[i].color = color;
 }

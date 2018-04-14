@@ -1,16 +1,27 @@
-#include <iostream>
 #include "BatchRenderer.h"
 
-BatchRenderer::BatchRenderer() : m_index_count(0)
+/**
+ * Constructor
+ */
+BatchRenderer::BatchRenderer()
 {
+	m_vao = 0;
+	m_vbo = 0;
+	m_ibo = 0;
+	m_num_vertices = 0;
+	m_num_indices = 0;
+	m_transformations.push_back(glm::mat4());
+	m_back_transform = &m_transformations.back();
+
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
 
 	glGenBuffers(1, &m_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, RENDERER_BUFFER_BYTES, nullptr, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, RENDERER_MAX_BUFFER_BYTES, nullptr, GL_DYNAMIC_DRAW);
 
 	glEnableVertexAttribArray(SHADER_INDEX_POSITION);
+	glEnableVertexAttribArray(SHADER_INDEX_UV);
 	glEnableVertexAttribArray(SHADER_INDEX_COLOR);
 
 	glVertexAttribPointer(
@@ -20,6 +31,14 @@ BatchRenderer::BatchRenderer() : m_index_count(0)
 		GL_FALSE,
 		sizeof(Vertex),
 		(void *)(offsetof(Vertex, Vertex::position))
+	);
+	glVertexAttribPointer(
+		SHADER_INDEX_UV,
+		2,
+		GL_FLOAT,
+		GL_FALSE,
+		sizeof(Vertex),
+		(void *)(offsetof(Vertex, Vertex::uv))
 	);
 	glVertexAttribPointer(
 		SHADER_INDEX_COLOR,
@@ -39,6 +58,9 @@ BatchRenderer::BatchRenderer() : m_index_count(0)
 	glBindVertexArray(0);
 }
 
+/**
+ * Destructor
+ */
 BatchRenderer::~BatchRenderer()
 {
 	glDeleteBuffers(1, &m_ibo);
@@ -46,42 +68,43 @@ BatchRenderer::~BatchRenderer()
 	glDeleteVertexArrays(1, &m_vao);
 }
 
-void BatchRenderer::begin()
-{
-//	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-//	m_buf = (Vertex *)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-//	m_ind = (GLuint *)glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY);
-}
-
-void BatchRenderer::end()
-{
-//	glUnmapBuffer(GL_ARRAY_BUFFER);
-//	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
-//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
+/**
+ * TODO
+ * @param shape TODO
+ */
 void BatchRenderer::submit(const Shape *shape)
 {
 	std::vector<Vertex> vertices = shape->getVertices();
 	std::vector<GLuint> indices = shape->getIndices();
+	glm::mat4 mt = shape->getModelTransform();
 
 	GLsizei verticesBytes = vertices.size() * sizeof(Vertex);
 	GLsizei indicesBytes = indices.size() * sizeof(GLuint);
+	GLintptr verticesOffset = m_num_vertices * sizeof(Vertex);
+	GLintptr indicesOffset = m_num_indices * sizeof(GLuint);
 
-	for (Vertex v : vertices)
+	// Apply transformations to vertices
+	for (unsigned int i = 0; i < vertices.size(); i++)
 	{
-		v.position = *m_back_transform * v.position;
+		vertices[i].position = mt * vertices[i].position;
+	}
+
+	// Apply offsets to indices
+	for (unsigned int i = 0; i < indices.size(); i++)
+	{
+		indices[i] += m_num_vertices;
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, verticesBytes, vertices.data());
+	glBufferSubData(GL_ARRAY_BUFFER, verticesOffset, verticesBytes, vertices.data());
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, indicesBytes, indices.data());
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, indicesOffset, indicesBytes, indices.data());
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	m_index_count += indices.size();
+	m_num_indices += indices.size();
+	m_num_vertices += vertices.size();
 }
 
 /**
@@ -91,9 +114,38 @@ void BatchRenderer::flush()
 {
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-	glDrawElements(GL_TRIANGLES, m_index_count, GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, m_num_indices, GL_UNSIGNED_INT, nullptr);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
-	m_index_count = 0;
+	m_num_vertices = 0;
+	m_num_indices = 0;
+}
+
+/**
+ * Pushes a transformation matrix. For more information, see:
+ * <https://www.youtube.com/watch?v=16GtFaXwMSo&index=17&list=PLlrATfBNZ98fqE45g3jZA_hLGUrD4bo6_>
+ * @param matrix TODO
+ * @param override TODO
+ */
+void BatchRenderer::push(glm::mat4 matrix, bool override)
+{
+	if (override)
+		m_transformations.push_back(matrix);
+	else
+		// For more information, see:
+		m_transformations.push_back(m_transformations.back() * matrix);
+
+	m_back_transform = &m_transformations.back();
+}
+
+/**
+ * Pops a transformation matrix
+ */
+void BatchRenderer::pop()
+{
+	if (m_transformations.size() > 1)
+		m_transformations.pop_back();
+
+	m_back_transform = &m_transformations.back();
 }

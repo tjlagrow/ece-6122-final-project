@@ -11,9 +11,13 @@ class Cube : public Shape
 {
 public:
 	Cube(glm::mat4 model_transform);
+	Cube(glm::vec4 color, glm::mat4 model_transform);
 	~Cube();
 
+	void setColor(const glm::vec4 &color);
 private:
+
+
 };
 
 
