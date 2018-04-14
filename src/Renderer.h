@@ -16,11 +16,11 @@
 
 class Shape;
 
-class BatchRenderer
+class Renderer
 {
 public:
-	BatchRenderer();
-	~BatchRenderer();
+	Renderer();
+	~Renderer();
 
 	void submit(const Shape *shape);
 	void flush();

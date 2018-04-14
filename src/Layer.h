@@ -3,7 +3,7 @@
 
 
 #include "Shape.h"
-#include "BatchRenderer.h"
+#include "Renderer.h"
 #include "Shader.h"
 #include <glm/glm.hpp>
 
@@ -17,9 +17,9 @@ public:
 	virtual void render();
 
 protected:
-	Layer(BatchRenderer *renderer, Shader *shader);
+	Layer(Renderer *renderer, Shader *shader);
 
-	BatchRenderer *m_renderer;
+	Renderer *m_renderer;
 	std::vector<Shape *> m_shapes;
 	Shader *m_shader;
 };

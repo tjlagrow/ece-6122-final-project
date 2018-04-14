@@ -21,7 +21,7 @@ Shape::~Shape()
  * It is up to the renderer to actually draw it
  * @param renderer The renderer to use for drawing
  */
-void Shape::submit(BatchRenderer *renderer) const
+void Shape::submit(Renderer *renderer) const
 {
 	renderer->submit(this);
 }

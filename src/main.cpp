@@ -23,10 +23,14 @@
 static float camx = 10.0f;
 static float camy = 10.0f;
 static float camz = 10.0f;
+static float cama = 0.0f;
+static float camr = 10.0f;
 
 ////////////////////////////////////////////////////////
 // END - GLOBAL VARIABLES FOR TEST ONLY
 ////////////////////////////////////////////////////////
+
+void calculateNewCameraPosition(float &x, float &y, float &a, float &r);
 
 /**
  * Main program entry point
@@ -124,6 +128,17 @@ int main(int argc, char **argv)
 			tnext = tnow + 1.0f;
 		}
 
+		calculateNewCameraPosition(camx, camz, cama, camr);
+
+		shader1.enable();
+		vMatrix = glm::lookAt(
+			glm::vec3(camx, camy, camz), // camera position
+			glm::vec3(0.0f, 0.0f, 0.0f), // where do you look
+			glm::vec3(0.0f, 1.0f, 0.0f)  // y-axis is up orientation
+		);
+		shader1.setUniformMat4("vvmat", vMatrix);
+		shader1.disable();
+
 		// Draw layers here
 		layer1.render();
 
@@ -142,3 +157,9 @@ int main(int argc, char **argv)
 	return (0);
 }
 
+void calculateNewCameraPosition(float &x, float &y, float &a, float &r)
+{
+	x = std::cos(a) * r;
+	y = std::sin(a) * r;
+	a += 0.01f;
+}

@@ -11,14 +11,14 @@ Cube::Cube(glm::mat4 model_transform) : Shape(model_transform)
 {
 	m_vertices =
 	{ //      X      Y      Z      W         U     V         R     G     B     A
-		{ { +0.0f, +0.0f, +1.0f, +1.0f }, { 1.0f, 1.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } }, // back  lower left
-		{ { +1.0f, +0.0f, +1.0f, +1.0f }, { 1.0f, 1.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } }, // back  lower right
-		{ { +1.0f, +1.0f, +1.0f, +1.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } }, // back  upper right
-		{ { +0.0f, +1.0f, +1.0f, +1.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } }, // back  upper left
-		{ { +0.0f, +0.0f, +0.0f, +1.0f }, { 1.0f, 1.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } }, // front lower left
-		{ { +1.0f, +0.0f, +0.0f, +1.0f }, { 1.0f, 1.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } }, // front lower right
-		{ { +1.0f, +1.0f, +0.0f, +1.0f }, { 1.0f, 1.0f }, { 1.0f, 1.0f, 0.0f, 1.0f } }, // front upper right
-		{ { +0.0f, +1.0f, +0.0f, +1.0f }, { 1.0f, 1.0f }, { 1.0f, 1.0f, 0.0f, 1.0f } }, // front upper left
+		{ { -0.5f, -0.5f, +0.5f, +1.0f }, { 1.0f, 1.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } }, // back  lower left
+		{ { +0.5f, -0.5f, +0.5f, +1.0f }, { 1.0f, 1.0f }, { 1.0f, 0.0f, 0.0f, 1.0f } }, // back  lower right
+		{ { +0.5f, +0.5f, +0.5f, +1.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } }, // back  upper right
+		{ { -0.5f, +0.5f, +0.5f, +1.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f, 0.0f, 1.0f } }, // back  upper left
+		{ { -0.5f, -0.5f, -0.5f, +1.0f }, { 1.0f, 1.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } }, // front lower left
+		{ { +0.5f, -0.5f, -0.5f, +1.0f }, { 1.0f, 1.0f }, { 0.0f, 0.0f, 1.0f, 1.0f } }, // front lower right
+		{ { +0.5f, +0.5f, -0.5f, +1.0f }, { 1.0f, 1.0f }, { 1.0f, 1.0f, 0.0f, 1.0f } }, // front upper right
+		{ { -0.5f, +0.5f, -0.5f, +1.0f }, { 1.0f, 1.0f }, { 1.0f, 1.0f, 0.0f, 1.0f } }, // front upper left
 	};
 
 	m_indices =
@@ -46,6 +46,6 @@ Cube::~Cube()
 
 void Cube::setColor(const glm::vec4 &color)
 {
-	for (int i = 0; i < m_vertices.size(); i++)
+	for (unsigned int i = 0; i < m_vertices.size(); i++)
 		m_vertices[i].color = color;
 }

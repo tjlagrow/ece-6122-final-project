@@ -2,12 +2,12 @@
 #define ECE_6122_FINAL_PROJECT_RENDERABLE_H
 
 #include "Vertex.h"
-#include "BatchRenderer.h"
+#include "Renderer.h"
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <vector>
 
-class BatchRenderer;
+class Renderer;
 
 class Shape
 {
@@ -15,7 +15,7 @@ public:
 	Shape(glm::mat4 model_transform);
 	~Shape();
 
-	void submit(BatchRenderer *renderer) const;
+	void submit(Renderer *renderer) const;
 
 	std::vector<Vertex> getVertices() const;
 	const std::vector<GLuint> &getIndices() const;

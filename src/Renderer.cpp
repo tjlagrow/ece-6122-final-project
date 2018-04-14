@@ -1,9 +1,9 @@
-#include "BatchRenderer.h"
+#include "Renderer.h"
 
 /**
  * Constructor
  */
-BatchRenderer::BatchRenderer()
+Renderer::Renderer()
 {
 	m_vao = 0;
 	m_vbo = 0;
@@ -61,7 +61,7 @@ BatchRenderer::BatchRenderer()
 /**
  * Destructor
  */
-BatchRenderer::~BatchRenderer()
+Renderer::~Renderer()
 {
 	glDeleteBuffers(1, &m_ibo);
 	glDeleteBuffers(1, &m_vbo);
@@ -72,7 +72,7 @@ BatchRenderer::~BatchRenderer()
  * TODO
  * @param shape TODO
  */
-void BatchRenderer::submit(const Shape *shape)
+void Renderer::submit(const Shape *shape)
 {
 	std::vector<Vertex> vertices = shape->getVertices();
 	std::vector<GLuint> indices = shape->getIndices();
@@ -86,7 +86,9 @@ void BatchRenderer::submit(const Shape *shape)
 	// Apply transformations to vertices
 	for (unsigned int i = 0; i < vertices.size(); i++)
 	{
-		vertices[i].position = mt * vertices[i].position;
+		// TODO I don't know if you can apply two transforms like this?
+		// You definitely need to apply the model transform, but the other?
+		vertices[i].position = *m_back_transform * mt * vertices[i].position;
 	}
 
 	// Apply offsets to indices
@@ -110,7 +112,7 @@ void BatchRenderer::submit(const Shape *shape)
 /**
  * Draws the triangles in this batch to the back buffer
  */
-void BatchRenderer::flush()
+void Renderer::flush()
 {
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
@@ -128,7 +130,7 @@ void BatchRenderer::flush()
  * @param matrix TODO
  * @param override TODO
  */
-void BatchRenderer::push(glm::mat4 matrix, bool override)
+void Renderer::push(glm::mat4 matrix, bool override)
 {
 	if (override)
 		m_transformations.push_back(matrix);
@@ -142,7 +144,7 @@ void BatchRenderer::push(glm::mat4 matrix, bool override)
 /**
  * Pops a transformation matrix
  */
-void BatchRenderer::pop()
+void Renderer::pop()
 {
 	if (m_transformations.size() > 1)
 		m_transformations.pop_back();
