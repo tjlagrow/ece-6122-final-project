@@ -1,6 +1,4 @@
 #include "Layer.h"
-#include "Renderer.h"
-#include <iostream>
 
 /**
  * Constructor
@@ -39,9 +37,9 @@ Layer::~Layer()
  * Adds (pushes back) a shape to the layer
  * @param shape The object to add
  */
-void Layer::add(Mesh *shape)
+void Layer::add(RigidObject *object)
 {
-	m_shapes.push_back(shape);
+	m_objects.push_back(object);
 }
 
 /**
@@ -52,10 +50,9 @@ void Layer::render()
 {
 	m_shader->enable();
 
-	for (const Mesh *shape : m_shapes)
+	for (const RigidObject *object : m_objects)
 	{
-//		m_shader->setUniformMat4("vmmat", shape->getModelTransform());
-		shape->submit(m_renderer);
+		object->submit(m_renderer);
 	}
 
 	m_renderer->flush();

@@ -2,7 +2,7 @@
 #define ECE_6122_FINAL_PROJECT_LAYER_H
 
 
-#include "meshes/Mesh.h"
+#include "meshes/RigidObject.h"
 #include "Renderer.h"
 #include "Shader.h"
 #include <glm/glm.hpp>
@@ -13,15 +13,15 @@ public:
 	Layer(Shader *shader);
 	~Layer();
 
-	void add(Mesh *mesh);
-	void add(std::vector<Mesh> &meshes);
+	void add(RigidObject *object);
+//	void add(std::vector<RigidObject> &objects);
 	void render();
 
 protected:
 	Layer(Renderer *renderer, Shader *shader);
 
 	Renderer *m_renderer;
-	std::vector<Mesh *> m_shapes;
+	std::vector<RigidObject *> m_objects;
 	Shader *m_shader;
 };
 

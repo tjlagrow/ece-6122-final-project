@@ -70,26 +70,42 @@ Renderer::~Renderer()
 
 /**
  * TODO
- * @param shape TODO
+ * @param object TODO
  */
-void Renderer::submit(const Mesh *shape)
+void Renderer::submit(const RigidObject *object)
 {
-	std::vector<Vertex> verts = shape->getVertices();
-	std::vector<Face> faces = shape->getFaces();
-	glm::mat4 mt = shape->getModelTransform();
+	std::vector<Mesh> meshes = object->getMeshes();
+	std::vector<Vertex> vertices;
+	std::vector<Face> faces;
 
-	GLsizei verticesBytes = verts.size() * sizeof(Vertex);
+	for (unsigned int i = 0; i < meshes.size(); ++i)
+	{
+		glm::mat4 mt = meshes[i].getModelTransform();
+
+		std::vector<Vertex> v = meshes[i].getVertices();
+		for (unsigned int j = 0; j < v.size(); ++j)
+		{
+			Vertex x;
+
+			// TODO I don't know if applying these two transforms is a good idea
+			// You definitely need to apply the model transform, but the other?
+			x.position = *m_back_transform * mt * v[j].position;
+
+			vertices.push_back(x);
+		}
+
+		std::vector<Face> f = meshes[i].getFaces();
+		for (unsigned int j = 0; j < f.size(); ++j)
+		{
+			faces.push_back(f[j]);
+		}
+
+	}
+
+	GLsizei verticesBytes = vertices.size() * sizeof(Vertex);
 	GLsizei indicesBytes = faces.size() * 3 * sizeof(GLuint);
 	GLintptr verticesOffset = m_num_vertices * sizeof(Vertex);
 	GLintptr indicesOffset = m_num_indices * sizeof(GLuint);
-
-	// Apply transformations to vertices
-	for (unsigned int i = 0; i < verts.size(); i++)
-	{
-		// TODO I don't know if applying these two transforms is a good idea
-		// You definitely need to apply the model transform, but the other?
-		verts[i].position = *m_back_transform * mt * verts[i].position;
-	}
 
 	// Apply offsets to indices
 	for (unsigned int i = 0; i < faces.size(); i++)
@@ -100,7 +116,7 @@ void Renderer::submit(const Mesh *shape)
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferSubData(GL_ARRAY_BUFFER, verticesOffset, verticesBytes, verts.data());
+	glBufferSubData(GL_ARRAY_BUFFER, verticesOffset, verticesBytes, vertices.data());
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
@@ -108,7 +124,7 @@ void Renderer::submit(const Mesh *shape)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	m_num_indices += faces.size() * 3;
-	m_num_vertices += verts.size();
+	m_num_vertices += vertices.size();
 }
 
 /**

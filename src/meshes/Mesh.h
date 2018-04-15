@@ -3,12 +3,9 @@
 
 #include "../Vertex.h"
 #include "../Face.h"
-#include "../Renderer.h"
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <vector>
-
-class Renderer;
 
 class Mesh
 {
@@ -17,8 +14,6 @@ public:
 	Mesh(glm::mat4 model_transform);
 	Mesh(std::vector<Vertex> vertices, std::vector<Face> faces, glm::mat4 model_transform);
 	~Mesh();
-
-	void submit(Renderer *renderer) const;
 
 	std::vector<Vertex> getVertices() const;
 	const std::vector<Face> &getFaces() const;

@@ -44,16 +44,6 @@ Mesh::~Mesh()
 }
 
 /**
- * This function simply submits this shape to its renderer.
- * It is up to the renderer to actually draw it
- * @param renderer The renderer to use for drawing
- */
-void Mesh::submit(Renderer *renderer) const
-{
-	renderer->submit(this);
-}
-
-/**
  * Get the vertices vector
  * @return A vector of vertices for this shape
  */

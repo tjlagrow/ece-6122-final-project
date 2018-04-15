@@ -144,7 +144,7 @@ std::vector<Mesh> createMeshesFromAiScene(const aiScene *scene)
 	for (unsigned int i = 0; i < scene->mNumMeshes; ++i)
 	{
 		const aiMesh *mesh = scene->mMeshes[i];
-		meshes.push_back(new Mesh())
+		meshes.push_back(Mesh());
 
 		if (mesh->HasPositions())
 		{

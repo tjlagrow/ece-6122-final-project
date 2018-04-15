@@ -1,7 +1,7 @@
 #ifndef ECE_6122_FINAL_PROJECT_BATCHRENDERER_H
 #define ECE_6122_FINAL_PROJECT_BATCHRENDERER_H
 
-#include "meshes/Mesh.h"
+#include "meshes/RigidObject.h"
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <vector>
@@ -14,7 +14,7 @@
 #define SHADER_INDEX_UV          1
 #define SHADER_INDEX_COLOR       2
 
-class Mesh;
+class RigidObject;
 
 class Renderer
 {
@@ -22,7 +22,7 @@ public:
 	Renderer();
 	~Renderer();
 
-	void submit(const Mesh *shape);
+	void submit(const RigidObject *object);
 	void flush();
 
 	void push(glm::mat4 matrix, bool override = false);
