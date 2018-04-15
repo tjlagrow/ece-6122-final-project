@@ -1,10 +1,37 @@
-#include "Shape.h"
+#include "Mesh.h"
 
 /**
  * Constructor
  * @param model_transform TODO
  */
-Shape::Shape(glm::mat4 model_transform) :
+Mesh::Mesh() :
+	m_vertices(),
+	m_faces(),
+	m_model_transform(glm::mat4(1.0f))
+{
+}
+
+/**
+ * Constructor
+ * @param model_transform TODO
+ */
+Mesh::Mesh(glm::mat4 model_transform) :
+	m_vertices(),
+	m_faces(),
+	m_model_transform(model_transform)
+{
+}
+
+/**
+ * Constructor
+ * @param model_transform TODO
+ */
+Mesh::Mesh(
+	std::vector<Vertex> vertices,
+	std::vector<Face> faces,
+	glm::mat4 model_transform) :
+	m_vertices(vertices),
+	m_faces(faces),
 	m_model_transform(model_transform)
 {
 }
@@ -12,7 +39,7 @@ Shape::Shape(glm::mat4 model_transform) :
 /**
  * Destructor
  */
-Shape::~Shape()
+Mesh::~Mesh()
 {
 }
 
@@ -21,7 +48,7 @@ Shape::~Shape()
  * It is up to the renderer to actually draw it
  * @param renderer The renderer to use for drawing
  */
-void Shape::submit(Renderer *renderer) const
+void Mesh::submit(Renderer *renderer) const
 {
 	renderer->submit(this);
 }
@@ -30,7 +57,7 @@ void Shape::submit(Renderer *renderer) const
  * Get the vertices vector
  * @return A vector of vertices for this shape
  */
-std::vector<Vertex> Shape::getVertices() const
+std::vector<Vertex> Mesh::getVertices() const
 {
 	return m_vertices;
 }
@@ -39,16 +66,16 @@ std::vector<Vertex> Shape::getVertices() const
  * Get the indices vector
  * @return A vector of indices for this shape
  */
-const std::vector<GLuint> &Shape::getIndices() const
+const std::vector<Face> &Mesh::getFaces() const
 {
-	return m_indices;
+	return m_faces;
 }
 
 /**
  * Get the model transform matrix for the shape
  * @return The model transform matrix for this shape
  */
-const glm::mat4 &Shape::getModelTransform() const
+const glm::mat4 &Mesh::getModelTransform() const
 {
 	return m_model_transform;
 }
@@ -57,7 +84,7 @@ const glm::mat4 &Shape::getModelTransform() const
  * Set the vertices for this shape
  * @param vertices The new vector of vertices
  */
-//void Shape::setVertices(const std::vector<Vertex> &vertices)
+//void Mesh::setVertices(const std::vector<Vertex> &vertices)
 //{
 //	m_vertices = vertices;
 //}
@@ -66,16 +93,8 @@ const glm::mat4 &Shape::getModelTransform() const
  * Set the indices for this shape
  * @param indices The new vector of indices
  */
-//void Shape::setIndices(const std::vector<GLuint> &indices)
+//void Mesh::setIndices(const std::vector<GLuint> &indices)
 //{
 //	m_indices = indices;
 //}
 
-/**
- * Set the model transform matrix for this shape
- * @param model_transform The shape's model transform matrix
- */
-void Shape::setModelTransform(const glm::mat4 model_transform)
-{
-	m_model_transform = model_transform;
-}

@@ -3,8 +3,9 @@
 #include "PhysicsEngine.h"
 #include "Shader.h"
 #include "TextWriter.h"
-#include "shapes/Cube.h"
 #include "Layer.h"
+#include "meshes/Mesh.h"
+#include "meshes/MeshLoader.h"
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -52,16 +53,13 @@ int main(int argc, char **argv)
 
 	Shader shader1(VS_CUBE_PATH, FS_CUBE_PATH);
 
-	Cube cube1(glm::translate(glm::mat4(), glm::vec3(+5.0f, +0.0f, +0.0f)));
-	Cube cube2(glm::translate(glm::mat4(), glm::vec3(-5.0f, +0.0f, +0.0f)));
-	Cube cube3(
-		glm::vec4(1.0f, 0.0f, 1.0f, 1.0f),
-		glm::translate(glm::mat4(), glm::vec3(+0.0f, +0.0f, +0.0f)));
+	std::vector<Mesh> mesh1 = MeshLoader::loadFromFile("../models/beachball.obj");
+//	Cube cube1(glm::translate(glm::mat4(), glm::vec3(+5.0f, +0.0f, +0.0f)));
+//	Cube cube2(glm::translate(glm::mat4(), glm::vec3(-5.0f, +0.0f, +0.0f)));
 
 	Layer layer1(&shader1);
-	layer1.add(&cube1);
-	layer1.add(&cube2);
-	layer1.add(&cube3);
+//	layer1.add(&cube1);
+//	layer1.add(&cube2);
 
 ////////////////////////////////////////////////////////
 // BEGIN - TODO ABSTRACT THIS STUFF
@@ -102,7 +100,7 @@ int main(int argc, char **argv)
 	// Tell the vertex shader about the Projection and View matrices
 	// The shader is looking for the Projection, View, and Model matrices
 	// when it draws a vertex. The Projection and View matrices are handled
-	// here; the Model matrix is handled by the individual Shape objects
+	// here; the Model matrix is handled by the individual Mesh objects
 	// (like is the constructor for Cube class)
 	shader1.enable();
 	shader1.setUniformMat4("vpmat", pMatrix);

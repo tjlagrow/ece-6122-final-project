@@ -39,7 +39,7 @@ Layer::~Layer()
  * Adds (pushes back) a shape to the layer
  * @param shape The object to add
  */
-void Layer::add(Shape *shape)
+void Layer::add(Mesh *shape)
 {
 	m_shapes.push_back(shape);
 }
@@ -52,7 +52,7 @@ void Layer::render()
 {
 	m_shader->enable();
 
-	for (const Shape *shape : m_shapes)
+	for (const Mesh *shape : m_shapes)
 	{
 //		m_shader->setUniformMat4("vmmat", shape->getModelTransform());
 		shape->submit(m_renderer);

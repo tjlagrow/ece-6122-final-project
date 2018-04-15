@@ -53,6 +53,8 @@ Window::Window(const char *title, int width, int height)
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
+//	glEnable(GL_CULL_FACE);
+
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	// The window has been created successfully at this point,

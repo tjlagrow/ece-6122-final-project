@@ -28,6 +28,10 @@ include_directories(${BULLET_INCLUDE_DIRS})
 find_package(Freetype REQUIRED)
 include_directories(${FREETYPE_INCLUDE_DIRS})
 
+# sudo apt-get install libassimp-dev
+find_package(ASSIMP REQUIRED)
+include_directories(${ASSIMP_INCLUDE_DIRS})
+
 # Set the CMAKE_MODULE_PATH to the cmake-modules/ directory.
 # This directory contains custom *.cmake files we need for
 # compiling things outside the normal reach of cmake.
@@ -54,12 +58,12 @@ link_libraries(${FREEIMAGE_LIBRARIES})
 
 # Gather up all the headers and sources in one variable: SOURCES
 set (SRC_DIR "src")
-set (SHAPE_DIR "${SRC_DIR}/shapes")
+set (MESH_DIR "${SRC_DIR}/meshes")
 set (UTILS_DIR "${SRC_DIR}/utils")
 
 file (GLOB SOURCES
     ${SRC_DIR}/*.c ${SRC_DIR}/*.cpp ${SRC_DIR}/*.h
-    ${SHAPE_DIR}/*.c ${SHAPE_DIR}/*.cpp ${SHAPE_DIR}/*.h
+    ${MESH_DIR}/*.c ${MESH_DIR}/*.cpp ${MESH_DIR}/*.h
     ${UTILS_DIR}/*.c ${UTILS_DIR}/*.cpp ${UTILS_DIR}/*.h
 )
 
@@ -70,6 +74,7 @@ target_link_libraries(${PROJECT_NAME}
     ${OPENGL_LIBRARIES}
     ${GLFW3_LIBRARIES}
     ${FREEIMAGE_LIBRARIES}
+    ${ASSIMP_LIBRARIES}
     ${BULLET_LIBRARIES}
     ${FREETYPE_LIBRARIES}
 )
