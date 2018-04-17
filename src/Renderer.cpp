@@ -78,29 +78,32 @@ void Renderer::submit(const RigidObject *object)
 	std::vector<Vertex> vertices;
 	std::vector<Face> faces;
 
-	for (unsigned int i = 0; i < meshes.size(); ++i)
+	for (auto &mesh : meshes)
 	{
-		glm::mat4 mt = meshes[i].getModelTransform();
+		glm::mat4 mt = mesh.getModelTransform();
 
 		Vertex v;
 
-		std::vector<Position> positions = meshes[i].getPositions();
-		std::vector<Normal> normals = meshes[i].getNormals();
-		for (unsigned int j = 0; j < positions.size(); ++j)
+		std::vector<Position> positions = mesh.getPositions();
+		std::vector<Normal> normals = mesh.getNormals();
+		for (unsigned int i = 0; i < positions.size(); ++i)
 		{
 			// TODO I don't know if applying both transforms is a good idea
 			// Definitely need the model transform, but the other?
-			v.position = *m_back_transform * mt * glm::vec4(positions[j].getGLM(), 1.0f);
-			v.normal = normals[j];
+			v.position = *m_back_transform * mt * glm::vec4(positions[i].getGlmVec4());
+			v.normal = normals[i];
 			v.color = Color().getGLM();
 
 			vertices.push_back(v);
 		}
 
-		std::vector<Face> f = meshes[i].getFaces();
-		for (unsigned int j = 0; j < f.size(); ++j)
+		for (auto &f : mesh.getFaces())
 		{
-			faces.push_back(f[j]);
+			faces.push_back(Face(
+				f.x + vertices.size(),
+				f.y + vertices.size(),
+				f.z + vertices.size()
+			));
 		}
 	}
 
@@ -108,15 +111,6 @@ void Renderer::submit(const RigidObject *object)
 	GLsizei indicesBytes = faces.size() * 3 * sizeof(GLuint);
 	GLintptr verticesOffset = m_num_vertices * sizeof(Vertex);
 	GLintptr indicesOffset = m_num_indices * sizeof(GLuint);
-
-	// Apply offsets to indices
-//	for (unsigned int i = 0; i < faces.size(); ++i)
-//	{
-//		faces[i].x = faces[i].x + m_num_vertices;
-//		faces[i].y = faces[i].y + m_num_vertices;
-//		faces[i].z = faces[i].z + m_num_vertices;
-//		printf("%u: %u %u %u\n", i, faces[i].x, faces[i].y, faces[i].z);
-//	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	glBufferSubData(GL_ARRAY_BUFFER, verticesOffset, verticesBytes, vertices.data());
@@ -128,7 +122,6 @@ void Renderer::submit(const RigidObject *object)
 
 	m_num_indices += faces.size() * 3;
 	m_num_vertices += vertices.size();
-//	printf("verts: %u, inds: %u\n", m_num_vertices, m_num_indices);
 }
 
 /**

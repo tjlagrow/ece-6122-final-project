@@ -63,3 +63,13 @@ void RigidObject::setMaterials(std::unordered_map<unsigned int, Material> materi
 {
 	m_materials = materials;
 }
+
+/**
+ * TODO
+ * @param transform TODO
+ */
+void RigidObject::applyTransform(glm::mat4 transform)
+{
+	for (auto &mesh : m_meshes)
+		mesh.setModelTransform(transform);
+}

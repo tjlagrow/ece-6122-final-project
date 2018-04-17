@@ -58,12 +58,14 @@ int main(int argc, char **argv)
 	Shader shader1(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH);
 
 //	RigidObject beachball("../models/beachball.obj");
-	RigidObject cube("../models/cube_simple.obj");
-//	RigidObject cube("../models/cube.obj");
+	RigidObject cube1("../models/cube_simple.obj");
+	RigidObject cube2("../models/cube.obj");
+	cube2.applyTransform(glm::translate(glm::vec3(0.0f, 2.0f, 0.0f)));
 
 	Layer layer1(&shader1);
 //	layer1.add(&beachball);
-	layer1.add(&cube);
+	layer1.add(&cube1);
+	layer1.add(&cube2);
 
 ////////////////////////////////////////////////////////
 // BEGIN - TODO ABSTRACT THIS STUFF

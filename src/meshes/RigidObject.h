@@ -22,6 +22,8 @@ public:
 	const std::vector<Mesh> &getMeshes() const;
 	const std::unordered_map<unsigned int, Material> &getMaterials() const;
 
+	void applyTransform(glm::mat4 transform);
+
 	void setMeshes(std::vector<Mesh> meshes);
 	void setMaterials(std::unordered_map<unsigned int, Material> materials);
 
