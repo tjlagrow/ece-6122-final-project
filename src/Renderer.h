@@ -33,8 +33,8 @@ private:
 	GLuint m_vao;
 	GLuint m_vbo;
 	GLuint m_ibo;
-	GLsizei m_num_vertices;
-	GLsizei m_num_indices;
+	GLsizei m_NumVertices;
+	GLsizei m_NumIndices;
 
 	std::vector<glm::mat4> m_transformations;
 	const glm::mat4 *m_back_transform;

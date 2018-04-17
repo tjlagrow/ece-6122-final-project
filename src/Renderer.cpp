@@ -8,8 +8,8 @@ Renderer::Renderer()
 	m_vao = 0;
 	m_vbo = 0;
 	m_ibo = 0;
-	m_num_vertices = 0;
-	m_num_indices = 0;
+	m_NumVertices = 0;
+	m_NumIndices = 0;
 	m_transformations.push_back(glm::mat4());
 	m_back_transform = &m_transformations.back();
 
@@ -80,17 +80,15 @@ void Renderer::submit(const RigidObject *object)
 
 	for (auto &mesh : meshes)
 	{
-		glm::mat4 mt = mesh.getModelTransform();
-
 		Vertex v;
-
+		glm::mat4 mt = mesh.getModelTransform();
 		std::vector<Position> positions = mesh.getPositions();
 		std::vector<Normal> normals = mesh.getNormals();
+
 		for (unsigned int i = 0; i < positions.size(); ++i)
 		{
-			// TODO I don't know if applying both transforms is a good idea
-			// Definitely need the model transform, but the other?
-			v.position = *m_back_transform * mt * glm::vec4(positions[i].getGlmVec4());
+//			v.position = *m_back_transform * mt * glm::vec4(positions[i].getGlmVec4());
+			v.position = mt * glm::vec4(positions[i].getGlmVec4());
 			v.normal = normals[i];
 			v.color = Color().getGLM();
 
@@ -109,8 +107,8 @@ void Renderer::submit(const RigidObject *object)
 
 	GLsizei verticesBytes = vertices.size() * sizeof(Vertex);
 	GLsizei indicesBytes = faces.size() * 3 * sizeof(GLuint);
-	GLintptr verticesOffset = m_num_vertices * sizeof(Vertex);
-	GLintptr indicesOffset = m_num_indices * sizeof(GLuint);
+	GLintptr verticesOffset = m_NumVertices * sizeof(Vertex);
+	GLintptr indicesOffset = m_NumIndices * sizeof(GLuint);
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	glBufferSubData(GL_ARRAY_BUFFER, verticesOffset, verticesBytes, vertices.data());
@@ -120,8 +118,8 @@ void Renderer::submit(const RigidObject *object)
 	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, indicesOffset, indicesBytes, faces.data());
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	m_num_indices += faces.size() * 3;
-	m_num_vertices += vertices.size();
+	m_NumIndices += faces.size() * 3;
+	m_NumVertices += vertices.size();
 }
 
 /**
@@ -131,12 +129,12 @@ void Renderer::flush()
 {
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-	glDrawElements(GL_TRIANGLES, m_num_indices, GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, m_NumIndices, GL_UNSIGNED_INT, nullptr);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
-	m_num_vertices = 0;
-	m_num_indices = 0;
+	m_NumVertices = 0;
+	m_NumIndices = 0;
 }
 
 /**
