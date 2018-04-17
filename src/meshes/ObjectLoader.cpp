@@ -1,19 +1,28 @@
-#include "MeshLoader.h"
+#include "ObjectLoader.h"
+#include "Mesh.h"
+#include "Material.h"
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 #include <iostream>
 #include <fstream>
+#include <unordered_map>
 
 std::vector<Mesh> createMeshesFromAiScene(const aiScene *scene);
+std::unordered_map<unsigned int, Material> createMaterialsFromAiScene(const aiScene *scene);
 void printAiSceneInfo(const aiScene *scene);
+
+/**
+ * Constructor
+ */
+ObjectLoader::ObjectLoader() { }
 
 /**
  * TODO
  * @param filepath TODO
  * @return TODO
  */
-std::vector<Mesh> MeshLoader::loadFromFile(const char *filepath)
+void ObjectLoader::loadFromFile(const char *filepath, RigidObject *object)
 {
 	// The Assimp importer loads the 3D file
 	Assimp::Importer importer;
@@ -28,7 +37,7 @@ std::vector<Mesh> MeshLoader::loadFromFile(const char *filepath)
 	if (! f.good())
 	{
 		std::cout << "ERROR: Unable to open the file: " << filepath << std::endl;
-		return { };
+		return;
 	}
 	f.close();
 
@@ -37,14 +46,16 @@ std::vector<Mesh> MeshLoader::loadFromFile(const char *filepath)
 	if (! scene)
 	{
 		std::cout << importer.GetErrorString() << std::endl;
-		return { };
+		return;
 	}
 
 	// Print everything about this file to the console
 	printAiSceneInfo(scene);
 
-	// Format the aiScene into our Mesh class and return it
-	return (createMeshesFromAiScene(scene));
+	object->setMeshes(createMeshesFromAiScene(scene));
+	object->setMaterials(createMaterialsFromAiScene(scene));
+
+	return;
 }
 
 /**
@@ -138,23 +149,17 @@ std::vector<Mesh> createMeshesFromAiScene(const aiScene *scene)
 	if (! scene)
 		return { };
 
-	std::vector<GLuint> indices;
-	std::vector<Vertex> vertices;
-
 	for (unsigned int i = 0; i < scene->mNumMeshes; ++i)
 	{
 		const aiMesh *mesh = scene->mMeshes[i];
-		meshes.push_back(Mesh());
+		Mesh m;
 
 		if (mesh->HasPositions())
 		{
 			for (unsigned int j = 0; j < mesh->mNumVertices; ++j)
 			{
-				Vertex v;
 				aiVector3D vec = mesh->mVertices[j];
-				v.position = glm::vec4(vec.x, vec.y, vec.z, 1.0f);
-				v.color = glm::vec4(1.0f, 1.0f, 0.0f, 0.0f);
-				vertices.push_back(v);
+				m.addPosition(Position(vec.x, vec.y, vec.z));
 			}
 		}
 
@@ -162,9 +167,13 @@ std::vector<Mesh> createMeshesFromAiScene(const aiScene *scene)
 		{
 			for (unsigned int j = 0; j < mesh->mNumFaces; ++j)
 			{
-				for (unsigned int k = 0; k < mesh->mFaces[j].mNumIndices; ++k)
+				for (unsigned int k = 0; k < mesh->mFaces[j].mNumIndices; k += 3)
 				{
-					indices.push_back(mesh->mFaces[j].mIndices[k]);
+					m.addFace(Face(
+						mesh->mFaces[j].mIndices[k+0],
+						mesh->mFaces[j].mIndices[k+1],
+						mesh->mFaces[j].mIndices[k+2]
+					));
 				}
 			}
 		}
@@ -189,10 +198,97 @@ std::vector<Mesh> createMeshesFromAiScene(const aiScene *scene)
 
 			}
 		}
+
+		meshes.push_back(m);
 	}
 
-	return { };
+	return meshes;
 }
+
+/**
+ * TODO
+ * @param scene TODO
+ * @return TODO
+ */
+std::unordered_map<unsigned int, Material>
+createMaterialsFromAiScene(const aiScene *scene)
+{
+	if (! scene)
+		return { };
+
+	if (! scene->HasMaterials())
+		return { };
+
+	std::unordered_map<unsigned int, Material> materials;
+
+	for (unsigned int i = 0; i < scene->mNumMaterials; ++i)
+	{
+		Material m;
+		aiMaterial *material = scene->mMaterials[i];
+
+		aiString matName;
+		material->Get(AI_MATKEY_NAME, matName);
+		m.setName(matName.C_Str());
+
+		aiColor3D color(0.0f, 0.0f, 0.0f);
+		material->Get(AI_MATKEY_COLOR_AMBIENT, color);
+		m.setAmbient(glm::vec3(color.r, color.g, color.b));
+
+		material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+		m.setDiffuse(glm::vec3(color.r, color.g, color.b));
+
+		material->Get(AI_MATKEY_COLOR_SPECULAR, color);
+		m.setSpecular(glm::vec3(color.r, color.g, color.b));
+
+		material->Get(AI_MATKEY_COLOR_EMISSIVE, color);
+		m.setEmission(glm::vec3(color.r, color.g, color.b));
+
+		float shininess = 0.0f;
+		material->Get(AI_MATKEY_SHININESS, shininess);
+		m.setSpecularExponent(shininess);
+
+		// TODO Add support for textures
+//		unsigned int diffuseTextureCount = material->GetTextureCount(aiTextureType_DIFFUSE);
+//		cout << "Diffuse texture count " << diffuseTextureCount << endl;
+//		for (unsigned int k = 0; k < diffuseTextureCount; k++)
+//		{
+//			aiString textureFilePath;
+//			if (AI_SUCCESS == scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, k, &textureFilePath))
+//			{
+//				cout << "Diffuse Texture file: " << textureFilePath.data << endl;
+//			}
+//		} // end of for diffuseTextureCount
+//
+//		unsigned int specularTextureCount = material->GetTextureCount(aiTextureType_SPECULAR);
+//		cout << "Specular texture count " << specularTextureCount << endl;
+//		for (unsigned int k = 0; k < specularTextureCount; k++)
+//		{
+//			aiString textureFilePath;
+//			if (AI_SUCCESS == scene->mMaterials[i]->GetTexture(aiTextureType_SPECULAR, k, &textureFilePath))
+//			{
+//				cout << "Specular texture file: " << textureFilePath.data << endl;
+//			}
+//		} // end of for specularTextureCount
+//
+//		unsigned int normalMapCount = material->GetTextureCount(aiTextureType_NORMALS);
+//		cout << "Normal map count " << normalMapCount << endl;
+//		for (unsigned int k = 0; k < normalMapCount; k++)
+//		{
+//			aiString textureFilePath;
+//			if (AI_SUCCESS == scene->mMaterials[i]->GetTexture(aiTextureType_NORMALS, k, &textureFilePath))
+//			{
+//				cout << "Specular texture file: " << textureFilePath.data << endl;
+//			}
+//		} // end of for specularTextureCount
+//
+//		cout << endl;
+
+		materials.insert({ i, m });
+	} // end of for mNumMaterials
+
+	return (materials);
+}
+
 
 using namespace std;
 

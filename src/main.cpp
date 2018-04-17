@@ -5,7 +5,7 @@
 #include "TextWriter.h"
 #include "Layer.h"
 #include "meshes/Mesh.h"
-#include "meshes/MeshLoader.h"
+#include "meshes/ObjectLoader.h"
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -14,8 +14,8 @@
 ////////////////////////////////////////////////////////
 // BEGIN - GLOBAL VARIABLES FOR TEST ONLY
 ////////////////////////////////////////////////////////
-#define VS_CUBE_PATH  "../shaders/vertex.glsl"
-#define FS_CUBE_PATH  "../shaders/fragment.glsl"
+#define VERTEX_SHADER_PATH    "../shaders/vertex.glsl"
+#define FRAGMENT_SHADER_PATH  "../shaders/fragment.glsl"
 
 #define WINDOW_WIDTH    800
 #define WINDOW_HEIGHT   600
@@ -41,25 +41,28 @@ void calculateNewCameraPosition(float &x, float &y, float &a, float &r);
  */
 int main(int argc, char **argv)
 {
+	// Parse program arguments and store in ProgramConfig
+	// TODO Use ProgramConfig::modelsDir to automatically parse all models file
 	ProgramConfig cfg;
 	ArgParser::parse_args(argc, argv, &cfg);
 
 	Window window(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+	// The text writer is used to write text onto the window
+	// It does not hinder the raytracer algorithm
 	TextWriter tw(VS_FONT_PATH, FS_FONT_PATH, TTF_PATH, 16);
 
 //	PhysicsEngine engine;
 //	engine.simple_ball_drop();
 
-	Shader shader1(VS_CUBE_PATH, FS_CUBE_PATH);
+	Shader shader1(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH);
 
-	std::vector<Mesh> mesh1 = MeshLoader::loadFromFile("../models/beachball.obj");
-//	Cube cube1(glm::translate(glm::mat4(), glm::vec3(+5.0f, +0.0f, +0.0f)));
-//	Cube cube2(glm::translate(glm::mat4(), glm::vec3(-5.0f, +0.0f, +0.0f)));
+//	RigidObject beachball("../models/beachball.obj");
+	RigidObject cube("../models/cube.obj");
 
 	Layer layer1(&shader1);
-//	layer1.add(&cube1);
-//	layer1.add(&cube2);
+//	layer1.add(&beachball);
+	layer1.add(&cube);
 
 ////////////////////////////////////////////////////////
 // BEGIN - TODO ABSTRACT THIS STUFF

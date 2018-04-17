@@ -2,37 +2,8 @@
 
 /**
  * Constructor
- * @param model_transform TODO
  */
-Mesh::Mesh() :
-	m_vertices(),
-	m_faces(),
-	m_model_transform(glm::mat4(1.0f))
-{
-}
-
-/**
- * Constructor
- * @param model_transform TODO
- */
-Mesh::Mesh(glm::mat4 model_transform) :
-	m_vertices(),
-	m_faces(),
-	m_model_transform(model_transform)
-{
-}
-
-/**
- * Constructor
- * @param model_transform TODO
- */
-Mesh::Mesh(
-	std::vector<Vertex> vertices,
-	std::vector<Face> faces,
-	glm::mat4 model_transform) :
-	m_vertices(vertices),
-	m_faces(faces),
-	m_model_transform(model_transform)
+Mesh::Mesh()
 {
 }
 
@@ -44,12 +15,84 @@ Mesh::~Mesh()
 }
 
 /**
- * Get the vertices vector
- * @return A vector of vertices for this shape
+ * TODO
+ * @param position TODO
  */
-std::vector<Vertex> Mesh::getVertices() const
+void Mesh::addPosition(Position position)
 {
-	return m_vertices;
+	m_positions.push_back(position);
+}
+
+/**
+ * TODO
+ * @param normal TODO
+ */
+void Mesh::addNormal(Normal normal)
+{
+	m_normals.push_back(normal);
+}
+
+/**
+ * TODO
+ * @param face TODO
+ */
+void Mesh::addFace(Face face)
+{
+	m_faces.push_back(face);
+}
+
+/**
+ * TODO
+ * @param texcoord TODO
+ */
+void Mesh::addTexCoord(TexCoord texcoord)
+{
+	m_texcoords.push_back(texcoord);
+}
+
+/**
+ * TODO
+ * @param color TODO
+ */
+void Mesh::addColor(Color color)
+{
+	m_colors.push_back(color);
+}
+
+/**
+ * TODO
+ * @param materialIndex TODO
+ */
+void Mesh::setMaterialIndex(GLuint materialIndex)
+{
+	m_materialIndex = materialIndex;
+}
+
+/**
+ * TODO
+ * @param modelTransform TODO
+ */
+void Mesh::setModelTransform(glm::mat4 modelTransform)
+{
+	m_modelTransform = modelTransform;
+}
+
+/**
+ * TODO
+ * @return TODO
+ */
+const std::vector<Position> &Mesh::getPositions() const
+{
+	return m_positions;
+}
+
+/**
+ * TODO
+ * @return TODO
+ */
+const std::vector<Normal> &Mesh::getNormals() const
+{
+	return m_normals;
 }
 
 /**
@@ -62,29 +105,37 @@ const std::vector<Face> &Mesh::getFaces() const
 }
 
 /**
+ * TODO
+ * @return TODO
+ */
+const std::vector<TexCoord> &Mesh::getTexCoords() const
+{
+	return m_texcoords;
+}
+
+/**
+ * TODO
+ * @return TODO
+ */
+const std::vector<Color> &Mesh::getColors() const
+{
+	return m_colors;
+}
+
+/**
+ * TODO
+ * @return TODO
+ */
+const GLuint &Mesh::getMaterialIndex() const
+{
+	return m_materialIndex;
+}
+
+/**
  * Get the model transform matrix for the shape
  * @return The model transform matrix for this shape
  */
 const glm::mat4 &Mesh::getModelTransform() const
 {
-	return m_model_transform;
+	return m_modelTransform;
 }
-
-/**
- * Set the vertices for this shape
- * @param vertices The new vector of vertices
- */
-//void Mesh::setVertices(const std::vector<Vertex> &vertices)
-//{
-//	m_vertices = vertices;
-//}
-
-/**
- * Set the indices for this shape
- * @param indices The new vector of indices
- */
-//void Mesh::setIndices(const std::vector<GLuint> &indices)
-//{
-//	m_indices = indices;
-//}
-

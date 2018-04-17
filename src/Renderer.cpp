@@ -82,16 +82,17 @@ void Renderer::submit(const RigidObject *object)
 	{
 		glm::mat4 mt = meshes[i].getModelTransform();
 
-		std::vector<Vertex> v = meshes[i].getVertices();
-		for (unsigned int j = 0; j < v.size(); ++j)
+		std::vector<Position> positions = meshes[i].getPositions();
+		for (unsigned int j = 0; j < positions.size(); ++j)
 		{
-			Vertex x;
-
-			// TODO I don't know if applying these two transforms is a good idea
-			// You definitely need to apply the model transform, but the other?
-			x.position = *m_back_transform * mt * v[j].position;
-
-			vertices.push_back(x);
+			vertices.push_back(Vertex(
+				// TODO I don't know if applying both transforms is a good idea
+				// Definitely need the model transform, but the other?
+				*m_back_transform * mt * glm::vec4(positions[j].getGLM(), 1.0f),
+				glm::vec2(),
+				glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
+				glm::vec3()
+			));
 		}
 
 		std::vector<Face> f = meshes[i].getFaces();
@@ -108,11 +109,11 @@ void Renderer::submit(const RigidObject *object)
 	GLintptr indicesOffset = m_num_indices * sizeof(GLuint);
 
 	// Apply offsets to indices
-	for (unsigned int i = 0; i < faces.size(); i++)
+	for (unsigned int i = 0; i < faces.size(); ++i)
 	{
-		faces[i].indices[0] += m_num_vertices;
-		faces[i].indices[1] += m_num_vertices;
-		faces[i].indices[2] += m_num_vertices;
+		faces[i].x += m_num_vertices;
+		faces[i].y += m_num_vertices;
+		faces[i].z += m_num_vertices;
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);

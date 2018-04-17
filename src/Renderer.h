@@ -1,14 +1,14 @@
 #ifndef ECE_6122_FINAL_PROJECT_BATCHRENDERER_H
 #define ECE_6122_FINAL_PROJECT_BATCHRENDERER_H
 
+#include "meshes/Vertex.h"
 #include "meshes/RigidObject.h"
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <vector>
 
-#define RENDERER_MAX_SHAPES          1000
 #define RENDERER_MAX_INDICES         10000
-#define RENDERER_MAX_BUFFER_BYTES    (100 * sizeof(Vertex) * RENDERER_MAX_SHAPES)
+#define RENDERER_MAX_BUFFER_BYTES    1000000
 
 #define SHADER_INDEX_POSITION    0
 #define SHADER_INDEX_UV          1
