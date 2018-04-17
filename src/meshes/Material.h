@@ -12,6 +12,7 @@ public:
 		glm::vec3 Kd,
 		glm::vec3 Ks,
 		glm::vec3 Ke,
+		float shininess,
 		float Ni,
 		float Ns,
 		float d,
@@ -22,6 +23,7 @@ public:
 		m_Kd = Kd;
 		m_Ks = Ks;
 		m_Ke = Ke;
+		m_shininess = shininess;
 		m_Ni = Ni;
 		m_Ns = Ns;
 		m_d = d;
@@ -33,6 +35,7 @@ public:
 	void setDiffuse(glm::vec3 Kd) { m_Kd = Kd; }
 	void setSpecular(glm::vec3 Ks) { m_Ks = Ks; }
 	void setEmission(glm::vec3 Ke) { m_Ke = Ke; }
+	void setShininess(float shininess) { m_shininess = shininess; }
 	void setRefraction(float Ni) { m_Ni = Ni; }
 	void setSpecularExponent(float Ns) { m_Ns = Ns; }
 	void setDissolveFactor(float d) { m_d = d; }
@@ -44,6 +47,7 @@ private:
 	glm::vec3 m_Kd; // Diffuse
 	glm::vec3 m_Ks; // Specular
 	glm::vec3 m_Ke; // Emission
+	float m_shininess; // Shininess
 	float m_Ni; // Optical density; index of refraction
 	float m_Ns; // Specular exponent; high exponent is tight highlight
 	float m_d; // Factor; amount of dissolve applied to material; transparency

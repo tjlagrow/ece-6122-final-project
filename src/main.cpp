@@ -58,7 +58,8 @@ int main(int argc, char **argv)
 	Shader shader1(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH);
 
 //	RigidObject beachball("../models/beachball.obj");
-	RigidObject cube("../models/cube.obj");
+	RigidObject cube("../models/cube_simple.obj");
+//	RigidObject cube("../models/cube.obj");
 
 	Layer layer1(&shader1);
 //	layer1.add(&beachball);

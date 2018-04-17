@@ -82,17 +82,19 @@ void Renderer::submit(const RigidObject *object)
 	{
 		glm::mat4 mt = meshes[i].getModelTransform();
 
+		Vertex v;
+
 		std::vector<Position> positions = meshes[i].getPositions();
+		std::vector<Normal> normals = meshes[i].getNormals();
 		for (unsigned int j = 0; j < positions.size(); ++j)
 		{
-			vertices.push_back(Vertex(
-				// TODO I don't know if applying both transforms is a good idea
-				// Definitely need the model transform, but the other?
-				*m_back_transform * mt * glm::vec4(positions[j].getGLM(), 1.0f),
-				glm::vec2(),
-				glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-				glm::vec3()
-			));
+			// TODO I don't know if applying both transforms is a good idea
+			// Definitely need the model transform, but the other?
+			v.position = *m_back_transform * mt * glm::vec4(positions[j].getGLM(), 1.0f);
+			v.normal = normals[j];
+			v.color = Color().getGLM();
+
+			vertices.push_back(v);
 		}
 
 		std::vector<Face> f = meshes[i].getFaces();
@@ -100,7 +102,6 @@ void Renderer::submit(const RigidObject *object)
 		{
 			faces.push_back(f[j]);
 		}
-
 	}
 
 	GLsizei verticesBytes = vertices.size() * sizeof(Vertex);
@@ -109,12 +110,13 @@ void Renderer::submit(const RigidObject *object)
 	GLintptr indicesOffset = m_num_indices * sizeof(GLuint);
 
 	// Apply offsets to indices
-	for (unsigned int i = 0; i < faces.size(); ++i)
-	{
-		faces[i].x += m_num_vertices;
-		faces[i].y += m_num_vertices;
-		faces[i].z += m_num_vertices;
-	}
+//	for (unsigned int i = 0; i < faces.size(); ++i)
+//	{
+//		faces[i].x = faces[i].x + m_num_vertices;
+//		faces[i].y = faces[i].y + m_num_vertices;
+//		faces[i].z = faces[i].z + m_num_vertices;
+//		printf("%u: %u %u %u\n", i, faces[i].x, faces[i].y, faces[i].z);
+//	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	glBufferSubData(GL_ARRAY_BUFFER, verticesOffset, verticesBytes, vertices.data());
@@ -126,6 +128,7 @@ void Renderer::submit(const RigidObject *object)
 
 	m_num_indices += faces.size() * 3;
 	m_num_vertices += vertices.size();
+//	printf("verts: %u, inds: %u\n", m_num_vertices, m_num_indices);
 }
 
 /**

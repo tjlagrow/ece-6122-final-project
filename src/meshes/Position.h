@@ -8,6 +8,7 @@
 struct Position : public glm::vec3
 {
 	Position(float x, float y, float z) : glm::vec3(x, y, z) { }
+
 	glm::vec3 getGLM()
 	{
 		return glm::vec3(this->x, this->y, this->z);

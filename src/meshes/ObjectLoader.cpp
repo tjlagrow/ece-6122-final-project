@@ -42,7 +42,14 @@ void ObjectLoader::loadFromFile(const char *filepath, RigidObject *object)
 	f.close();
 
 	// Load the meshes from the file into the aiScene
-	scene = importer.ReadFile(filepath, aiProcessPreset_TargetRealtime_Quality);
+//	scene = importer.ReadFile(filepath, aiProcessPreset_TargetRealtime_Quality);
+	scene = importer.ReadFile(filepath,
+		aiProcess_Triangulate |
+//			aiProcessPreset_TargetRealtime_Quality |
+//			aiProcess_FlipUVs |
+			aiProcess_FixInfacingNormals |
+			aiProcess_GenUVCoords
+	);
 	if (! scene)
 	{
 		std::cout << importer.GetErrorString() << std::endl;
@@ -65,85 +72,6 @@ void ObjectLoader::loadFromFile(const char *filepath, RigidObject *object)
  */
 std::vector<Mesh> createMeshesFromAiScene(const aiScene *scene)
 {
-//	unsigned int *vaoArray;
-//	unsigned int *faceArray;
-//
-//	struct materialProperties
-//	{
-//		float ambient[4];
-//		float diffuse[4];
-//		float specular[4];
-//		float emission[4];
-//		float shininess[4];
-//	};
-//
-//	struct materialProperties *matprops;
-//
-//	struct materialLocations
-//	{
-//		unsigned int ambient;
-//		unsigned int diffuse;
-//		unsigned int specular;
-//		unsigned int emission;
-//		unsigned int shininess;
-//	};
-//
-//	const unsigned int maxNumLightSources = 50;
-//
-//	float lightPosition[maxNumLightSources][4] = { { 1.0f, 1.0f, 1.0f, 1.0f } };
-//	float lightDirection[maxNumLightSources][4] = { { 0.0f, 0.0f, -1.0f, 1.0 } };
-//	float lightDiffuse[maxNumLightSources][4] = { { 1.0f, 1.0f, 1.0f, 1.0f } };
-//	float lightSpecular[maxNumLightSources][4] = { { 1.0f, 1.0f, 1.0f, 1.0f } };
-//	float lightAmbient[maxNumLightSources][4] = { { 0.2f, 0.2f, 0.2f, 1.0f } };
-//	float lightConstantAttenuation[maxNumLightSources] = { 1.0f };
-//	float lightLinearAttenuation[maxNumLightSources] = { 0.5f };
-//	float lightQuadraticAttenuation[maxNumLightSources] = { 0.1f };
-//	float spotlightInnerCone[maxNumLightSources] = { 0.3f }; // inner cone cutoff angle (in radians)
-//	float spotlightOuterCone[maxNumLightSources] = { 2.0f }; // spotlight cutoff angle (in radians)
-//	int lightType[maxNumLightSources] = { 1 }; // default point light source
-//
-//	unsigned int numLights = 1;
-//
-//	struct LightSourceLocations
-//	{
-//		unsigned int position;
-//		unsigned int direction;
-//		unsigned int ambient;
-//		unsigned int diffuse;
-//		unsigned int specular;
-//		unsigned int constantAttenuation;
-//		unsigned int linearAttenuation;
-//		unsigned int quadraticAttenuation;
-//		unsigned int spotlightInnerCone;
-//		unsigned int spotlightOuterCone;
-//		unsigned int type;
-//		unsigned int eyePosition;
-//		unsigned int hasTexture;
-//		unsigned int numLights;
-//	};
-//
-//	LightSourceLocations lightSourceLocations;
-//
-//	// ------------------------------------
-//	// Texture mapping related variables.
-//	float* textureCoordArray = 0;
-//	unsigned int* textureObjectIDArray = 0;
-//	unsigned int textureUnit;
-//
-//	// User interactions related parameters
-//	float rotateX = 0;
-//	float rotateY = 0;
-//
-//	bool useMouse = false;
-//
-//	float scaleFactor = 1.0f;
-//
-//	float xTranslation = 0.0f;
-//	float yTranslation = 0.0f;
-//	float zTranslation = 0.0f;
-//
-//	float transformationStep = 1.0f;
-
 	std::vector<Mesh> meshes;
 
 	if (! scene)
@@ -180,14 +108,18 @@ std::vector<Mesh> createMeshesFromAiScene(const aiScene *scene)
 
 		if (mesh->HasNormals())
 		{
-
+			for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
+			{
+				aiVector3D vec = mesh->mNormals[i];
+				m.addNormal(Normal(vec.x, vec.y, vec.z));
+			}
 		}
 
 		for (unsigned int j = 0; j < mesh->GetNumColorChannels(); ++j)
 		{
 			if (mesh->HasVertexColors(j))
 			{
-
+				// TODO
 			}
 		}
 
@@ -195,7 +127,7 @@ std::vector<Mesh> createMeshesFromAiScene(const aiScene *scene)
 		{
 			if (mesh->HasTextureCoords(j))
 			{
-
+				// TODO
 			}
 		}
 
