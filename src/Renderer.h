@@ -37,9 +37,9 @@ private:
 	GLuint m_vao;
 	GLuint m_vbo;
 	GLuint m_ibo;
-	unsigned int m_numVertices;
-	unsigned int m_numIndices;
-	std::vector<std::vector<unsigned int>> m_indices;
+	unsigned int m_numGpuVertices;
+	unsigned int m_numGpuIndices;
+	std::vector<unsigned int> m_indicesCount;
 
 	std::vector<glm::mat4> m_transformations;
 	const glm::mat4 *m_back_transform;

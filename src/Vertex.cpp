@@ -75,3 +75,21 @@ std::ostream &operator<< (std::ostream &stream, const Vertex &vertex)
 		<< vertex.color.a;
 	return (stream);
 }
+
+bool operator== (const Vertex &lhs, const Vertex &rhs)
+{
+	return (
+		lhs.position.x == rhs.position.x &&
+		lhs.position.y == rhs.position.y &&
+		lhs.position.z == rhs.position.z &&
+		lhs.color.r == rhs.color.r &&
+		lhs.color.g == rhs.color.g &&
+		lhs.color.b == rhs.color.b &&
+		lhs.color.a == rhs.color.a &&
+		lhs.normal.x == rhs.normal.x &&
+		lhs.normal.y == rhs.normal.y &&
+		lhs.normal.z == rhs.normal.z &&
+		lhs.uv.x == rhs.uv.x &&
+		lhs.uv.y == rhs.uv.y
+	);
+}

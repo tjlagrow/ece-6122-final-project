@@ -11,8 +11,8 @@ Renderer::Renderer()
 	m_vao = 0;
 	m_vbo = 0;
 	m_ibo = 0;
-	m_numVertices = 0;
-	m_numIndices = 0;
+	m_numGpuVertices = 0;
+	m_numGpuIndices = 0;
 	m_transformations.push_back(glm::mat4());
 	m_back_transform = &m_transformations.back();
 
@@ -85,9 +85,9 @@ Renderer::~Renderer()
  */
 void Renderer::addMeshes(unsigned int count)
 {
-	size_t n = m_indices.size();
+	size_t n = m_indicesCount.size();
 	for (unsigned int i = n; i < n + count; ++i)
-		m_indices.push_back({ });
+		m_indicesCount.push_back(0);
 }
 
 /**
@@ -96,19 +96,18 @@ void Renderer::addMeshes(unsigned int count)
  */
 void Renderer::submit(const RigidObject *object)
 {
+	std::vector<Vertex> gpuVertices;
+	std::vector<GLuint> gpuIndices;
 	std::vector<Mesh> meshes = object->getMeshes();
-//	std::vector<Material> materials = object->getMaterials();
-//	std::vector<Position> positions = object->getPositions();
-//	std::vector<Normal> normals = object->getNormals();
-//	std::vector<TexCoord> texcoords = object->getTexCoords();
-
-	std::vector<Vertex> vertices;
 
 	// Loop over the meshes in this object and extract the relevant vertices
-	// and matching index positions into their respective arrays. These will
-	// be sent to the GPU later in this function.
+	// and matching index positions into their respective arrays. These arrays
+	// will be sent to the GPU next.
 	for (unsigned int i = 0; i < meshes.size(); ++i)
 	{
+		unsigned int thisMeshesIndicesCount = 0;
+		glm::mat4 mt = meshes[i].getModelTransform();
+
 		// Each mesh has a face
 		for (auto &face : meshes[i].getFaces())
 		{
@@ -135,14 +134,21 @@ void Renderer::submit(const RigidObject *object)
 
 				const Normal *ptrNormal = object->getNormal(face.normalIndices[j]);
 				if (! ptrNormal)
+				{
 					nrm = Normal();
+				}
 				else
+				{
 					nrm = *ptrNormal;
+				}
 
-				Vertex v(pos.getGlmVec4(), tex, col, nrm);
+				Vertex v(mt * pos.getGlmVec4(), tex, col, nrm);
 				unsigned int index = 0;
 
-				if (! vertices.empty())
+				// If the vertices array is empty, then it's the first time
+				// we've been through here and thus we just need to add the
+				// Vertex we created above
+				if (! gpuVertices.empty())
 				{
 					// Look and see if this vertex already exists in our array
 					// If so, no need to add it and duplicate it. That will waste
@@ -150,66 +156,58 @@ void Renderer::submit(const RigidObject *object)
 					// and store the index of the existing Vertex
 					// NOTE: If this thing below looks weird it's because it
 					// is kind of weird. It's called a "lambda" function.
-					auto it = std::find_if(vertices.begin(), vertices.end(),
+					auto it = std::find_if(gpuVertices.begin(), gpuVertices.end(),
 						[&v](const Vertex &obj) // lambda function begin
 						{
-							return (
-								obj.position.x == v.position.x &&
-								obj.position.y == v.position.y &&
-								obj.position.z == v.position.z &&
-								obj.color.r == v.color.r &&
-								obj.color.g == v.color.g &&
-								obj.color.b == v.color.b &&
-								obj.color.a == v.color.a &&
-								obj.normal.x == v.normal.x &&
-								obj.normal.y == v.normal.y &&
-								obj.normal.z == v.normal.z &&
-								obj.uv.x == v.uv.x &&
-								obj.uv.y == v.uv.y
-							);
+							return (v == obj);
 						}
 					);
 
 					// Check if we found the object
-					if (it != vertices.end())
+					if (it != gpuVertices.end())
 					{
 						// We found it. Grab the index
-						index = std::distance(vertices.begin(), it);
+						index = std::distance(gpuVertices.begin(), it);
 					}
 					else
 					{
 						// Did not find it. New index is the last element + 1
-						index = vertices.size();
-						vertices.push_back(v);
+						// NOTE: Must do in this order!
+						index = gpuVertices.size();
+						gpuVertices.push_back(v);
 					}
-					m_indices[i].push_back(index);
 				}
 				else
 				{
-					vertices.push_back(v);
-					m_indices[i].push_back(index);
+					// Array was empty, so just add it
+					gpuVertices.push_back(v);
 				}
+				gpuIndices.push_back(index);
+				thisMeshesIndicesCount++;
 			}
 		}
-		m_numIndices += m_indices[i].size();
+
+		m_indicesCount[i] = thisMeshesIndicesCount;
 	}
 
-	GLsizei vertBytes = vertices.size() * sizeof(Vertex);
-	GLintptr vertOffset = m_numVertices * sizeof(Vertex);
+	unsigned long vertBytes = gpuVertices.size() * sizeof(Vertex);
+	GLintptr vertOffset = m_numGpuVertices * sizeof(Vertex);
 
-	GLsizei indicesBytes = m_indices.back().size() * sizeof(GLuint);
-	GLintptr indicesOffset = m_numIndices * sizeof(GLuint);
-//
+	unsigned long indicesBytes = gpuIndices.size() * sizeof(GLuint);
+	GLintptr indicesOffset = m_numGpuIndices * sizeof(GLuint);
+
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferSubData(GL_ARRAY_BUFFER, vertOffset, vertBytes, vertices.data());
+	glBufferSubData(GL_ARRAY_BUFFER, vertOffset, vertBytes, gpuVertices.data());
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, indicesOffset, indicesBytes, m_indices.back().data());
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, indicesOffset, indicesBytes, gpuIndices.data());
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	m_numVertices += vertices.size();
-	printf("%u %u\n", m_numIndices, m_numVertices);
+	// Keep a running tally of the total number of indices and vertices
+	// written to the GPU
+	m_numGpuIndices += gpuIndices.size();
+	m_numGpuVertices += gpuVertices.size();
 }
 
 /**
@@ -220,17 +218,18 @@ void Renderer::flush()
 	unsigned int count = 0;
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-	for (unsigned int i = 0; i < m_indices.size(); ++i)
+	for (unsigned int i = 0; i < m_indicesCount.size(); ++i)
 	{
-		glDrawElements(GL_TRIANGLES, m_indices[i].size(), GL_UNSIGNED_INT, (void *)(count * sizeof(GLuint)));
-		count += m_indices[i].size();
-		m_indices[i].clear();
+		glDrawElements(GL_TRIANGLES, m_indicesCount[i], GL_UNSIGNED_INT, (void *)(count * sizeof(GLuint)));
+		count += m_indicesCount[i];
+		m_indicesCount[i] = 0;
 	}
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
-	m_numVertices = 0;
-	m_numIndices = 0;
+	m_numGpuVertices = 0;
+	m_numGpuIndices = 0;
+//	m_indicesCount.clear();
 }
 
 /**

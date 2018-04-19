@@ -23,5 +23,6 @@ struct Vertex
 };
 
 std::ostream &operator<< (std::ostream &stream, const Vertex &vertex);
+bool operator== (const Vertex &lhs, const Vertex &rhs);
 
 #endif //ECE_6122_FINAL_PROJECT_VERTEX_H

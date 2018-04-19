@@ -45,10 +45,10 @@ void ObjectLoader::loadFromFile(const char *filepath, RigidObject *object)
 //	scene = importer.ReadFile(filepath, aiProcessPreset_TargetRealtime_Quality);
 	scene = importer.ReadFile(filepath,
 		aiProcess_Triangulate |
-//			aiProcessPreset_TargetRealtime_Quality |
-//			aiProcess_FlipUVs |
-			aiProcess_FixInfacingNormals |
-			aiProcess_GenUVCoords
+//		aiProcessPreset_TargetRealtime_Quality |
+//		aiProcess_FlipUVs |
+		aiProcess_FixInfacingNormals |
+		aiProcess_GenUVCoords
 	);
 	if (! scene)
 	{
