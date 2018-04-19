@@ -16,24 +16,6 @@ Mesh::~Mesh()
 
 /**
  * TODO
- * @param position TODO
- */
-void Mesh::addPosition(Position position)
-{
-	m_positions.push_back(position);
-}
-
-/**
- * TODO
- * @param normal TODO
- */
-void Mesh::addNormal(Normal normal)
-{
-	m_normals.push_back(normal);
-}
-
-/**
- * TODO
  * @param face TODO
  */
 void Mesh::addFace(Face face)
@@ -43,20 +25,14 @@ void Mesh::addFace(Face face)
 
 /**
  * TODO
- * @param texcoord TODO
+ * @param face TODO
  */
-void Mesh::addTexCoord(TexCoord texcoord)
+void Mesh::addFace(
+	unsigned int px, unsigned int py, unsigned int pz,
+	unsigned int tx, unsigned int ty, unsigned int tz,
+	unsigned int nx, unsigned int ny, unsigned int nz)
 {
-	m_texcoords.push_back(texcoord);
-}
-
-/**
- * TODO
- * @param color TODO
- */
-void Mesh::addColor(Color color)
-{
-	m_colors.push_back(color);
+	m_faces.push_back(Face(px, py, pz, tx, ty, tz, nx, ny, nz));
 }
 
 /**
@@ -78,48 +54,12 @@ void Mesh::setModelTransform(glm::mat4 modelTransform)
 }
 
 /**
- * TODO
- * @return TODO
- */
-const std::vector<Position> &Mesh::getPositions() const
-{
-	return m_positions;
-}
-
-/**
- * TODO
- * @return TODO
- */
-const std::vector<Normal> &Mesh::getNormals() const
-{
-	return m_normals;
-}
-
-/**
  * Get the indices vector
  * @return A vector of indices for this shape
  */
 const std::vector<Face> &Mesh::getFaces() const
 {
 	return m_faces;
-}
-
-/**
- * TODO
- * @return TODO
- */
-const std::vector<TexCoord> &Mesh::getTexCoords() const
-{
-	return m_texcoords;
-}
-
-/**
- * TODO
- * @return TODO
- */
-const std::vector<Color> &Mesh::getColors() const
-{
-	return m_colors;
 }
 
 /**

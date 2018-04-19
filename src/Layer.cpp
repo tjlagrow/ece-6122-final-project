@@ -40,6 +40,7 @@ Layer::~Layer()
 void Layer::add(RigidObject *object)
 {
 	m_objects.push_back(object);
+	m_renderer->addMeshes(object->getMeshes().size());
 }
 
 /**

@@ -7,6 +7,7 @@
 
 struct Normal : public glm::vec3
 {
+	Normal() : glm::vec3() { }
 	Normal(float x, float y, float z) : glm::vec3(x, y, z) { }
 };
 

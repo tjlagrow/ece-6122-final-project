@@ -8,8 +8,8 @@
 #include <fstream>
 #include <unordered_map>
 
-std::vector<Mesh> createMeshesFromAiScene(const aiScene *scene);
-std::unordered_map<unsigned int, Material> createMaterialsFromAiScene(const aiScene *scene);
+void createMeshesFromAiScene(const aiScene *scene, RigidObject *object);
+void createMaterialsFromAiScene(const aiScene *scene, RigidObject *object);
 void printAiSceneInfo(const aiScene *scene);
 
 /**
@@ -59,8 +59,8 @@ void ObjectLoader::loadFromFile(const char *filepath, RigidObject *object)
 	// Print everything about this file to the console
 	printAiSceneInfo(scene);
 
-	object->setMeshes(createMeshesFromAiScene(scene));
-	object->setMaterials(createMaterialsFromAiScene(scene));
+	createMeshesFromAiScene(scene, object);
+	createMaterialsFromAiScene(scene, object);
 
 	return;
 }
@@ -70,49 +70,79 @@ void ObjectLoader::loadFromFile(const char *filepath, RigidObject *object)
  * @param scene TODO
  * @return TODO
  */
-std::vector<Mesh> createMeshesFromAiScene(const aiScene *scene)
+void createMeshesFromAiScene(const aiScene *scene, RigidObject *object)
 {
-	std::vector<Mesh> meshes;
+	if (! scene || ! object)
+		return;
 
-	if (! scene)
-		return { };
-
+	// Loop over the meshes and extract relevant information
 	for (unsigned int i = 0; i < scene->mNumMeshes; ++i)
 	{
-		const aiMesh *mesh = scene->mMeshes[i];
 		Mesh m;
+		const aiMesh *mesh = scene->mMeshes[i];
 
+		if (mesh->mNumVertices / mesh->mNumFaces != 3)
+			continue;
+
+		std::vector<unsigned int> vertices;
 		if (mesh->HasPositions())
 		{
 			for (unsigned int j = 0; j < mesh->mNumVertices; ++j)
 			{
 				aiVector3D vec = mesh->mVertices[j];
-				m.addPosition(Position(vec.x, vec.y, vec.z));
+				Position position(vec.x, vec.y, vec.z);
+				unsigned int index = object->addPosition(position);
+				vertices.push_back(index);
 			}
 		}
 
+		std::vector<glm::uvec3> positionIndices;
 		if (mesh->HasFaces())
 		{
 			for (unsigned int j = 0; j < mesh->mNumFaces; ++j)
 			{
-				for (unsigned int k = 0; k < mesh->mFaces[j].mNumIndices; k += 3)
-				{
-					m.addFace(Face(
-						mesh->mFaces[j].mIndices[k+0],
-						mesh->mFaces[j].mIndices[k+1],
-						mesh->mFaces[j].mIndices[k+2]
-					));
-				}
+				int x = mesh->mFaces[j].mIndices[0];
+				int y = mesh->mFaces[j].mIndices[1];
+				int z = mesh->mFaces[j].mIndices[2];
+				positionIndices.push_back(glm::uvec3(
+					vertices[x],
+					vertices[y],
+					vertices[z]
+				));
 			}
 		}
 
+		std::vector<unsigned int> normalIndices;
 		if (mesh->HasNormals())
 		{
-			for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
+			for (unsigned int j = 0; j < mesh->mNumVertices; ++j)
 			{
-				aiVector3D vec = mesh->mNormals[i];
-				m.addNormal(Normal(vec.x, vec.y, vec.z));
+				aiVector3D vec = mesh->mNormals[j];
+				Normal normal(vec.x, vec.y, vec.z);
+				unsigned int index = object->addNormal(normal);
+				normalIndices.push_back(index);
 			}
+		}
+
+		for (unsigned int j = 0; j < normalIndices.size()/3; j++)
+		{
+			Face f(
+				positionIndices[j].x,
+				positionIndices[j].y,
+				positionIndices[j].z,
+				0,
+				0,
+				0,
+				normalIndices[j*3+0],
+				normalIndices[j*3+1],
+				normalIndices[j*3+2]);
+			m.addFace(f);
+		}
+
+
+		if (scene->HasMaterials())
+		{
+			m.setMaterialIndex(mesh->mMaterialIndex);
 		}
 
 		for (unsigned int j = 0; j < mesh->GetNumColorChannels(); ++j)
@@ -131,10 +161,8 @@ std::vector<Mesh> createMeshesFromAiScene(const aiScene *scene)
 			}
 		}
 
-		meshes.push_back(m);
+		object->addMesh(m);
 	}
-
-	return meshes;
 }
 
 /**
@@ -142,14 +170,13 @@ std::vector<Mesh> createMeshesFromAiScene(const aiScene *scene)
  * @param scene TODO
  * @return TODO
  */
-std::unordered_map<unsigned int, Material>
-createMaterialsFromAiScene(const aiScene *scene)
+void createMaterialsFromAiScene(const aiScene *scene, RigidObject *object)
 {
 	if (! scene)
-		return { };
+		return;
 
 	if (! scene->HasMaterials())
-		return { };
+		return;
 
 	std::unordered_map<unsigned int, Material> materials;
 
@@ -218,7 +245,7 @@ createMaterialsFromAiScene(const aiScene *scene)
 		materials.insert({ i, m });
 	} // end of for mNumMaterials
 
-	return (materials);
+	return;
 }
 
 

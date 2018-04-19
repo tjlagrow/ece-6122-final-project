@@ -1,5 +1,8 @@
 #include "Vertex.h"
 
+/**
+ * Constructor
+ */
 Vertex::Vertex()
 {
 	position = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -9,10 +12,11 @@ Vertex::Vertex()
 }
 
 /**
- * TODO
- * @param position TODO
- * @param uv TODO
- * @param color TODO
+ * Constructor
+ * @param position The vertex position in model space
+ * @param uv The texture coordinate mapping for this vertex
+ * @param color The color of this vertex
+ * @param normal The normal for this vertex
  */
 Vertex::Vertex(glm::vec4 position, glm::vec2 uv, glm::vec4 color, glm::vec3 normal)
 {
@@ -23,17 +27,20 @@ Vertex::Vertex(glm::vec4 position, glm::vec2 uv, glm::vec4 color, glm::vec3 norm
 }
 
 /**
- * TODO
- * @param x TODO
- * @param y TODO
- * @param z TODO
- * @param w TODO
- * @param u TODO
- * @param v TODO
- * @param r TODO
- * @param g TODO
- * @param b TODO
- * @param a TODO
+ * Constructor
+ * @param x Position in x-direction
+ * @param y Position in y-direction
+ * @param z Position in z-direction
+ * @param w 1 means a point, 0 means a vector (usually=1)
+ * @param u Texture coordinate in x-direction
+ * @param v Texture coordinate in y-direction
+ * @param r Red color value
+ * @param g Green color value
+ * @param b Blue color value
+ * @param a Alpha value
+ * @param m Normal coordinate in x-direction
+ * @param n Normal coordinate in y-direction
+ * @param o Normal coordinate in z-direction
  */
 Vertex::Vertex(
 	float x, float y, float z, float w, // Position
@@ -47,6 +54,12 @@ Vertex::Vertex(
 	this->normal = glm::vec3(m, n, o);
 }
 
+/**
+ * Overload of the << operator for ease of printing the values
+ * @param stream The ostream to write to (i.e. std::cout)
+ * @param vertex The vertex to print
+ * @return Returns the original ostream
+ */
 std::ostream &operator<< (std::ostream &stream, const Vertex &vertex)
 {
 	stream

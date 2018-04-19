@@ -7,6 +7,7 @@ in DATA
     vec4 pos;
     vec2 uv;
     vec4 col;
+    vec3 norm;
 } fin;
 
 void main()

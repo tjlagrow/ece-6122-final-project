@@ -4,10 +4,21 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
-struct Face : public glm::uvec3
+struct Face
 {
-	Face(unsigned int x, unsigned int y, unsigned int z) :
-		glm::uvec3(x, y, z) { }
+	glm::uvec3 positionIndices;
+	glm::uvec3 texcoordIndices;
+	glm::uvec3 normalIndices;
+
+	Face() { }
+	Face(
+		unsigned int px, unsigned int py, unsigned int pz,
+		unsigned int tx, unsigned int ty, unsigned int tz,
+		unsigned int nx, unsigned int ny, unsigned int nz)
+		: positionIndices(px, py, pz),
+		  texcoordIndices(tx, ty, tz),
+		  normalIndices(nx, ny, nz)
+	{ }
 };
 
 #endif //ECE_6122_FINAL_PROJECT_FACE_H
