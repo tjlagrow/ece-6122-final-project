@@ -2,12 +2,14 @@
 #define ECE_6122_FINAL_PROJECT_MATERIAL_H
 
 
+#include <string>
+
 class Material
 {
 public:
 	Material() { };
 	Material(
-		const char *name,
+		std::string name,
 		glm::vec3 Ka,
 		glm::vec3 Kd,
 		glm::vec3 Ks,
@@ -30,7 +32,7 @@ public:
 		m_illum = illum;
 	}
 
-	void setName(const char *name) { m_name = name; }
+	void setName(std::string name) { m_name = name; }
 	void setAmbient(glm::vec3 Ka) { m_Ka = Ka; }
 	void setDiffuse(glm::vec3 Kd) { m_Kd = Kd; }
 	void setSpecular(glm::vec3 Ks) { m_Ks = Ks; }
@@ -41,8 +43,19 @@ public:
 	void setDissolveFactor(float d) { m_d = d; }
 	void setIllumination(unsigned int illum) { m_illum = illum; }
 
+	std::string getName() { return m_name; }
+	glm::vec3 getAmbient() { return m_Ka; }
+	glm::vec3 getDiffuse() { return m_Kd; }
+	glm::vec3 getSpecular() { return m_Ks; }
+	glm::vec3 getEmission() { return m_Ke; }
+	float getShininess() { return m_shininess; }
+	float getRefraction() { return m_Ni; }
+	float getSpecularExponent() { return m_Ns; }
+	float getDissolveFactor() { return m_d; }
+	unsigned int getIllumination() { return m_illum; }
+
 private:
-	const char *m_name;
+	std::string m_name;
 	glm::vec3 m_Ka; // Ambient
 	glm::vec3 m_Kd; // Diffuse
 	glm::vec3 m_Ks; // Specular

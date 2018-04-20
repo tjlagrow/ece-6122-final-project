@@ -61,8 +61,6 @@ void ObjectLoader::loadFromFile(const char *filepath, RigidObject *object)
 
 	createMeshesFromAiScene(scene, object);
 	createMaterialsFromAiScene(scene, object);
-
-	return;
 }
 
 /**
@@ -130,9 +128,9 @@ void createMeshesFromAiScene(const aiScene *scene, RigidObject *object)
 				positionIndices[j].x,
 				positionIndices[j].y,
 				positionIndices[j].z,
-				0,
-				0,
-				0,
+				0, // TODO Add texture support
+				0, // TODO Add texture support
+				0, // TODO Add texture support
 				normalIndices[j*3+0],
 				normalIndices[j*3+1],
 				normalIndices[j*3+2]);
@@ -149,7 +147,7 @@ void createMeshesFromAiScene(const aiScene *scene, RigidObject *object)
 		{
 			if (mesh->HasVertexColors(j))
 			{
-				// TODO
+				// TODO Add color support (not so important since materials are working)
 			}
 		}
 
@@ -157,7 +155,7 @@ void createMeshesFromAiScene(const aiScene *scene, RigidObject *object)
 		{
 			if (mesh->HasTextureCoords(j))
 			{
-				// TODO
+				// TODO Add texture support
 			}
 		}
 
@@ -166,19 +164,16 @@ void createMeshesFromAiScene(const aiScene *scene, RigidObject *object)
 }
 
 /**
- * TODO
- * @param scene TODO
- * @return TODO
+ * Create material objects from an aiScene
+ * @param scene The aiScene containing the materials
  */
 void createMaterialsFromAiScene(const aiScene *scene, RigidObject *object)
 {
-	if (! scene)
+	if (! scene || ! object)
 		return;
 
 	if (! scene->HasMaterials())
 		return;
-
-	std::unordered_map<unsigned int, Material> materials;
 
 	for (unsigned int i = 0; i < scene->mNumMaterials; ++i)
 	{
@@ -204,7 +199,20 @@ void createMaterialsFromAiScene(const aiScene *scene, RigidObject *object)
 
 		float shininess = 0.0f;
 		material->Get(AI_MATKEY_SHININESS, shininess);
-		m.setSpecularExponent(shininess);
+		m.setShininess(shininess);
+
+		float specularExponent = 0.0f;
+		material->Get(AI_MATKEY_SHININESS_STRENGTH, specularExponent);
+		m.setSpecularExponent(specularExponent);
+
+		float dissolveFactor;
+		material->Get(AI_MATKEY_COLOR_TRANSPARENT, dissolveFactor);
+		m.setDissolveFactor(1-dissolveFactor);
+
+		float refraction;
+		material->Get(AI_MATKEY_REFRACTI, refraction);
+		m.setRefraction(refraction);
+
 
 		// TODO Add support for textures
 //		unsigned int diffuseTextureCount = material->GetTextureCount(aiTextureType_DIFFUSE);
@@ -242,10 +250,24 @@ void createMaterialsFromAiScene(const aiScene *scene, RigidObject *object)
 //
 //		cout << endl;
 
-		materials.insert({ i, m });
-	} // end of for mNumMaterials
+		glm::vec3 v;
+		printf("name: %s\n", m.getName().c_str());
+		v = m.getAmbient();
+		printf("ambient: %f %f %f\n", v.x, v.y, v.z);
+		v = m.getDiffuse();
+		printf("diffuse: %f %f %f\n", v.x, v.y, v.z);
+		v = m.getSpecular();
+		printf("specular: %f %f %f\n", v.x, v.y, v.z);
+		v = m.getEmission();
+		printf("emission: %f %f %f\n", v.x, v.y, v.z);
+		printf("shininess: %f\n", m.getShininess());
+		printf("refraction: %f\n", m.getRefraction());
+		printf("dissolve factor: %f\n", m.getDissolveFactor());
+		printf("illum: %u\n", m.getIllumination());
+		printf("specular exp: %f\n", m.getSpecularExponent());
 
-	return;
+		object->addMaterial(m);
+	} // end of for mNumMaterials
 }
 
 
