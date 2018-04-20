@@ -8,7 +8,7 @@
 #include <vector>
 #include <unordered_map>
 
-#define MESH_MAX_INDICES         10000
+#define MESH_MAX_INDICES         1000000
 #define MESH_MAX_BUFFER_BYTES    1000000
 
 #define SHADER_INDEX_POSITION    0
@@ -24,8 +24,6 @@ public:
 	Renderer();
 	~Renderer();
 
-	void addMeshes(unsigned int count);
-
 	void submit(const RigidObject *object);
 	void flush();
 
@@ -39,7 +37,7 @@ private:
 	GLuint m_ibo;
 	unsigned int m_numGpuVertices;
 	unsigned int m_numGpuIndices;
-	std::vector<unsigned int> m_indicesCount;
+	std::vector<unsigned int> m_meshIndicesCount;
 
 	std::vector<glm::mat4> m_transformations;
 	const glm::mat4 *m_back_transform;

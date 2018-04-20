@@ -57,15 +57,22 @@ int main(int argc, char **argv)
 
 	Shader shader1(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH);
 
-//	RigidObject beachball("../models/beachball.obj");
-	RigidObject cube1("../models/cube_simple.obj");
-	RigidObject cube2("../models/cube.obj");
-	cube2.applyTransform(glm::translate(glm::vec3(0.0f, 2.0f, 0.0f)));
+	RigidObject beachball("../models/beachball.obj");
+//	RigidObject cube1("../models/cube.obj");
+//	RigidObject cube2("../models/cube_simple.obj");
+//	RigidObject cube3("../models/cube_simple.obj");
+//	RigidObject cube4("../models/cube.obj");
+//	cube1.applyTransform(glm::translate(glm::vec3(+2.0f, +3.0f, +0.0f)));
+//	cube2.applyTransform(glm::translate(glm::vec3(+0.0f, +0.0f, +0.0f)));
+//	cube3.applyTransform(glm::translate(glm::vec3(-2.0f, -5.0f, +2.0f)));
+//	cube4.applyTransform(glm::translate(glm::vec3(-5.0f, +0.0f, -3.0f)));
 
 	Layer layer1(&shader1);
-//	layer1.add(&beachball);
-	layer1.add(&cube1);
-	layer1.add(&cube2);
+	layer1.add(&beachball);
+//	layer1.add(&cube1);
+//	layer1.add(&cube2);
+//	layer1.add(&cube3);
+//	layer1.add(&cube4);
 
 ////////////////////////////////////////////////////////
 // BEGIN - TODO ABSTRACT THIS STUFF

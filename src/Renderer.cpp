@@ -1,7 +1,44 @@
 #include <map>
 #include <algorithm>
+#include <numeric>
+#include <cstring>
 #include "Renderer.h"
 #include "meshes/Color.h"
+
+void deleteme(const char *func)
+{
+	GLenum errnum = glGetError();
+	if (errnum != GL_NO_ERROR)
+	{
+		printf("ERROR: %s: OpenGL %d: ", func, errnum);
+		switch (errnum)
+		{
+			case GL_INVALID_ENUM:
+				printf("Invalid enum\n");
+				break;
+			case GL_INVALID_VALUE:
+				printf("Invalid value\n");
+				break;
+			case GL_INVALID_OPERATION:
+				printf("Invalid operation\n");
+				break;
+			case GL_INVALID_FRAMEBUFFER_OPERATION:
+				printf("Invalid framebuffer operation\n");
+				break;
+			case GL_OUT_OF_MEMORY:
+				printf("Out of memory\n");
+				break;
+			case GL_STACK_UNDERFLOW:
+				printf("Stack underflow\n");
+				break;
+			case GL_STACK_OVERFLOW:
+				printf("Stack overflow\n");
+				break;
+			default:
+				printf("\n");
+		}
+	}
+}
 
 /**
  * Constructor
@@ -80,17 +117,6 @@ Renderer::~Renderer()
 }
 
 /**
- * Generates element array buffers for storing indices
- * @param count The number of buffers to generate
- */
-void Renderer::addMeshes(unsigned int count)
-{
-	size_t n = m_indicesCount.size();
-	for (unsigned int i = n; i < n + count; ++i)
-		m_indicesCount.push_back(0);
-}
-
-/**
  * TODO
  * @param object TODO
  */
@@ -107,24 +133,25 @@ void Renderer::submit(const RigidObject *object)
 	{
 		unsigned int thisMeshesIndicesCount = 0;
 		glm::mat4 mt = meshes[i].getModelTransform();
+		std::vector<Face> faces = meshes[i].getFaces();
 
 		// Each mesh has a face
-		for (auto &face : meshes[i].getFaces())
+		for (unsigned int j = 0; j < faces.size(); ++j)
 		{
 			// Each face has 3 vertices
-			for (unsigned int j = 0; j < 3; j++)
+			for (unsigned int k = 0; k < 3; k++)
 			{
 				Position pos;
 				TexCoord tex;
 				Color col;
 				Normal nrm;
 
-				const Position *ptrPosition = object->getPosition(face.positionIndices[j]);
+				const Position *ptrPosition = object->getPosition(faces[j].positionIndices[k]);
 				if (!ptrPosition)
 					continue;
 				pos = *ptrPosition;
 
-				const TexCoord *ptrTexCoord = object->getTexCoord(face.texcoordIndices[j]);
+				const TexCoord *ptrTexCoord = object->getTexCoord(faces[j].texcoordIndices[k]);
 				if (! ptrTexCoord)
 					tex = TexCoord();
 				else
@@ -132,15 +159,11 @@ void Renderer::submit(const RigidObject *object)
 
 				col = Color(1.0f, 1.0f, 1.0f, 1.0f);
 
-				const Normal *ptrNormal = object->getNormal(face.normalIndices[j]);
+				const Normal *ptrNormal = object->getNormal(faces[j].normalIndices[k]);
 				if (! ptrNormal)
-				{
 					nrm = Normal();
-				}
 				else
-				{
 					nrm = *ptrNormal;
-				}
 
 				Vertex v(mt * pos.getGlmVec4(), tex, col, nrm);
 				unsigned int index = 0;
@@ -182,12 +205,12 @@ void Renderer::submit(const RigidObject *object)
 					// Array was empty, so just add it
 					gpuVertices.push_back(v);
 				}
-				gpuIndices.push_back(index);
+				gpuIndices.push_back(index + m_numGpuVertices);
 				thisMeshesIndicesCount++;
 			}
 		}
 
-		m_indicesCount[i] = thisMeshesIndicesCount;
+		m_meshIndicesCount.push_back(thisMeshesIndicesCount);
 	}
 
 	unsigned long vertBytes = gpuVertices.size() * sizeof(Vertex);
@@ -204,8 +227,8 @@ void Renderer::submit(const RigidObject *object)
 	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, indicesOffset, indicesBytes, gpuIndices.data());
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	// Keep a running tally of the total number of indices and vertices
-	// written to the GPU
+	// Keep a running tally of the total number of
+	// indices and vertices written to the GPU
 	m_numGpuIndices += gpuIndices.size();
 	m_numGpuVertices += gpuVertices.size();
 }
@@ -218,18 +241,17 @@ void Renderer::flush()
 	unsigned int count = 0;
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-	for (unsigned int i = 0; i < m_indicesCount.size(); ++i)
+	for (unsigned int i = 0; i < m_meshIndicesCount.size(); ++i)
 	{
-		glDrawElements(GL_TRIANGLES, m_indicesCount[i], GL_UNSIGNED_INT, (void *)(count * sizeof(GLuint)));
-		count += m_indicesCount[i];
-		m_indicesCount[i] = 0;
+		glDrawElements(GL_TRIANGLES, m_meshIndicesCount[i], GL_UNSIGNED_INT, (void *)(count * sizeof(GLuint)));
+		count += m_meshIndicesCount[i];
 	}
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
 	m_numGpuVertices = 0;
 	m_numGpuIndices = 0;
-//	m_indicesCount.clear();
+	m_meshIndicesCount.clear();
 }
 
 /**
@@ -259,3 +281,4 @@ void Renderer::pop()
 
 	m_back_transform = &m_transformations.back();
 }
+

@@ -205,6 +205,10 @@ void Window::cb_window_size(GLFWwindow *window, int width, int height)
 	w->m_height = height;
 }
 
+/**
+ * Returns a double representing the current timestamp
+ * @return
+ */
 double Window::get_time()
 {
 	return glfwGetTime();
