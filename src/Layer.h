@@ -14,8 +14,10 @@ public:
 	~Layer();
 
 	void add(RigidObject *object);
-//	void add(std::vector<RigidObject> &objects);
 	void render();
+
+	const std::vector<RigidObject *> &getObjects();
+	RigidObject *getObject(int index);
 
 protected:
 	Layer(Renderer *renderer, Shader *shader);

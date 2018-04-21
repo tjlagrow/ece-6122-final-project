@@ -2,6 +2,8 @@
 #define ECE_6122_FINAL_PROJECT_BATCHRENDERER_H
 
 #include "Vertex.h"
+#include "Shader.h"
+#include "meshes/Material.h"
 #include "meshes/RigidObject.h"
 #include <GL/glew.h>
 #include <glm/glm.hpp>
@@ -32,12 +34,14 @@ public:
 
 private:
 
+//	Shader *m_shader;
 	GLuint m_vao;
 	GLuint m_vbo;
 	GLuint m_ibo;
 	unsigned int m_numGpuVertices;
 	unsigned int m_numGpuIndices;
 	std::vector<unsigned int> m_meshIndicesCount;
+	std::unordered_map<unsigned int, Material> m_materials;
 
 	std::vector<glm::mat4> m_transformations;
 	const glm::mat4 *m_back_transform;

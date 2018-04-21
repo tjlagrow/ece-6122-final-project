@@ -21,9 +21,9 @@
 #define WINDOW_HEIGHT   600
 #define WINDOW_TITLE    "ECE6122 Final Project"
 
-static float camx = 10.0f;
-static float camy = 10.0f;
-static float camz = 10.0f;
+static float camx = 50.0f;
+static float camy = 50.0f;
+static float camz = 50.0f;
 static float cama = 0.0f;
 static float camr = 10.0f;
 
@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 	// It does not hinder the raytracer algorithm
 	TextWriter tw(VS_FONT_PATH, FS_FONT_PATH, TTF_PATH, 16);
 
-//	PhysicsEngine engine;
+	PhysicsEngine engine;
 //	engine.simple_ball_drop();
 
 	Shader shader1(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH);
@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 //	RigidObject cube3("../models/cube_simple.obj");
 //	RigidObject cube4("../models/cube.obj");
 //	ball1.applyTransform(glm::translate(glm::vec3(+3.0f, +0.0f, +3.0f)));
-	cube1.applyTransform(glm::translate(glm::vec3(+3.0f, +3.0f, +0.0f)));
+	cube1.applyTransform(glm::translate(glm::vec3(+3.0f, +50.0f, +0.0f)));
 //	cube2.applyTransform(glm::translate(glm::vec3(+0.0f, +0.0f, +0.0f)));
 //	cube3.applyTransform(glm::translate(glm::vec3(-3.0f, -3.0f, +3.0f)));
 //	cube4.applyTransform(glm::translate(glm::vec3(-3.0f, +0.0f, -3.0f)));
@@ -74,6 +74,9 @@ int main(int argc, char **argv)
 //	layer1.add(&cube2);
 //	layer1.add(&cube3);
 //	layer1.add(&cube4);
+
+	engine.addObjects(layer1.getObjects());
+	engine.addBox(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(3.0f, 50.0f, 0.0f));
 
 ////////////////////////////////////////////////////////
 // BEGIN - TODO ABSTRACT THIS STUFF
@@ -140,7 +143,19 @@ int main(int argc, char **argv)
 			tnext = tnow + 1.0f;
 		}
 
-		calculateNewCameraPosition(camx, camz, cama, camr);
+		engine.stepSimulation(1 / 20.0f);
+		std::vector<glm::vec3> positions;
+		engine.getMotionStates(positions);
+		for (unsigned int i = 0; i < positions.size(); ++i)
+		{
+			printf("%u: %f %f %f\n", i, positions[i].x, positions[i].y, positions[i].z);
+		}
+
+		glm::mat4 updateTransform;
+		RigidObject *object = layer1.getObject(0);
+		engine.getOpenGLMatrix(0, updateTransform);
+		object->applyTransform(updateTransform);
+//		calculateNewCameraPosition(camx, camz, cama, camr);
 
 		shader1.enable();
 		vMatrix = glm::lookAt(

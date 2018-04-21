@@ -1,50 +1,48 @@
-#include <map>
-#include <algorithm>
-#include <numeric>
-#include <cstring>
 #include "Renderer.h"
 #include "meshes/Color.h"
+#include <algorithm>
 
-void deleteme(const char *func)
-{
-	GLenum errnum = glGetError();
-	if (errnum != GL_NO_ERROR)
-	{
-		printf("ERROR: %s: OpenGL %d: ", func, errnum);
-		switch (errnum)
-		{
-			case GL_INVALID_ENUM:
-				printf("Invalid enum\n");
-				break;
-			case GL_INVALID_VALUE:
-				printf("Invalid value\n");
-				break;
-			case GL_INVALID_OPERATION:
-				printf("Invalid operation\n");
-				break;
-			case GL_INVALID_FRAMEBUFFER_OPERATION:
-				printf("Invalid framebuffer operation\n");
-				break;
-			case GL_OUT_OF_MEMORY:
-				printf("Out of memory\n");
-				break;
-			case GL_STACK_UNDERFLOW:
-				printf("Stack underflow\n");
-				break;
-			case GL_STACK_OVERFLOW:
-				printf("Stack overflow\n");
-				break;
-			default:
-				printf("\n");
-		}
-	}
-}
+//void deleteme(const char *func)
+//{
+//	GLenum errnum = glGetError();
+//	if (errnum != GL_NO_ERROR)
+//	{
+//		printf("ERROR: %s: OpenGL %d: ", func, errnum);
+//		switch (errnum)
+//		{
+//			case GL_INVALID_ENUM:
+//				printf("Invalid enum\n");
+//				break;
+//			case GL_INVALID_VALUE:
+//				printf("Invalid value\n");
+//				break;
+//			case GL_INVALID_OPERATION:
+//				printf("Invalid operation\n");
+//				break;
+//			case GL_INVALID_FRAMEBUFFER_OPERATION:
+//				printf("Invalid framebuffer operation\n");
+//				break;
+//			case GL_OUT_OF_MEMORY:
+//				printf("Out of memory\n");
+//				break;
+//			case GL_STACK_UNDERFLOW:
+//				printf("Stack underflow\n");
+//				break;
+//			case GL_STACK_OVERFLOW:
+//				printf("Stack overflow\n");
+//				break;
+//			default:
+//				printf("\n");
+//		}
+//	}
+//}
 
 /**
  * Constructor
  */
 Renderer::Renderer()
 {
+//	m_shader = nullptr;
 	m_vao = 0;
 	m_vbo = 0;
 	m_ibo = 0;
@@ -134,6 +132,7 @@ void Renderer::submit(const RigidObject *object)
 		unsigned int thisMeshesIndicesCount = 0;
 		glm::mat4 mt = meshes[i].getModelTransform();
 		std::vector<Face> faces = meshes[i].getFaces();
+		m_materials.insert({ meshes[i].getMaterialIndex(), Material() });
 
 		// Each mesh has a face
 		for (unsigned int j = 0; j < faces.size(); ++j)
@@ -243,7 +242,11 @@ void Renderer::flush()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
 	for (unsigned int i = 0; i < m_meshIndicesCount.size(); ++i)
 	{
-		glDrawElements(GL_TRIANGLES, m_meshIndicesCount[i], GL_UNSIGNED_INT, (void *)(count * sizeof(GLuint)));
+		glDrawElements(
+			GL_TRIANGLES, // Type of primitive to draw (usually triangle)
+			m_meshIndicesCount[i], // Number of elements to draw
+			GL_UNSIGNED_INT, // Size of element
+			(void *)(count * sizeof(GLuint))); // Offset in bytes
 		count += m_meshIndicesCount[i];
 	}
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

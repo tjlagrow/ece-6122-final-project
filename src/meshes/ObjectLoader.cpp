@@ -197,22 +197,30 @@ void createMaterialsFromAiScene(const aiScene *scene, RigidObject *object)
 		material->Get(AI_MATKEY_COLOR_EMISSIVE, color);
 		m.setEmission(glm::vec3(color.r, color.g, color.b));
 
-		float shininess = 0.0f;
-		material->Get(AI_MATKEY_SHININESS, shininess);
+		float shininess;
+		material->Get(AI_MATKEY_SHININESS_STRENGTH, shininess);
 		m.setShininess(shininess);
 
-		float specularExponent = 0.0f;
-		material->Get(AI_MATKEY_SHININESS_STRENGTH, specularExponent);
+		float specularExponent;
+		material->Get(AI_MATKEY_SHININESS, specularExponent);
 		m.setSpecularExponent(specularExponent);
 
+		// TODO this returns an aiColor3D NOT a float
 		float dissolveFactor;
 		material->Get(AI_MATKEY_COLOR_TRANSPARENT, dissolveFactor);
 		m.setDissolveFactor(1-dissolveFactor);
+
+		int wireframe;
+		material->Get(AI_MATKEY_ENABLE_WIREFRAME, wireframe);
+		m.setWireframe(wireframe);
 
 		float refraction;
 		material->Get(AI_MATKEY_REFRACTI, refraction);
 		m.setRefraction(refraction);
 
+		int shading_model;
+		material->Get(AI_MATKEY_SHADING_MODEL, shading_model);
+		m.setShadingModel(shading_model);
 
 		// TODO Add support for textures
 //		unsigned int diffuseTextureCount = material->GetTextureCount(aiTextureType_DIFFUSE);
@@ -250,21 +258,21 @@ void createMaterialsFromAiScene(const aiScene *scene, RigidObject *object)
 //
 //		cout << endl;
 
-		glm::vec3 v;
 		printf("name: %s\n", m.getName().c_str());
+		printf("Ns: %f\n", m.getSpecularExponent());
+		glm::vec3 v;
 		v = m.getAmbient();
-		printf("ambient: %f %f %f\n", v.x, v.y, v.z);
+		printf("Ka: %f %f %f\n", v.x, v.y, v.z);
 		v = m.getDiffuse();
-		printf("diffuse: %f %f %f\n", v.x, v.y, v.z);
+		printf("Kd: %f %f %f\n", v.x, v.y, v.z);
 		v = m.getSpecular();
-		printf("specular: %f %f %f\n", v.x, v.y, v.z);
+		printf("Ks: %f %f %f\n", v.x, v.y, v.z);
 		v = m.getEmission();
-		printf("emission: %f %f %f\n", v.x, v.y, v.z);
+		printf("Ke: %f %f %f\n", v.x, v.y, v.z);
 		printf("shininess: %f\n", m.getShininess());
 		printf("refraction: %f\n", m.getRefraction());
 		printf("dissolve factor: %f\n", m.getDissolveFactor());
 		printf("illum: %u\n", m.getIllumination());
-		printf("specular exp: %f\n", m.getSpecularExponent());
 
 		object->addMaterial(m);
 	} // end of for mNumMaterials

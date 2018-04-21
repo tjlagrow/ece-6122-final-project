@@ -58,3 +58,13 @@ void Layer::render()
 	m_renderer->flush();
 	m_shader->disable();
 }
+
+RigidObject *Layer::getObject(int index)
+{
+	return m_objects[index];
+}
+
+const std::vector<RigidObject *> &Layer::getObjects()
+{
+	return m_objects;
+}

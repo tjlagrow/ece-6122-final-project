@@ -129,6 +129,7 @@ void main()
 	finalColor +=
 	    ambientColor + emission + attenuation * (diffuseColor + specularColor);
 
+    finalColor = fin.col;
 //	if (hasTexture == 1)
 //	{
 //		// Perform the texture mapping. Retrieve the texture color
