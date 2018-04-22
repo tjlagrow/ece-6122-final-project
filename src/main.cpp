@@ -4,6 +4,8 @@
 #include "Shader.h"
 #include "TextWriter.h"
 #include "Layer.h"
+#include "utils/GlmUtils.h"
+#include "raytracer/Raytracer.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
@@ -20,35 +22,40 @@
 #define WINDOW_HEIGHT   600
 #define WINDOW_TITLE    "ECE6122 Final Project"
 
-static float camx = 10.0f; // Camera location x
-static float camy = 10.0f; // Camera location y, this is the height
-static float camz = 10.0f; // Camera location z
-static float camr = 10.0f; // Camera radius
+static float camx = 50.0f; // Camera location x
+static float camy = 50.0f; // Camera location y, this is the height
+static float camz = 50.0f; // Camera location z
+static float camr = 50.0f; // Camera radius
 static float cama = 0.0f; // Camera angle in radians
 
 // Delta multiplier for camera angle; affects speed of movement. Not exactly
 // sure what units it's is, but a larger number means faster movement
-static float camdt = 0.001f;
+static float camdt = 0.002f;
 
-enum class ShapeType { Box, Sphere };
+enum class ShapeType { Box, Sphere, Cylinder, Cone };
 
 struct objMetadata
 {
-	bool isEnabled;
 	ShapeType type;
 	glm::vec3 position;
 	float mass;
+	float bounciness;
 	const char *filepath;
 };
 
 static std::vector<struct objMetadata> objmeta =
 {
-	{ false, ShapeType::Sphere, glm::vec3(+0.0f, +0.0f, +0.0f), 1.0f, "../models/beachball.obj" },
-	{ true,  ShapeType::Box,    glm::vec3(+0.0f, +9.0f, +0.0f), 1.0f, "../models/cube.obj" },
-	{ true,  ShapeType::Box,    glm::vec3(+5.0f, +0.0f, +0.0f), 1.0f, "../models/cube.obj" },
-	{ true,  ShapeType::Box,    glm::vec3(-5.0f, +0.0f, +0.0f), 1.0f, "../models/cube.obj" },
-	{ true,  ShapeType::Box,    glm::vec3(+0.0f, +0.0f, +5.0f), 1.0f, "../models/cube.obj" },
-	{ true,  ShapeType::Box,    glm::vec3(+0.0f, +0.0f, -5.0f), 1.0f, "../models/cube.obj" },
+//	{ ShapeType::Sphere,   glm::vec3(+0.9f, +15.0f, +0.9f), 1.0f, 1.0f, "../models/beachball.obj" },
+	{ ShapeType::Box,      glm::vec3(+0.0f, +30.0f, +0.0f), 1.0f, 0.6f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+0.0f, +20.0f, +0.0f), 1.0f, 0.6f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+0.5f, +15.0f, +0.5f), 1.0f, 0.6f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+0.5f, +10.0f, -0.5f), 1.0f, 0.6f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(-0.5f, +05.0f, -0.5f), 1.0f, 0.6f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(-0.5f, +03.0f, +0.5f), 1.0f, 0.6f, "../models/cube.obj" },
+//	{ ShapeType::Cone,     glm::vec3(+7.0f, +0.0f, +7.0f), 1.0f, 0.1f, "../models/cone.obj" },
+//	{ ShapeType::Cone,     glm::vec3(-7.0f, +0.0f, -7.0f), 1.0f, 0.1f, "../models/cone.obj" },
+//	{ ShapeType::Cylinder, glm::vec3(-7.0f, +0.0f, +7.0f), 1.0f, 0.1f, "../models/cylinder.obj" },
+//	{ ShapeType::Cylinder, glm::vec3(+7.0f, +0.0f, -7.0f), 1.0f, 0.1f, "../models/cylinder.obj" },
 };
 
 ////////////////////////////////////////////////////////
@@ -99,10 +106,7 @@ int main(int argc, char **argv)
 	std::vector<Object *> objects;
 	for (unsigned int i = 0; i < objmeta.size(); ++i)
 	{
-		if (! objmeta[i].isEnabled)
-			continue;
-
-		Object *o = new Object(objmeta[i].filepath);
+		auto *o = new Object(objmeta[i].filepath);
 		glm::mat4 transform = glm::translate(objmeta[i].position);
 		o->applyTransform(transform);
 		layer1.add(o);
@@ -110,17 +114,32 @@ int main(int argc, char **argv)
 		switch (objmeta[i].type)
 		{
 			case ShapeType::Sphere:
-				engine.addSphere(1.0f, objmeta[i].mass, objmeta[i].position);
+				engine.addSphere(
+					1.0f,
+					objmeta[i].mass,
+					objmeta[i].bounciness,
+					objmeta[i].position
+				);
 				break;
 			case ShapeType::Box:
-//				engine.addBox(o->getSize(), objmeta[i].mass, objmeta[i].position);
-				engine.addBox(glm::vec3(1.0f, 1.0f, 1.0f), objmeta[i].mass, objmeta[i].position);
+				engine.addBox(
+					o->getSize()/2.0f,
+					objmeta[i].mass,
+					objmeta[i].bounciness,
+					objmeta[i].position
+				);
+				break;
+			case ShapeType::Cone:
+				// TODO add to engine
+				break;
+			case ShapeType::Cylinder:
+				// TODO add to engine
 				break;
 		}
 	}
 
 ////////////////////////////////////////////////////////
-// BEGIN - TODO ABSTRACT THIS STUFF
+// BEGIN - TODO Find a better home for this stuff
 ////////////////////////////////////////////////////////
 
 	// Set up the Projection matrix
@@ -139,7 +158,6 @@ int main(int argc, char **argv)
 	);
 
 	// Frames per second stuff
-	// TODO There's probably a better place to put this
 	size_t frames = 0;
 	char frm_str[32] = "frames: 0";
 	char sec_str[32] = "secs:   0.000";
@@ -151,17 +169,18 @@ int main(int argc, char **argv)
 	glm::vec4 color_white(1.0f, 1.0f, 1.0f, 1.0f);
 
 ////////////////////////////////////////////////////////
-// END - TODO ABSTRACT THIS STUFF
+// END - TODO Find a better home for this stuff
 ////////////////////////////////////////////////////////
 
-	// Tell the vertex shader about the Projection and View matrices
-	// The shader is looking for the Projection, View, and Model matrices
-	// when it draws a vertex. The Projection and View matrices are handled
-	// here; the Model matrix is handled by the individual Mesh objects
-	// (like is the constructor for Cube class)
+	// Tell the vertex shader about the Projection and View matrices. The GPU
+	// can make short work of multiplying these matrices. On the other hand,
+	// the model matrix is computed on the CPU when the objects are rendered.
+	// Sometimes in this code you'll see the model matrix called the
+	// "transform" matrix (because it transforms the object's vertices from
+	// local space to world space).
 	shader1.enable();
-	shader1.setUniformMat4("vpmat", pMatrix);
-	shader1.setUniformMat4("vvmat", vMatrix);
+	shader1.setUniformMat4("vpmat", pMatrix); // Vertexshader-Projection-MATrix
+	shader1.setUniformMat4("vvmat", vMatrix); // Vertexshader-View-MATrix
 	shader1.disable();
 
 	while (! window.should_close())
@@ -188,24 +207,30 @@ int main(int argc, char **argv)
 		engine.getMotionStates(positions);
 
 		// TODO Get transforms and update ALL the objects
-		glm::mat4 updateTransform;
-		Object *object = layer1.getObject(0);
-		engine.getOpenGLMatrix(0, updateTransform);
-		object->applyTransform(updateTransform);
+		for (unsigned int i = 0; i < objects.size(); ++i)
+		{
+			glm::mat4 updateTransform;
+			engine.getOpenGLMatrix(i, updateTransform);
+			objects[i]->applyTransform(updateTransform);
+		}
 
 		updateCameraPosition(camx, camz, cama);
 
+		// Set the camera position by applying a "view matrix"
+		// (as part of the model-view-projection graphics scheme)
 		shader1.enable();
 		vMatrix = glm::lookAt(
 			glm::vec3(camx, camy, camz), // Camera position
 			glm::vec3(0.0f, 0.0f, 0.0f), // Where do you look
 			glm::vec3(0.0f, 1.0f, 0.0f)  // Y-axis is Up
 		);
-		shader1.setUniformMat4("vvmat", vMatrix);
+		shader1.setUniformMat4("vvmat", vMatrix); // "Vertexshader-View-MATrix"
 		shader1.disable();
 
-		// Draw layers here
-		layer1.render();
+		// Draw layers (and their objects) here
+		layer1.render(glm::vec3(camx, camy, camz));
+
+//		Raytracer::render(/* TODO Figure out what needs to be passed in */);
 
 		// Draw text last so it is on top of the other layers
 		tw.begin();

@@ -1,5 +1,7 @@
 #include "PhysicsEngine.h"
 
+
+
 /**
  * TODO Document
  * @param matrix TODO Document
@@ -163,9 +165,10 @@ void PhysicsEngine::stepSimulation(const double &deltaTime)
  * Adds a sphere to the physics engine
  * @param radius The radius of the sphere
  * @param mass The sphere's mass
+ * @param bounciness The sphere's bounciness from 0=none to 1=bouncy
  * @param position The sphere's initial position as measured from the origin
  */
-void PhysicsEngine::addSphere(float radius, float mass, glm::vec3 position)
+void PhysicsEngine::addSphere(float radius, float mass, float bounciness, glm::vec3 position)
 {
 	btCollisionShape *shape = new btSphereShape(radius);
 	m_shapes.push_back(shape);
@@ -178,7 +181,9 @@ void PhysicsEngine::addSphere(float radius, float mass, glm::vec3 position)
 
 	btVector3 inertia(0, 0, 0);
 
-	addObject(shape, mass, inertia, motion);
+	if (bounciness < 0 || bounciness > 1)
+		bounciness = DEFAULT_BOUNCINESS;
+	addObject(shape, mass, inertia, motion, bounciness);
 }
 
 /**
@@ -187,7 +192,7 @@ void PhysicsEngine::addSphere(float radius, float mass, glm::vec3 position)
  * @param mass The box's mass
  * @param position The box's initial position as measured by the origin
  */
-void PhysicsEngine::addBox(glm::vec3 size, float mass, glm::vec3 position)
+void PhysicsEngine::addBox(glm::vec3 size, float mass, float bounciness, glm::vec3 position)
 {
 	btVector3 boxHalfExtents(size.x, size.y, size.z);
 
@@ -202,7 +207,7 @@ void PhysicsEngine::addBox(glm::vec3 size, float mass, glm::vec3 position)
 
 	btVector3 inertia(0, 0, 0);
 
-	addObject(shape, mass, inertia, motion);
+	addObject(shape, mass, inertia, motion, bounciness);
 }
 
 /**
@@ -259,7 +264,8 @@ void PhysicsEngine::addObject(
 	btCollisionShape *shape,
 	btScalar mass,
 	btVector3 inertia,
-	btDefaultMotionState *motion)
+	btDefaultMotionState *motion,
+	btScalar bounciness)
 {
 	shape->calculateLocalInertia(mass, inertia);
 
@@ -270,6 +276,8 @@ void PhysicsEngine::addObject(
 		inertia);
 
 	auto *rigidBody = new btRigidBody(rigidBodyCI);
+	rigidBody->setRestitution(bounciness);
+
 	m_rigidBodies.push_back(rigidBody);
 	m_world->addRigidBody(rigidBody);
 }

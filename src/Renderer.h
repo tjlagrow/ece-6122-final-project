@@ -1,10 +1,10 @@
-#ifndef ECE_6122_FINAL_PROJECT_BATCHRENDERER_H
-#define ECE_6122_FINAL_PROJECT_BATCHRENDERER_H
+#ifndef ECE_6122_FINAL_PROJECT_RENDERER_H
+#define ECE_6122_FINAL_PROJECT_RENDERER_H
 
 #include "Vertex.h"
 #include "Shader.h"
-#include "meshes/Material.h"
-#include "meshes/Object.h"
+#include "objects/Material.h"
+#include "objects/Object.h"
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <vector>
@@ -28,7 +28,7 @@ public:
 	~Renderer();
 
 	void submit(const Object *object);
-	void flush();
+	void flush(const glm::vec3 &eyePosition);
 
 private:
 
@@ -51,4 +51,4 @@ private:
 };
 
 
-#endif //ECE_6122_FINAL_PROJECT_BATCHRENDERER_H
+#endif //ECE_6122_FINAL_PROJECT_RENDERER_H

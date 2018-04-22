@@ -1,5 +1,5 @@
 #include "Renderer.h"
-#include "meshes/Color.h"
+#include "objects/Color.h"
 #include <algorithm>
 
 //void deleteme(const char *func)
@@ -138,11 +138,11 @@ void Renderer::submit(const Object *object)
 		glm::mat4 mt = meshes[i].getModelTransform();
 		std::vector<Face> faces = meshes[i].getFaces();
 
-		const std::string matName = materials[thisMeshesMaterialIndex].getName();
+		const Material &thisMaterial = materials[thisMeshesMaterialIndex];
 		auto it = std::find_if(m_materials.begin(), m_materials.end(),
-			[&matName](const Material &material)
+			[&thisMaterial](const Material &material)
 			{
-				return (matName == material.getName());
+				return (thisMaterial == material);
 			}
 		);
 		if (it != m_materials.end())
@@ -150,7 +150,7 @@ void Renderer::submit(const Object *object)
 		else
 		{
 			thisMeshesMaterialIndex = m_materials.size();
-			m_materials.push_back(materials[thisMeshesMaterialIndex]);
+			m_materials.push_back(thisMaterial);
 		}
 
 
@@ -255,15 +255,26 @@ void Renderer::submit(const Object *object)
 /**
  * Draws the triangles in this batch to the back buffer
  */
-void Renderer::flush()
+void Renderer::flush(const glm::vec3 &eyePosition)
 {
 	unsigned int count = 0;
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
+	m_shader->setUniform3f("eyePosition", eyePosition);
 	for (unsigned int i = 0; i < m_meshInfo.size(); ++i)
 	{
 		Material material = m_materials[m_meshInfo[i].materialIndex];
-		m_shader->setUniform4f("diffuseLightIntensity", glm::vec4(material.getDiffuse(), 1.0f));
+//		printf("%s: %f %f %f, %f %f %f, %f %f %f\n",
+//			material.getName().c_str(),
+//			material.getAmbient().x, material.getAmbient().y, material.getAmbient().z,
+//			material.getDiffuse().x, material.getDiffuse().y, material.getDiffuse().z,
+//			material.getSpecular().x, material.getSpecular().y, material.getSpecular().z
+//		);
+		m_shader->setUniform4f("Ka", glm::vec4(material.getAmbient(), 1.0f));
+		m_shader->setUniform4f("Kd", glm::vec4(material.getDiffuse(), 1.0f));
+		m_shader->setUniform4f("Ks", glm::vec4(material.getSpecular(), 1.0f));
+//		m_shader->setUniform4f("emission", glm::vec4(material.getEmission(), 1.0f));
+//		m_shader->setUniform1f("shininess", material.getShininess());
 		glDrawElements(
 			GL_TRIANGLES, // Type of primitive to draw (usually triangle)
 			m_meshInfo[i].numIndices, // Number of elements to draw

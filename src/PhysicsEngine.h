@@ -2,10 +2,13 @@
 #define ECE_6122_FINAL_PROJECT_PHYSICSENGINE_H
 
 
-#include "meshes/Object.h"
+#include "objects/Object.h"
 #include <iostream>
 #include <btBulletCollisionCommon.h>
 #include <btBulletDynamicsCommon.h>
+
+
+#define DEFAULT_BOUNCINESS  0.1f
 
 class PhysicsEngine
 {
@@ -15,8 +18,8 @@ public:
 	~PhysicsEngine();
 
 	void stepSimulation(const double &deltaTime);
-	void addSphere(float radius, float mass, glm::vec3 position);
-	void addBox(glm::vec3 size, float mass, glm::vec3 position);
+	void addSphere(float radius, float mass, float bounciness, glm::vec3 position);
+	void addBox(glm::vec3 size, float mass, float bounciness, glm::vec3 position);
 
 	void getMotionStates(std::vector<glm::vec3> &states);
 	void getOpenGLMatrix(int index, glm::mat4 &matrix);
@@ -28,7 +31,9 @@ private:
 		btCollisionShape *shape,
 		btScalar mass,
 		btVector3 inertia,
-		btDefaultMotionState *motion);
+		btDefaultMotionState *motion,
+		btScalar bounciness
+	);
 
 	btBroadphaseInterface *m_broadphase;
 	btDefaultCollisionConfiguration *m_colConfig;

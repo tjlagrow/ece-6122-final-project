@@ -2,7 +2,7 @@
 #define ECE_6122_FINAL_PROJECT_LAYER_H
 
 
-#include "meshes/Object.h"
+#include "objects/Object.h"
 #include "Renderer.h"
 #include "Shader.h"
 #include <glm/glm.hpp>
@@ -14,7 +14,7 @@ public:
 	~Layer();
 
 	void add(Object *object);
-	void render();
+	void render(const glm::vec3 &eyePosition);
 
 	const std::vector<Object *> &getObjects();
 	Object *getObject(int index);

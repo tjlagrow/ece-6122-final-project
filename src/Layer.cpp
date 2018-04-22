@@ -41,7 +41,7 @@ void Layer::add(Object *object)
  * Renders the layer by submitting the objects to the Renderer, then
  * flushing the Renderer buffer (aka draw the triangles)
  */
-void Layer::render()
+void Layer::render(const glm::vec3 &eyePosition)
 {
 	m_shader->enable();
 
@@ -50,7 +50,7 @@ void Layer::render()
 		object->submit(m_renderer);
 	}
 
-	m_renderer->flush();
+	m_renderer->flush(eyePosition);
 	m_shader->disable();
 }
 

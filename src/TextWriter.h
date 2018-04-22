@@ -1,5 +1,5 @@
-#ifndef ECE_6122_FINAL_PROJECT_FONT_H
-#define ECE_6122_FINAL_PROJECT_FONT_H
+#ifndef ECE_6122_FINAL_PROJECT_TEXTWRITER_H
+#define ECE_6122_FINAL_PROJECT_TEXTWRITER_H
 
 #include "Shader.h"
 #include <GL/glew.h>
@@ -37,4 +37,4 @@ private:
 };
 
 
-#endif //ECE_6122_FINAL_PROJECT_FONT_H
+#endif //ECE_6122_FINAL_PROJECT_TEXTWRITER_H

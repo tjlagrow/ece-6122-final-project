@@ -58,16 +58,18 @@ link_libraries(${FREEIMAGE_LIBRARIES})
 
 # Gather up all the headers and sources in one variable: SOURCES
 set (SRC_DIR "src")
-set (MESH_DIR "${SRC_DIR}/meshes")
+set (OBJECT_DIR "${SRC_DIR}/objects")
+set (RAYTRACER_DIR "${SRC_DIR}/raytracer")
 set (UTILS_DIR "${SRC_DIR}/utils")
 
 file (GLOB SOURCES
     ${SRC_DIR}/*.c ${SRC_DIR}/*.cpp ${SRC_DIR}/*.h
-    ${MESH_DIR}/*.c ${MESH_DIR}/*.cpp ${MESH_DIR}/*.h
+    ${OBJECT_DIR}/*.c ${OBJECT_DIR}/*.cpp ${OBJECT_DIR}/*.h
+    ${RAYTRACER_DIR}/*.c ${RAYTRACER_DIR}/*.cpp ${RAYTRACER_DIR}/*.h
     ${UTILS_DIR}/*.c ${UTILS_DIR}/*.cpp ${UTILS_DIR}/*.h
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCES} src/objects/Material.cpp src/utils/GlmUtils.h)
 
 target_link_libraries(${PROJECT_NAME}
     ${GLEW_LIBRARIES}
