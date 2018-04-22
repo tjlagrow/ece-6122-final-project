@@ -1,6 +1,20 @@
 #include "PhysicsEngine.h"
 
 /**
+ * TODO Document
+ * @param matrix TODO Document
+ * @return TODO Document
+ */
+glm::mat4 btScalar2glmMat4(btScalar* matrix)
+{
+	return glm::mat4(
+		matrix[0], matrix[1], matrix[2], matrix[3],
+		matrix[4], matrix[5], matrix[6], matrix[7],
+		matrix[8], matrix[9], matrix[10], matrix[11],
+		matrix[12], matrix[13], matrix[14], matrix[15]);
+}
+
+/**
  * Demo getting started function
  */
 void PhysicsEngine::simple_ball_drop()
@@ -137,86 +151,65 @@ PhysicsEngine::~PhysicsEngine()
 
 /**
  * Advance the simulation
- * @param deltaTime Change in time from the last time step (usually 1/60.0f)
+ * @param deltaTime Change in time from the last time step (usually something
+ * like 1/60.0f)
  */
 void PhysicsEngine::stepSimulation(const double &deltaTime)
 {
 	m_world->stepSimulation(deltaTime, 10);
 }
 
-void PhysicsEngine::addObject(const RigidObject *object)
-{
-}
-
-void PhysicsEngine::addObjects(const std::vector<RigidObject *> &objects)
-{
-	for (unsigned int i = 0; i < objects.size(); ++i)
-		addObject(objects[i]);
-}
-
-void PhysicsEngine::addSphere()
-{
-	btCollisionShape *sphereShape = new btSphereShape(1);
-	btDefaultMotionState *sphereMotionState = new btDefaultMotionState(
-		btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 50, 0)));
-	btScalar sphereMass = 1;
-	btVector3 sphereInertia(0, 0, 0);
-	sphereShape->calculateLocalInertia(sphereMass, sphereInertia);
-	btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(
-		sphereMass,
-		sphereMotionState,
-		sphereShape,
-		sphereInertia);
-	btRigidBody *sphereRigidBody = new btRigidBody(sphereRigidBodyCI);
-	m_world->addRigidBody(sphereRigidBody);
-}
-
 /**
- * TODO
- * @param boundaries TODO
- * @param position TODO
+ * Adds a sphere to the physics engine
+ * @param radius The radius of the sphere
+ * @param mass The sphere's mass
+ * @param position The sphere's initial position as measured from the origin
  */
-void PhysicsEngine::addBox(
-	const glm::vec3 &boundaries,
-	const glm::vec3 &position)
+void PhysicsEngine::addSphere(float radius, float mass, glm::vec3 position)
 {
-	btVector3 boxHalfExtents(boundaries.x, boundaries.y, boundaries.z);
-
-	btCollisionShape *shape = new btBoxShape(boxHalfExtents);
+	btCollisionShape *shape = new btSphereShape(radius);
 	m_shapes.push_back(shape);
 
-	btDefaultMotionState *motionState = new btDefaultMotionState(
+	btDefaultMotionState *motion = new btDefaultMotionState(
 		btTransform(
 			btQuaternion(0, 0, 0, 1),
 			btVector3(position.x, position.y, position.z))
 	);
 
-	btScalar mass = 1;
 	btVector3 inertia(0, 0, 0);
-	shape->calculateLocalInertia(mass, inertia);
 
-	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
-		mass,        // btScalar
-		motionState, // pointer to btDefaultMotionState
-		shape,       // pointer to btCollisionShape
-		inertia);    // btVector3
-
-	btRigidBody *rigidBody = new btRigidBody(rigidBodyCI);
-
-	m_rigidBodies.push_back(rigidBody);
-	m_world->addRigidBody(rigidBody);
+	addObject(shape, mass, inertia, motion);
 }
 
-glm::mat4 btScalar2glmMat4(btScalar* matrix) {
-	return glm::mat4(
-		matrix[0], matrix[1], matrix[2], matrix[3],
-		matrix[4], matrix[5], matrix[6], matrix[7],
-		matrix[8], matrix[9], matrix[10], matrix[11],
-		matrix[12], matrix[13], matrix[14], matrix[15]);
+/**
+ * Adds a box to the physics engine
+ * @param size The size of the box as measured from the origin
+ * @param mass The box's mass
+ * @param position The box's initial position as measured by the origin
+ */
+void PhysicsEngine::addBox(glm::vec3 size, float mass, glm::vec3 position)
+{
+	btVector3 boxHalfExtents(size.x, size.y, size.z);
+
+	btCollisionShape *shape = new btBoxShape(boxHalfExtents);
+	m_shapes.push_back(shape);
+
+	btDefaultMotionState *motion = new btDefaultMotionState(
+		btTransform(
+			btQuaternion(0, 0, 0, 1),
+			btVector3(position.x, position.y, position.z))
+	);
+
+	btVector3 inertia(0, 0, 0);
+
+	addObject(shape, mass, inertia, motion);
 }
 
-void PhysicsEngine::getMotionStates(
-	std::vector<glm::vec3> &states)
+/**
+ * TODO Document
+ * @param states TODO Document
+ */
+void PhysicsEngine::getMotionStates(std::vector<glm::vec3> &states)
 {
 	if (m_rigidBodies.size() > 0)
 		states.clear();
@@ -234,6 +227,11 @@ void PhysicsEngine::getMotionStates(
 	}
 }
 
+/**
+ * TODO Document
+ * @param index TODO Document
+ * @param matrix TODO Document
+ */
 void PhysicsEngine::getOpenGLMatrix(int index, glm::mat4 &matrix)
 {
 	if (m_rigidBodies.empty())
@@ -246,3 +244,33 @@ void PhysicsEngine::getOpenGLMatrix(int index, glm::mat4 &matrix)
 	worldTransform.getOpenGLMatrix(trans);
 	matrix = btScalar2glmMat4(trans);
 }
+
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+/**
+ * TODO Document
+ * @param shape TODO Document
+ * @param mass TODO Document
+ * @param inertia TODO Document
+ * @param motion TODO Document
+ */
+void PhysicsEngine::addObject(
+	btCollisionShape *shape,
+	btScalar mass,
+	btVector3 inertia,
+	btDefaultMotionState *motion)
+{
+	shape->calculateLocalInertia(mass, inertia);
+
+	btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(
+		mass,
+		motion,
+		shape,
+		inertia);
+
+	auto *rigidBody = new btRigidBody(rigidBodyCI);
+	m_rigidBodies.push_back(rigidBody);
+	m_world->addRigidBody(rigidBody);
+}
+

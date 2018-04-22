@@ -10,11 +10,11 @@
 
 class Renderer;
 
-class RigidObject
+class Object
 {
 public:
-	RigidObject(const char *filepath);
-	~RigidObject();
+	Object(const char *filepath);
+	~Object();
 
 	void submit(Renderer *renderer) const;
 
@@ -24,6 +24,11 @@ public:
 	const std::vector<Normal> &getNormals() const;
 	const std::vector<TexCoord> &getTexCoords() const;
 
+	const glm::vec3 &getOrigin() const;
+	const float &getMass() const;
+	const glm::vec3 &getInertia() const;
+	const glm::vec3 &getSize() const;
+
 	const Position *getPosition(unsigned int index) const;
 	const Normal *getNormal(unsigned int index) const;
 	const TexCoord *getTexCoord(unsigned int index) const;
@@ -31,6 +36,10 @@ public:
 	int getPositionIndex(Position position) const;
 	int getNormalIndex(Normal normal) const;
 	int getTexCoordIndex(TexCoord texcoord) const;
+
+	void setOrigin(const glm::vec3 &origin);
+	void setMass(const float &mass);
+	void setInertia(const glm::vec3 &inertia);
 
 	void applyTransform(glm::mat4 transform);
 
@@ -41,13 +50,18 @@ public:
 	unsigned int addTexCoord(TexCoord texcoord);
 
 private:
-	RigidObject();
+	Object();
 
 	std::vector<Mesh> m_meshes;
 	std::vector<Material> m_materials;
 	std::vector<Position> m_positions;
 	std::vector<Normal> m_normals;
 	std::vector<TexCoord> m_texcoords;
+
+	glm::vec3 m_origin;
+	float m_mass;
+	glm::vec3 m_inertia;
+	glm::vec3 m_size;
 };
 
 

@@ -2,7 +2,7 @@
 #define ECE_6122_FINAL_PROJECT_PHYSICSENGINE_H
 
 
-#include "meshes/RigidObject.h"
+#include "meshes/Object.h"
 #include <iostream>
 #include <btBulletCollisionCommon.h>
 #include <btBulletDynamicsCommon.h>
@@ -15,12 +15,8 @@ public:
 	~PhysicsEngine();
 
 	void stepSimulation(const double &deltaTime);
-	void addObject(const RigidObject *object);
-	void addObjects(const std::vector<RigidObject *> &objects);
-	void addSphere();
-	void addBox(
-		const glm::vec3 &boundaries,
-		const glm::vec3 &position);
+	void addSphere(float radius, float mass, glm::vec3 position);
+	void addBox(glm::vec3 size, float mass, glm::vec3 position);
 
 	void getMotionStates(std::vector<glm::vec3> &states);
 	void getOpenGLMatrix(int index, glm::mat4 &matrix);
@@ -28,6 +24,12 @@ public:
 	static void simple_ball_drop();
 
 private:
+	void addObject(
+		btCollisionShape *shape,
+		btScalar mass,
+		btVector3 inertia,
+		btDefaultMotionState *motion);
+
 	btBroadphaseInterface *m_broadphase;
 	btDefaultCollisionConfiguration *m_colConfig;
 	btCollisionDispatcher *m_dispatcher;

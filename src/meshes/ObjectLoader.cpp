@@ -8,8 +8,8 @@
 #include <fstream>
 #include <unordered_map>
 
-void createMeshesFromAiScene(const aiScene *scene, RigidObject *object);
-void createMaterialsFromAiScene(const aiScene *scene, RigidObject *object);
+void createMeshesFromAiScene(const aiScene *scene, Object *object);
+void createMaterialsFromAiScene(const aiScene *scene, Object *object);
 void printAiSceneInfo(const aiScene *scene);
 
 /**
@@ -22,7 +22,7 @@ ObjectLoader::ObjectLoader() { }
  * @param filepath TODO
  * @return TODO
  */
-void ObjectLoader::loadFromFile(const char *filepath, RigidObject *object)
+void ObjectLoader::loadFromFile(const char *filepath, Object *object)
 {
 	// The Assimp importer loads the 3D file
 	Assimp::Importer importer;
@@ -68,7 +68,7 @@ void ObjectLoader::loadFromFile(const char *filepath, RigidObject *object)
  * @param scene TODO
  * @return TODO
  */
-void createMeshesFromAiScene(const aiScene *scene, RigidObject *object)
+void createMeshesFromAiScene(const aiScene *scene, Object *object)
 {
 	if (! scene || ! object)
 		return;
@@ -167,7 +167,7 @@ void createMeshesFromAiScene(const aiScene *scene, RigidObject *object)
  * Create material objects from an aiScene
  * @param scene The aiScene containing the materials
  */
-void createMaterialsFromAiScene(const aiScene *scene, RigidObject *object)
+void createMaterialsFromAiScene(const aiScene *scene, Object *object)
 {
 	if (! scene || ! object)
 		return;

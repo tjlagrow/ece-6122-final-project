@@ -2,14 +2,14 @@
 #define ECE_6122_FINAL_PROJECT_MESHLOADER_H
 
 
-#include "RigidObject.h"
+#include "Object.h"
 #include <vector>
 
 
 class ObjectLoader
 {
 public:
-	static void loadFromFile(const char *filepath, RigidObject *object);
+	static void loadFromFile(const char *filepath, Object *object);
 
 private:
 	ObjectLoader();

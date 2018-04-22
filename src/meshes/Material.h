@@ -61,19 +61,19 @@ public:
 	void setBlendFunc(int blendFunc) { m_blendFunc = blendFunc; }
 	void setWireframe(int enable) { m_enableWireframe = enable; }
 
-	std::string getName() { return m_name; }
-	glm::vec3 getAmbient() { return m_Ka; }
-	glm::vec3 getDiffuse() { return m_Kd; }
-	glm::vec3 getSpecular() { return m_Ks; }
-	glm::vec3 getEmission() { return m_Ke; }
-	float getShininess() { return m_shininess; }
-	float getRefraction() { return m_Ni; }
-	float getSpecularExponent() { return m_Ns; }
-	float getDissolveFactor() { return m_d; }
-	unsigned int getIllumination() { return m_illum; }
-	int getShadingModel() { return m_shadingModel; }
-	int getBlendFunc() { return m_blendFunc; }
-	int getWireframe() { return m_enableWireframe; }
+	const std::string &getName() const { return m_name; }
+	const glm::vec3 &getAmbient() { return m_Ka; }
+	const glm::vec3 &getDiffuse() { return m_Kd; }
+	const glm::vec3 &getSpecular() { return m_Ks; }
+	const glm::vec3 &getEmission() { return m_Ke; }
+	const float &getShininess() { return m_shininess; }
+	const float &getRefraction() { return m_Ni; }
+	const float &getSpecularExponent() { return m_Ns; }
+	const float &getDissolveFactor() { return m_d; }
+	const unsigned int &getIllumination() { return m_illum; }
+	const int &getShadingModel() { return m_shadingModel; }
+	const int &getBlendFunc() { return m_blendFunc; }
+	const int &getWireframe() { return m_enableWireframe; }
 
 private:
 	std::string m_name;

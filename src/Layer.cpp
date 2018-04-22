@@ -5,7 +5,7 @@
  * @param shader TODO
  */
 Layer::Layer(Shader *shader)
-	: Layer(new Renderer(), shader)
+	: Layer(new Renderer(shader), shader)
 {
 }
 
@@ -18,9 +18,6 @@ Layer::Layer(Shader *shader)
 Layer::Layer(Renderer *renderer, Shader *shader)
 	: m_renderer(renderer), m_shader(shader)
 {
-//	m_shader->enable();
-//	m_shader->setUniformMat4("vpmat", m_pmat);
-//	m_shader->disable();
 }
 
 /**
@@ -29,28 +26,26 @@ Layer::Layer(Renderer *renderer, Shader *shader)
 Layer::~Layer()
 {
 	delete m_renderer;
-//	for (unsigned int i = 0; i < m_objects.size(); ++i)
-//		delete m_objects[i];
 }
 
 /**
  * Adds (pushes back) a shape to the layer
  * @param shape The object to add
  */
-void Layer::add(RigidObject *object)
+void Layer::add(Object *object)
 {
 	m_objects.push_back(object);
 }
 
 /**
- * Renders the layer
- * TODO Add more description
+ * Renders the layer by submitting the objects to the Renderer, then
+ * flushing the Renderer buffer (aka draw the triangles)
  */
 void Layer::render()
 {
 	m_shader->enable();
 
-	for (const RigidObject *object : m_objects)
+	for (const Object *object : m_objects)
 	{
 		object->submit(m_renderer);
 	}
@@ -59,12 +54,23 @@ void Layer::render()
 	m_shader->disable();
 }
 
-RigidObject *Layer::getObject(int index)
+/**
+ * Returns the object by index
+ * @param index The index into the object array
+ * @return Returns the pointer to the object on success, else NULL
+ */
+Object *Layer::getObject(int index)
 {
+	if (index < 0 || index >= (int)m_objects.size())
+		return nullptr;
 	return m_objects[index];
 }
 
-const std::vector<RigidObject *> &Layer::getObjects()
+/**
+ * Get all the objects in this layer
+ * @return Returns all the objects in this layer
+ */
+const std::vector<Object *> &Layer::getObjects()
 {
 	return m_objects;
 }

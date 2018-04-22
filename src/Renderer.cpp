@@ -40,16 +40,18 @@
 /**
  * Constructor
  */
-Renderer::Renderer()
+Renderer::Renderer(Shader *shader)
 {
-//	m_shader = nullptr;
+	assert(shader);
+
+	m_shader = shader;
 	m_vao = 0;
 	m_vbo = 0;
 	m_ibo = 0;
 	m_numGpuVertices = 0;
 	m_numGpuIndices = 0;
+	m_materials.push_back(Material());
 	m_transformations.push_back(glm::mat4());
-	m_back_transform = &m_transformations.back();
 
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
@@ -118,21 +120,39 @@ Renderer::~Renderer()
  * TODO
  * @param object TODO
  */
-void Renderer::submit(const RigidObject *object)
+void Renderer::submit(const Object *object)
 {
 	std::vector<Vertex> gpuVertices;
 	std::vector<GLuint> gpuIndices;
-	std::vector<Mesh> meshes = object->getMeshes();
+	const std::vector<Mesh> &meshes = object->getMeshes();
+	std::vector<Material> materials = object->getMaterials();
 
+	// TODO This nested for-loop can almost certainly be parallelized
 	// Loop over the meshes in this object and extract the relevant vertices
 	// and matching index positions into their respective arrays. These arrays
-	// will be sent to the GPU next.
+	// will be sent to the GPU next (the glBufferSubData() calls).
 	for (unsigned int i = 0; i < meshes.size(); ++i)
 	{
 		unsigned int thisMeshesIndicesCount = 0;
+		unsigned int thisMeshesMaterialIndex = meshes[i].getMaterialIndex();
 		glm::mat4 mt = meshes[i].getModelTransform();
 		std::vector<Face> faces = meshes[i].getFaces();
-		m_materials.insert({ meshes[i].getMaterialIndex(), Material() });
+
+		const std::string matName = materials[thisMeshesMaterialIndex].getName();
+		auto it = std::find_if(m_materials.begin(), m_materials.end(),
+			[&matName](const Material &material)
+			{
+				return (matName == material.getName());
+			}
+		);
+		if (it != m_materials.end())
+			thisMeshesMaterialIndex = std::distance(m_materials.begin(), it);
+		else
+		{
+			thisMeshesMaterialIndex = m_materials.size();
+			m_materials.push_back(materials[thisMeshesMaterialIndex]);
+		}
+
 
 		// Each mesh has a face
 		for (unsigned int j = 0; j < faces.size(); ++j)
@@ -179,9 +199,9 @@ void Renderer::submit(const RigidObject *object)
 					// NOTE: If this thing below looks weird it's because it
 					// is kind of weird. It's called a "lambda" function.
 					auto it = std::find_if(gpuVertices.begin(), gpuVertices.end(),
-						[&v](const Vertex &obj) // lambda function begin
+						[&v](const Vertex &vertex) // lambda function begin
 						{
-							return (v == obj);
+							return (v == vertex);
 						}
 					);
 
@@ -209,7 +229,7 @@ void Renderer::submit(const RigidObject *object)
 			}
 		}
 
-		m_meshIndicesCount.push_back(thisMeshesIndicesCount);
+		m_meshInfo.push_back({ thisMeshesIndicesCount, thisMeshesMaterialIndex });
 	}
 
 	unsigned long vertBytes = gpuVertices.size() * sizeof(Vertex);
@@ -240,48 +260,21 @@ void Renderer::flush()
 	unsigned int count = 0;
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
-	for (unsigned int i = 0; i < m_meshIndicesCount.size(); ++i)
+	for (unsigned int i = 0; i < m_meshInfo.size(); ++i)
 	{
+		Material material = m_materials[m_meshInfo[i].materialIndex];
+		m_shader->setUniform4f("diffuseLightIntensity", glm::vec4(material.getDiffuse(), 1.0f));
 		glDrawElements(
 			GL_TRIANGLES, // Type of primitive to draw (usually triangle)
-			m_meshIndicesCount[i], // Number of elements to draw
+			m_meshInfo[i].numIndices, // Number of elements to draw
 			GL_UNSIGNED_INT, // Size of element
 			(void *)(count * sizeof(GLuint))); // Offset in bytes
-		count += m_meshIndicesCount[i];
+		count += m_meshInfo[i].numIndices;
 	}
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
 	m_numGpuVertices = 0;
 	m_numGpuIndices = 0;
-	m_meshIndicesCount.clear();
+	m_meshInfo.clear();
 }
-
-/**
- * Pushes a transformation matrix. For more information, see:
- * <https://www.youtube.com/watch?v=16GtFaXwMSo&index=17&list=PLlrATfBNZ98fqE45g3jZA_hLGUrD4bo6_>
- * @param matrix TODO
- * @param override TODO
- */
-void Renderer::push(glm::mat4 matrix, bool override)
-{
-	if (override)
-		m_transformations.push_back(matrix);
-	else
-		// For more information, see:
-		m_transformations.push_back(m_transformations.back() * matrix);
-
-	m_back_transform = &m_transformations.back();
-}
-
-/**
- * Pops a transformation matrix
- */
-void Renderer::pop()
-{
-	if (m_transformations.size() > 1)
-		m_transformations.pop_back();
-
-	m_back_transform = &m_transformations.back();
-}
-
