@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 2.8)
 project(ece-6122-final-project)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -25,6 +25,7 @@ link_libraries(${OPENGL_LIBRARIES})
 find_package(Bullet REQUIRED)
 include_directories(${BULLET_INCLUDE_DIRS})
 
+# sudo apt-get install libfreetype6-dev
 find_package(Freetype REQUIRED)
 include_directories(${FREETYPE_INCLUDE_DIRS})
 
@@ -62,6 +63,8 @@ set (OBJECT_DIR "${SRC_DIR}/objects")
 set (RAYTRACER_DIR "${SRC_DIR}/raytracer")
 set (UTILS_DIR "${SRC_DIR}/utils")
 
+# This searches through the following directories and
+# grabs all the source and header files into the SOURCES variable
 file (GLOB SOURCES
     ${SRC_DIR}/*.c ${SRC_DIR}/*.cpp ${SRC_DIR}/*.h
     ${OBJECT_DIR}/*.c ${OBJECT_DIR}/*.cpp ${OBJECT_DIR}/*.h
@@ -69,8 +72,10 @@ file (GLOB SOURCES
     ${UTILS_DIR}/*.c ${UTILS_DIR}/*.cpp ${UTILS_DIR}/*.h
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES} src/objects/Material.cpp src/utils/GlmUtils.h)
+# Builds the executable with the given sources
+add_executable(${PROJECT_NAME} ${SOURCES})
 
+# Links the executable agianst these libraries
 target_link_libraries(${PROJECT_NAME}
     ${GLEW_LIBRARIES}
     ${OPENGL_LIBRARIES}
