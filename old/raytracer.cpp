@@ -259,7 +259,7 @@ Vector3f trace(
 
 /* This is a helper function used to parallelize some of the operations in the function render */
 
-void threading_func(Vector3f *p, const int &width, const int &threaID, const int &numPerThread, const int &extra,
+void threading_func(Vector3f *p, const int &width, const unsigned &threaID, const int &numPerThread, const int &extra,
                      const float &invertedWidth, const float &invertedHeight, const float &angle, const std::vector<Sphere> &spheres, const float &aspectRatio ){
     if(threaID != (NUMTHREADS-1)){
         for(unsigned y = threaID*numPerThread; y < (threaID+1)*numPerThread; ++y){
@@ -289,7 +289,7 @@ void threading_func(Vector3f *p, const int &width, const int &threaID, const int
    sphere at the intersection point is returned, else we return the background color. */
 
 
-void render(const std::vector<Sphere> &spheres)
+void render(const std::vector<Sphere> &spheres, const int &parallel)
 {
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -299,32 +299,31 @@ void render(const std::vector<Sphere> &spheres)
     float invertedWidth = 1 / float(width), invertedHeight = 1 / float(height);
     float fov = 30, aspectRatio = width / float(height);
     float angle = tan(M_PI * 0.5 * fov / 180.);
-    
-    // This is the part that has been parallelized
-    /*for (unsigned y = 0; y < height; ++y) {
-        for (unsigned x = 0; x < width; ++x, ++pixel) {
-            float xx = (2 * ((x + 0.5) * invertedWidth) - 1) * angle * aspectRatio;
-            float yy = (1 - 2 * ((y + 0.5) * invertedHeight)) * angle;
-            Vector3f rayDirection(xx, yy, -1);
-            rayDirection.normalize();
-            *pixel = trace(Vector3f(0), rayDirection, spheres, 0);
+
+    if(!parallel) {
+        for (unsigned y = 0; y < height; ++y) {
+            for (unsigned x = 0; x < width; ++x, ++pixel) {
+                float xx = (2 * ((x + 0.5) * invertedWidth) - 1) * angle * aspectRatio;
+                float yy = (1 - 2 * ((y + 0.5) * invertedHeight)) * angle;
+                Vector3f rayDirection(xx, yy, -1);
+                rayDirection.normalize();
+                *pixel = trace(Vector3f(0), rayDirection, spheres, 0);
+            }
         }
-    }*/
-    
-    
-    std::thread threads[NUMTHREADS];
-    // Each thread get an equal number of rows except the last thread which takes care of the remainder of the division height/Number of threads
-    int numPerThread = height/NUMTHREADS;
-    int extra = height%NUMTHREADS;
-    for(int i = 0; i < NUMTHREADS; ++i){
-        threads[i] = std::thread(threading_func,pixel + (i*numPerThread*width), width, i, numPerThread, extra,
-                                   invertedWidth, invertedHeight, angle, spheres, aspectRatio);
-    }
+    }else {
+        std::thread threads[NUMTHREADS];
+        int numPerThread = height / NUMTHREADS;
+        int extra = height % NUMTHREADS;
 
-    for (int i = 0; i < NUMTHREADS ; ++i) {
-        threads[i].join();
-    }
+        for (int i = 0; i < NUMTHREADS; ++i) {
+            threads[i] = std::thread(threading_func, pixel + (i * numPerThread * width), width, i, numPerThread, extra,
+                                     invertedWidth, invertedHeight, angle, spheres, aspectRatio);
+        }
 
+        for (int i = 0; i < NUMTHREADS; ++i) {
+            threads[i].join();
+        }
+    }
     auto end = std::chrono::high_resolution_clock::now();
     std::cout << "Elapsed Time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << "ms" << std::endl;
 
@@ -366,7 +365,8 @@ int main(int argc, char **argv)
     spheres.push_back(Sphere(Vector3f( 10,  20,  10),      4, Vector3f(0.00, 0.00, 0.00), 0, 0.0, Vector3f(3)));
     
     /* GOOOOOOOOOOOOOOOOOO!!!!!!!!!!!!!!  And they are off to the races! */
-    render(spheres);
+    int parallel = 1;
+    render(spheres, parallel);
     
     /* annnndd... finish :') */
     return 0;
