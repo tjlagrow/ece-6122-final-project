@@ -104,7 +104,7 @@ PhysicsEngine::PhysicsEngine()
 
 	// The more negative Y is the stronger the gravity. Go ahead, try changing
 	// it to (0,-100,0) or something. It's like you're on another planet.
-	m_world->setGravity(btVector3(0, -10, 0));
+	m_world->setGravity(btVector3(0, -15, 0));
 
 	// For btStaticPlaneShape:
 	// The 1st argument is a vector - TODO what does it do?

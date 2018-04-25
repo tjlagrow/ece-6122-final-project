@@ -47,12 +47,12 @@ struct objMetadata
 static std::vector<struct objMetadata> objmeta =
 {
 //	{ ShapeType::Sphere,   glm::vec3(+0.9f, +15.0f, +0.9f), 1.0f, 1.0f, 0.5f, "../models/beachball.obj" },
-	{ ShapeType::Box,      glm::vec3(+1.0f, +30.0f, +1.0f), 1.0f, 0.8f, 0.7f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+0.8f, +26.0f, +0.8f), 1.0f, 0.8f, 0.7f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+0.6f, +22.0f, +0.6f), 1.0f, 0.8f, 0.7f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+0.4f, +18.0f, +0.4f), 1.0f, 0.8f, 0.7f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+0.2f, +14.0f, +0.2f), 1.0f, 0.8f, 0.7f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+0.0f, +10.0f, +0.0f), 1.0f, 0.8f, 0.7f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+1.0f, +30.0f, +1.0f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+0.8f, +26.0f, +0.8f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+0.6f, +22.0f, +0.6f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+0.4f, +18.0f, +0.4f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+0.2f, +14.0f, +0.2f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+0.0f, +10.0f, +0.0f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
 //	{ ShapeType::Cone,     glm::vec3(+7.0f, +00.0f, +7.0f), 1.0f, 0.1f, 0.5f, "../models/cone.obj" },
 //	{ ShapeType::Cone,     glm::vec3(-7.0f, +00.0f, -7.0f), 1.0f, 0.1f, 0.5f, "../models/cone.obj" },
 //	{ ShapeType::Cylinder, glm::vec3(-7.0f, +00.0f, +7.0f), 1.0f, 0.1f, 0.5f, "../models/cylinder.obj" },
@@ -223,7 +223,7 @@ int main(int argc, char **argv)
 		}
 
 		// Enable camera rotation
-//		updateCameraPosition(camx, camz, cama);
+		updateCameraPosition(camx, camz, cama);
 
 		// Set the camera position by applying a "view matrix"
 		// (as part of the model-view-projection graphics scheme)
