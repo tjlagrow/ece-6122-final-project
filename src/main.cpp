@@ -22,11 +22,11 @@
 #define WINDOW_HEIGHT   600
 #define WINDOW_TITLE    "ECE6122 Final Project"
 
-static float camx = 40.0f; // Camera location x
-static float camy = 40.0f; // Camera location y, this is the height
-static float camz = 40.0f; // Camera location z
-static float camr = 40.0f; // Camera radius
-static float cama = 0.0f; // Camera angle in radians
+static float camx = -8.0f; // Camera location x
+static float camy = 04.0f; // Camera location y, this is the height
+static float camz = 26.0f; // Camera location z
+static float camr = 10.0f; // Camera radius
+static float cama = -3 * M_PI / 4; // Camera angle in radians
 
 // Delta multiplier for camera angle; affects speed of movement. Not exactly
 // sure what units it's is, but a larger number means faster movement
@@ -46,14 +46,20 @@ struct objMetadata
 
 static std::vector<struct objMetadata> objmeta =
 {
-	{ ShapeType::Sphere,   glm::vec3(-8.0f, +06.0f, +0.0f), 9.9f, 0.0f, 0.0f, "../models/ball_simple.obj" },
-	{ ShapeType::Box,      glm::vec3(+9.0f, +02.0f, +0.0f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+9.0f, +04.0f, +0.0f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+9.0f, +06.0f, +0.0f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+9.0f, +08.0f, +0.0f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+9.0f, +10.0f, +0.0f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+9.0f, +12.0f, +0.0f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
-	{ ShapeType::Custom,   glm::vec3(-9.0f, +00.0f, +0.0f), 99.f, 0.6f, 0.8f, "../models/ramp.obj" },
+	{ ShapeType::Sphere,   glm::vec3(-7.0f, +30.0f, +0.0f), 4.0f, 0.6f, 0.9f, "../models/ball_simple.obj" },
+	{ ShapeType::Custom,   glm::vec3(-8.0f, +00.0f, +0.0f), 99.f, 0.6f, 0.9f, "../models/ramp.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +02.0f, -1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +04.0f, -1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +06.0f, -1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +08.0f, -1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +10.0f, -1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +12.0f, -1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +02.0f, +1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +04.0f, +1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +06.0f, +1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +08.0f, +1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +10.0f, +1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +12.0f, +1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
 //	{ ShapeType::Cone,     glm::vec3(+7.0f, +00.0f, +7.0f), 1.0f, 0.1f, 0.5f, "../models/cone.obj" },
 //	{ ShapeType::Cone,     glm::vec3(-7.0f, +00.0f, -7.0f), 1.0f, 0.1f, 0.5f, "../models/cone.obj" },
 //	{ ShapeType::Cylinder, glm::vec3(-7.0f, +00.0f, +7.0f), 1.0f, 0.1f, 0.5f, "../models/cylinder.obj" },
@@ -115,7 +121,7 @@ int main(int argc, char **argv)
 	{
 		auto *o = new Object(objmeta[i].filepath);
 		glm::mat4 transform = glm::translate(objmeta[i].position);
-		o->applyTransform(transform);
+		o->setTransform(transform);
 		modelLayer.add(o);
 		objects.push_back(o);
 		switch (objmeta[i].type)
@@ -220,7 +226,7 @@ int main(int argc, char **argv)
 			tnext = tnow + 1.0f;
 		}
 
-		engine.stepSimulation(1 / 40.0f); // Speed up to like 1/24 if too slow
+		engine.stepSimulation(1 / 60.0f); // Speed up to like 1/24 if too slow
 		std::vector<glm::vec3> positions;
 		engine.getMotionStates(positions);
 
@@ -229,18 +235,19 @@ int main(int argc, char **argv)
 		{
 			glm::mat4 updateTransform;
 			engine.getOpenGLMatrix(i, updateTransform);
-			objects[i]->applyTransform(updateTransform);
+			objects[i]->setTransform(updateTransform);
 		}
 
 		// Enable camera rotation
-		updateCameraPosition(camx, camz, cama);
+//		updateCameraPosition(camx, camz, cama);
 
 		// Set the camera position by applying a "view matrix"
 		// (as part of the model-view-projection graphics scheme)
 		shader1.enable();
 		vMatrix = glm::lookAt(
 			glm::vec3(camx, camy, camz), // Camera position
-			glm::vec3(0.0f, 0.0f, 0.0f), // Where do you look
+//			glm::vec3(0.0f, 0.0f, 0.0f), // Where do you look
+			objects[0]->getWorldOrigin(), // Look at the ball
 			glm::vec3(0.0f, 1.0f, 0.0f)  // Y-axis is Up
 		);
 		shader1.setUniformMat4("vvmat", vMatrix); // "Vertexshader-View-MATrix"

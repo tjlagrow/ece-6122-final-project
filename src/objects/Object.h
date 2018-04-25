@@ -25,7 +25,7 @@ public:
 	const std::vector<Normal> &getNormals() const;
 	const std::vector<TexCoord> &getTexCoords() const;
 
-	const glm::vec3 &getOrigin() const;
+	const glm::vec3 &getWorldOrigin() const;
 	const float &getMass() const;
 	const glm::vec3 &getInertia() const;
 	const glm::vec3 &getSize() const;
@@ -38,11 +38,10 @@ public:
 	int getNormalIndex(Normal normal) const;
 	int getTexCoordIndex(TexCoord texcoord) const;
 
-	void setOrigin(const glm::vec3 &origin);
 	void setMass(const float &mass);
 	void setInertia(const glm::vec3 &inertia);
 
-	void applyTransform(glm::mat4 transform);
+	void setTransform(glm::mat4 transform);
 
 	void addMesh(Mesh mesh);
 	void addMaterial(Material material);
@@ -59,7 +58,9 @@ private:
 	std::vector<Normal> m_normals;
 	std::vector<TexCoord> m_texcoords;
 
+	glm::vec3 m_worldOrigin;
 	glm::vec3 m_origin;
+
 	float m_mass;
 	glm::vec3 m_inertia;
 	glm::vec3 m_size;

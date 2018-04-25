@@ -122,9 +122,9 @@ const std::vector<TexCoord> &Object::getTexCoords() const
  * TODO Document
  * @return TODO Document
  */
-const glm::vec3 &Object::getOrigin() const
+const glm::vec3 &Object::getWorldOrigin() const
 {
-	return m_origin;
+	return m_worldOrigin;
 }
 
 /**
@@ -239,15 +239,6 @@ int Object::getTexCoordIndex(TexCoord texcoord) const
 
 /**
  * TODO Document
- * @param origin TODO Document
- */
-void Object::setOrigin(const glm::vec3 &origin)
-{
-	m_origin = origin;
-}
-
-/**
- * TODO Document
  * @return TODO Document
  */
 void Object::setMass(const float &mass)
@@ -268,8 +259,10 @@ void Object::setInertia(const glm::vec3 &inertia)
  * TODO Document
  * @param transform TODO Document
  */
-void Object::applyTransform(glm::mat4 transform)
+void Object::setTransform(glm::mat4 transform)
 {
+	glm::vec4 worldOrigin = transform * glm::vec4(m_origin.x, m_origin.y, m_origin.z, 1.0f);
+	m_worldOrigin = glm::vec3(worldOrigin.x, worldOrigin.y, worldOrigin.z);
 	for (auto &mesh : m_meshes)
 		mesh.setModelTransform(transform);
 }

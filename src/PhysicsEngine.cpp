@@ -122,9 +122,10 @@ PhysicsEngine::PhysicsEngine()
 		0, // Mass is 0 for the ground
 		groundMotionState,
 		m_ground,
-		btVector3(0, 0, 0) // Intertia is 0 for the ground
+		btVector3(0, 0, 0) // Inertia is 0 for the ground
 	);
 	m_groundRigidBody = new btRigidBody(groundRigidBodyCI);
+	m_groundRigidBody->setFriction(1.0);
 
 	// Finally, add the ground to the world
 	m_world->addRigidBody(m_groundRigidBody);
