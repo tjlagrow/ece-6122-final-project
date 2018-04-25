@@ -92,6 +92,18 @@ const std::vector<Position> &Object::getPositions() const
  * TODO Document
  * @return TODO Document
  */
+std::vector<glm::vec3> Object::getPositionsGlmVec3() const
+{
+	std::vector<glm::vec3> ret;
+	for (auto &p : m_positions)
+		ret.push_back(glm::vec3(p.x, p.y, p.z));
+	return (ret);
+}
+
+/**
+ * TODO Document
+ * @return TODO Document
+ */
 const std::vector<Normal> &Object::getNormals() const
 {
 	return m_normals;

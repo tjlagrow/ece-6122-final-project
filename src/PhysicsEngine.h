@@ -21,6 +21,7 @@ public:
 	void stepSimulation(const double &deltaTime);
 	void addSphere(float radius, float mass, float bounciness, float friction, glm::vec3 position);
 	void addBox(glm::vec3 size, float mass, float bounciness, float friction, glm::vec3 position);
+	void addHull(std::vector<glm::vec3> points, float mass, float bounciness, float friction, glm::vec3 position);
 
 	void getMotionStates(std::vector<glm::vec3> &states);
 	void getOpenGLMatrix(int index, glm::mat4 &matrix);

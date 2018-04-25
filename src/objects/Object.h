@@ -21,6 +21,7 @@ public:
 	const std::vector<Mesh> &getMeshes() const;
 	const std::vector<Material> &getMaterials() const;
 	const std::vector<Position> &getPositions() const;
+	std::vector<glm::vec3> getPositionsGlmVec3() const;
 	const std::vector<Normal> &getNormals() const;
 	const std::vector<TexCoord> &getTexCoords() const;
 

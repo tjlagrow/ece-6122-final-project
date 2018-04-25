@@ -32,7 +32,7 @@ static float cama = 0.0f; // Camera angle in radians
 // sure what units it's is, but a larger number means faster movement
 static float camdt = 0.002f;
 
-enum class ShapeType { Box, Sphere, Cylinder, Cone };
+enum class ShapeType { Box, Sphere, Cylinder, Cone, Custom };
 
 struct objMetadata
 {
@@ -46,13 +46,14 @@ struct objMetadata
 
 static std::vector<struct objMetadata> objmeta =
 {
-//	{ ShapeType::Sphere,   glm::vec3(+0.9f, +15.0f, +0.9f), 1.0f, 1.0f, 0.5f, "../models/beachball.obj" },
-	{ ShapeType::Box,      glm::vec3(+1.0f, +30.0f, +1.0f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+0.8f, +26.0f, +0.8f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+0.6f, +22.0f, +0.6f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+0.4f, +18.0f, +0.4f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+0.2f, +14.0f, +0.2f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+0.0f, +10.0f, +0.0f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
+	{ ShapeType::Sphere,   glm::vec3(-8.0f, +06.0f, +0.0f), 9.9f, 0.0f, 0.0f, "../models/ball_simple.obj" },
+	{ ShapeType::Box,      glm::vec3(+9.0f, +02.0f, +0.0f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+9.0f, +04.0f, +0.0f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+9.0f, +06.0f, +0.0f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+9.0f, +08.0f, +0.0f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+9.0f, +10.0f, +0.0f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+9.0f, +12.0f, +0.0f), 1.0f, 0.6f, 0.8f, "../models/cube.obj" },
+	{ ShapeType::Custom,   glm::vec3(-9.0f, +00.0f, +0.0f), 99.f, 0.6f, 0.8f, "../models/ramp.obj" },
 //	{ ShapeType::Cone,     glm::vec3(+7.0f, +00.0f, +7.0f), 1.0f, 0.1f, 0.5f, "../models/cone.obj" },
 //	{ ShapeType::Cone,     glm::vec3(-7.0f, +00.0f, -7.0f), 1.0f, 0.1f, 0.5f, "../models/cone.obj" },
 //	{ ShapeType::Cylinder, glm::vec3(-7.0f, +00.0f, +7.0f), 1.0f, 0.1f, 0.5f, "../models/cylinder.obj" },
@@ -143,6 +144,15 @@ int main(int argc, char **argv)
 			case ShapeType::Cylinder:
 				// TODO add to engine
 				break;
+			case ShapeType::Custom:
+				engine.addHull(
+					o->getPositionsGlmVec3(),
+					objmeta[i].mass,
+					objmeta[i].bounciness,
+					objmeta[i].friction,
+					objmeta[i].position
+				);
+				break;
 		}
 	}
 
@@ -210,7 +220,7 @@ int main(int argc, char **argv)
 			tnext = tnow + 1.0f;
 		}
 
-		engine.stepSimulation(1 / 60.0f); // Speed up to like 1/24 if too slow
+		engine.stepSimulation(1 / 40.0f); // Speed up to like 1/24 if too slow
 		std::vector<glm::vec3> positions;
 		engine.getMotionStates(positions);
 

@@ -228,6 +228,27 @@ void PhysicsEngine::addBox(glm::vec3 size, float mass, float bounciness, float f
 	addObject(shape, mass, inertia, motion, bounciness, friction);
 }
 
+void PhysicsEngine::addHull(std::vector<glm::vec3> points, float mass, float bounciness, float friction, glm::vec3 position)
+{
+	btConvexHullShape *shape = new btConvexHullShape();
+	for (unsigned int  i = 0; i < points.size(); ++i)
+		shape->addPoint(btVector3(points[i].x, points[i].y, points[i].z));
+
+	m_shapes.push_back(shape);
+
+	btDefaultMotionState *motion = new btDefaultMotionState(
+		btTransform(
+			btQuaternion(0, 0, 0, 1),
+			btVector3(position.x, position.y, position.z))
+	);
+
+	btVector3 inertia(0, 0, 0);
+
+	if (friction < 0 || friction > 1)
+		friction = DEFAULT_FRICTION;
+
+	addObject(shape, mass, inertia, motion, bounciness, friction);
+}
 /**
  * TODO Document
  * @param states TODO Document
