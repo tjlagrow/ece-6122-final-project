@@ -16,12 +16,21 @@
 #include <fstream>
 #include <vector>
 #include <iostream>
+#include <chrono>
+#include <thread>
+
+
 
 
 /* Variable tp help control maximum recursion depth.  Important for speed.
    Without a k-d tree or some type of time improvement, I usually don't go
    over 35. */
 #define MAX_RAY_DEPTH 25
+
+/* Setting number of threads */
+
+constexpr unsigned int NUMTHREADS = 64;
+
 
 /* constructor */
 template <typename Tvalue>
@@ -161,8 +170,7 @@ Vector3f trace(
     /* initialize */
     float tnear = INFINITY;
     const Sphere* sphere = NULL;
-
-
+	
     /* find intersection of this ray with the sphere in the scene */
     for (unsigned i = 0; i < spheres.size(); ++i) {
         float t0 = INFINITY, t1 = INFINITY;
@@ -249,12 +257,42 @@ Vector3f trace(
 }
 
 
+/* This is a helper function used to parallelize some of the operations in the function render */
+
+void threading_func(Vector3f *p, const int &width, const int &threaID, const int &numPerThread, const int &extra,
+                     const float &invertedWidth, const float &invertedHeight, const float &angle, const std::vector<Sphere> &spheres, const float &aspectRatio ){
+    if(threaID != (NUMTHREADS-1)){
+        for(unsigned y = threaID*numPerThread; y < (threaID+1)*numPerThread; ++y){
+            for(unsigned x = 0; x < width; ++x, ++p){
+                float xx = (2 * ((x + 0.5) * invertedWidth) - 1) * angle * aspectRatio;
+                float yy = (1 - 2 * ((y + 0.5) * invertedHeight)) * angle;
+                Vector3f rayDirection(xx, yy, -1);
+                rayDirection.normalize();
+                *p = trace(Vector3f(0), rayDirection, spheres, 0);
+            }
+        }
+    }else{
+        for(unsigned y = threaID*numPerThread; y < ((threaID+1)*numPerThread)+extra; ++y){
+            for(unsigned x = 0; x < width; ++x, ++p){
+                float xx = (2 * ((x + 0.5) * invertedWidth) - 1) * angle * aspectRatio;
+                float yy = (1 - 2 * ((y + 0.5) * invertedHeight)) * angle;
+                Vector3f rayDirection(xx, yy, -1);
+                rayDirection.normalize();
+                *p = trace(Vector3f(0), rayDirection, spheres, 0);
+            }
+        }
+    }
+}
+
 /* This is the rendering function! A camera ray for each pixel of the image is computed and then
    traced and finally returned with a color. If the ray hits a sphere, the color of the
    sphere at the intersection point is returned, else we return the background color. */
 
+
 void render(const std::vector<Sphere> &spheres)
 {
+    auto start = std::chrono::high_resolution_clock::now();
+
     //unsigned width = 3840, height = 2160; /* 16:9 aspect ratio, 4K image */
     unsigned width = 3240, height = 1080; /* 3:1 aspect ratio */
     Vector3f *image = new Vector3f[width * height], *pixel = image;
@@ -262,7 +300,8 @@ void render(const std::vector<Sphere> &spheres)
     float fov = 30, aspectRatio = width / float(height);
     float angle = tan(M_PI * 0.5 * fov / 180.);
     
-    for (unsigned y = 0; y < height; ++y) {
+    // This is the part that has been parallelized
+    /*for (unsigned y = 0; y < height; ++y) {
         for (unsigned x = 0; x < width; ++x, ++pixel) {
             float xx = (2 * ((x + 0.5) * invertedWidth) - 1) * angle * aspectRatio;
             float yy = (1 - 2 * ((y + 0.5) * invertedHeight)) * angle;
@@ -270,7 +309,25 @@ void render(const std::vector<Sphere> &spheres)
             rayDirection.normalize();
             *pixel = trace(Vector3f(0), rayDirection, spheres, 0);
         }
+    }*/
+    
+    
+    std::thread threads[NUMTHREADS];
+    // Each thread get an equal number of rows except the last thread which takes care of the remainder of the division height/Number of threads
+    int numPerThread = height/NUMTHREADS;
+    int extra = height%NUMTHREADS;
+    for(int i = 0; i < NUMTHREADS; ++i){
+        threads[i] = std::thread(threading_func,pixel + (i*numPerThread*width), width, i, numPerThread, extra,
+                                   invertedWidth, invertedHeight, angle, spheres, aspectRatio);
     }
+
+    for (int i = 0; i < NUMTHREADS ; ++i) {
+        threads[i].join();
+    }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::cout << "Elapsed Time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << "ms" << std::endl;
+
     /* Save result to a pmm image!                                                       
        This method of saving works for mac, but you need to save to .ppm for window/linux */
     std::ofstream ppm("./sphere_primitive_example.ppm", std::ios::out | std::ios::binary);
@@ -314,5 +371,6 @@ int main(int argc, char **argv)
     /* annnndd... finish :') */
     return 0;
 }
+
 
 
