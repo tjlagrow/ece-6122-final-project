@@ -32,6 +32,6 @@ f 4//4 3//4 8//4
 usemtl YellowMaterial
 f 1//5 4//5 8//5
 f 5//5 1//5 8//5
-usemtl OrangeMaterial
+usemtl SkyBlueMaterial
 f 2//6 3//6 4//6
 f 1//6 2//6 4//6

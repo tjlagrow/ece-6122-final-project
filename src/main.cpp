@@ -22,10 +22,10 @@
 #define WINDOW_HEIGHT   600
 #define WINDOW_TITLE    "ECE6122 Final Project"
 
-static float camx = 50.0f; // Camera location x
-static float camy = 50.0f; // Camera location y, this is the height
-static float camz = 50.0f; // Camera location z
-static float camr = 50.0f; // Camera radius
+static float camx = 40.0f; // Camera location x
+static float camy = 40.0f; // Camera location y, this is the height
+static float camz = 40.0f; // Camera location z
+static float camr = 40.0f; // Camera radius
 static float cama = 0.0f; // Camera angle in radians
 
 // Delta multiplier for camera angle; affects speed of movement. Not exactly
@@ -40,22 +40,23 @@ struct objMetadata
 	glm::vec3 position;
 	float mass;
 	float bounciness;
+	float friction;
 	const char *filepath;
 };
 
 static std::vector<struct objMetadata> objmeta =
 {
-//	{ ShapeType::Sphere,   glm::vec3(+0.9f, +15.0f, +0.9f), 1.0f, 1.0f, "../models/beachball.obj" },
-	{ ShapeType::Box,      glm::vec3(+0.0f, +30.0f, +0.0f), 1.0f, 0.6f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+0.0f, +20.0f, +0.0f), 1.0f, 0.6f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+0.5f, +15.0f, +0.5f), 1.0f, 0.6f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+0.5f, +10.0f, -0.5f), 1.0f, 0.6f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(-0.5f, +05.0f, -0.5f), 1.0f, 0.6f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(-0.5f, +03.0f, +0.5f), 1.0f, 0.6f, "../models/cube.obj" },
-//	{ ShapeType::Cone,     glm::vec3(+7.0f, +0.0f, +7.0f), 1.0f, 0.1f, "../models/cone.obj" },
-//	{ ShapeType::Cone,     glm::vec3(-7.0f, +0.0f, -7.0f), 1.0f, 0.1f, "../models/cone.obj" },
-//	{ ShapeType::Cylinder, glm::vec3(-7.0f, +0.0f, +7.0f), 1.0f, 0.1f, "../models/cylinder.obj" },
-//	{ ShapeType::Cylinder, glm::vec3(+7.0f, +0.0f, -7.0f), 1.0f, 0.1f, "../models/cylinder.obj" },
+//	{ ShapeType::Sphere,   glm::vec3(+0.9f, +15.0f, +0.9f), 1.0f, 1.0f, 0.5f, "../models/beachball.obj" },
+	{ ShapeType::Box,      glm::vec3(+1.0f, +30.0f, +1.0f), 1.0f, 0.8f, 0.7f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+0.8f, +26.0f, +0.8f), 1.0f, 0.8f, 0.7f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+0.6f, +22.0f, +0.6f), 1.0f, 0.8f, 0.7f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+0.4f, +18.0f, +0.4f), 1.0f, 0.8f, 0.7f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+0.2f, +14.0f, +0.2f), 1.0f, 0.8f, 0.7f, "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+0.0f, +10.0f, +0.0f), 1.0f, 0.8f, 0.7f, "../models/cube.obj" },
+//	{ ShapeType::Cone,     glm::vec3(+7.0f, +00.0f, +7.0f), 1.0f, 0.1f, 0.5f, "../models/cone.obj" },
+//	{ ShapeType::Cone,     glm::vec3(-7.0f, +00.0f, -7.0f), 1.0f, 0.1f, 0.5f, "../models/cone.obj" },
+//	{ ShapeType::Cylinder, glm::vec3(-7.0f, +00.0f, +7.0f), 1.0f, 0.1f, 0.5f, "../models/cylinder.obj" },
+//	{ ShapeType::Cylinder, glm::vec3(+7.0f, +00.0f, -7.0f), 1.0f, 0.1f, 0.5f, "../models/cylinder.obj" },
 };
 
 ////////////////////////////////////////////////////////
@@ -100,7 +101,12 @@ int main(int argc, char **argv)
 	PhysicsEngine engine;
 
 	Shader shader1(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH);
-	Layer layer1(&shader1);
+
+	Layer stageLayer(&shader1);
+	Layer modelLayer(&shader1);
+
+	Object stage("../models/stage.obj");
+	stageLayer.add(&stage);
 
 	// Load the objects from file into the layer
 	std::vector<Object *> objects;
@@ -109,7 +115,7 @@ int main(int argc, char **argv)
 		auto *o = new Object(objmeta[i].filepath);
 		glm::mat4 transform = glm::translate(objmeta[i].position);
 		o->applyTransform(transform);
-		layer1.add(o);
+		modelLayer.add(o);
 		objects.push_back(o);
 		switch (objmeta[i].type)
 		{
@@ -118,14 +124,16 @@ int main(int argc, char **argv)
 					1.0f,
 					objmeta[i].mass,
 					objmeta[i].bounciness,
+					objmeta[i].friction,
 					objmeta[i].position
 				);
 				break;
 			case ShapeType::Box:
 				engine.addBox(
-					o->getSize()/2.0f,
+					o->getSize()/2.0f, // Bullet wants half-lengths
 					objmeta[i].mass,
 					objmeta[i].bounciness,
+					objmeta[i].friction,
 					objmeta[i].position
 				);
 				break;
@@ -147,7 +155,7 @@ int main(int argc, char **argv)
 		glm::radians(45.0f), // Field of view (zoom-in, zoom-out)
 		(float) WINDOW_WIDTH / (float) WINDOW_HEIGHT, // Aspect ratio
 		0.1f, // Near field cutoff
-		100.f // Far field cutoff
+		1000.f // Far field cutoff
 	);
 
 	// Set up the View matrix
@@ -214,7 +222,8 @@ int main(int argc, char **argv)
 			objects[i]->applyTransform(updateTransform);
 		}
 
-		updateCameraPosition(camx, camz, cama);
+		// Enable camera rotation
+//		updateCameraPosition(camx, camz, cama);
 
 		// Set the camera position by applying a "view matrix"
 		// (as part of the model-view-projection graphics scheme)
@@ -228,7 +237,8 @@ int main(int argc, char **argv)
 		shader1.disable();
 
 		// Draw layers (and their objects) here
-		layer1.render(glm::vec3(camx, camy, camz));
+		stageLayer.render(glm::vec3(camx, camy, camz));
+		modelLayer.render(glm::vec3(camx, camy, camz));
 
 //		Raytracer::render(/* TODO Figure out what needs to be passed in */);
 

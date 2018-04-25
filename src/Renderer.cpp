@@ -2,41 +2,6 @@
 #include "objects/Color.h"
 #include <algorithm>
 
-//void deleteme(const char *func)
-//{
-//	GLenum errnum = glGetError();
-//	if (errnum != GL_NO_ERROR)
-//	{
-//		printf("ERROR: %s: OpenGL %d: ", func, errnum);
-//		switch (errnum)
-//		{
-//			case GL_INVALID_ENUM:
-//				printf("Invalid enum\n");
-//				break;
-//			case GL_INVALID_VALUE:
-//				printf("Invalid value\n");
-//				break;
-//			case GL_INVALID_OPERATION:
-//				printf("Invalid operation\n");
-//				break;
-//			case GL_INVALID_FRAMEBUFFER_OPERATION:
-//				printf("Invalid framebuffer operation\n");
-//				break;
-//			case GL_OUT_OF_MEMORY:
-//				printf("Out of memory\n");
-//				break;
-//			case GL_STACK_UNDERFLOW:
-//				printf("Stack underflow\n");
-//				break;
-//			case GL_STACK_OVERFLOW:
-//				printf("Stack overflow\n");
-//				break;
-//			default:
-//				printf("\n");
-//		}
-//	}
-//}
-
 /**
  * Constructor
  */
@@ -50,8 +15,8 @@ Renderer::Renderer(Shader *shader)
 	m_ibo = 0;
 	m_numGpuVertices = 0;
 	m_numGpuIndices = 0;
-	m_materials.push_back(Material());
-	m_transformations.push_back(glm::mat4());
+	m_materials.emplace_back(Material());
+	m_transformations.emplace_back(glm::mat4());
 
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);

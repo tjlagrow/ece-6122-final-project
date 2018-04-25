@@ -1,7 +1,5 @@
 #include "PhysicsEngine.h"
 
-
-
 /**
  * TODO Document
  * @param matrix TODO Document
@@ -104,22 +102,31 @@ PhysicsEngine::PhysicsEngine()
 		m_colConfig
 	);
 
+	// The more negative Y is the stronger the gravity. Go ahead, try changing
+	// it to (0,-100,0) or something. It's like you're on another planet.
 	m_world->setGravity(btVector3(0, -10, 0));
 
+	// For btStaticPlaneShape:
+	// The 1st argument is a vector - TODO what does it do?
+	// The 2nd argument is a scalar - TODO what does it do?
 	m_ground = new btStaticPlaneShape(btVector3(0, 1, 0), 1);
 
+	// This is called with a "new" and normally we'd have to save the variable
+	// in order to clean it up later. But we don't do that here because we can
+	// get it through the getMotionState() function later
 	btDefaultMotionState *groundMotionState = new btDefaultMotionState(
 		btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
 
+	// Create the ground rigid body object and its properties
 	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(
-		0,
+		0, // Mass is 0 for the ground
 		groundMotionState,
 		m_ground,
-		btVector3(0, 0, 0)
+		btVector3(0, 0, 0) // Intertia is 0 for the ground
 	);
-
 	m_groundRigidBody = new btRigidBody(groundRigidBodyCI);
 
+	// Finally, add the ground to the world
 	m_world->addRigidBody(m_groundRigidBody);
 }
 
@@ -154,7 +161,7 @@ PhysicsEngine::~PhysicsEngine()
 /**
  * Advance the simulation
  * @param deltaTime Change in time from the last time step (usually something
- * like 1/60.0f)
+ * like 1/60.0f to 1/20.0f)
  */
 void PhysicsEngine::stepSimulation(const double &deltaTime)
 {
@@ -166,9 +173,11 @@ void PhysicsEngine::stepSimulation(const double &deltaTime)
  * @param radius The radius of the sphere
  * @param mass The sphere's mass
  * @param bounciness The sphere's bounciness from 0=none to 1=bouncy
+ * @param friction The sphere's friction coefficient from 0=low to 1=high
+ * https://www.thoughtspike.com/friction-coefficients-for-bullet-physics/
  * @param position The sphere's initial position as measured from the origin
  */
-void PhysicsEngine::addSphere(float radius, float mass, float bounciness, glm::vec3 position)
+void PhysicsEngine::addSphere(float radius, float mass, float bounciness, float friction, glm::vec3 position)
 {
 	btCollisionShape *shape = new btSphereShape(radius);
 	m_shapes.push_back(shape);
@@ -183,16 +192,22 @@ void PhysicsEngine::addSphere(float radius, float mass, float bounciness, glm::v
 
 	if (bounciness < 0 || bounciness > 1)
 		bounciness = DEFAULT_BOUNCINESS;
-	addObject(shape, mass, inertia, motion, bounciness);
+	if (friction < 0 || friction > 1)
+		friction = DEFAULT_FRICTION;
+
+	addObject(shape, mass, inertia, motion, bounciness, friction);
 }
 
 /**
  * Adds a box to the physics engine
  * @param size The size of the box as measured from the origin
  * @param mass The box's mass
+ * @param bounciness The sphere's bounciness from 0=none to 1=bouncy
+ * @param friction The sphere's friction coefficient from 0=low to 1=high
+ * https://www.thoughtspike.com/friction-coefficients-for-bullet-physics/
  * @param position The box's initial position as measured by the origin
  */
-void PhysicsEngine::addBox(glm::vec3 size, float mass, float bounciness, glm::vec3 position)
+void PhysicsEngine::addBox(glm::vec3 size, float mass, float bounciness, float friction, glm::vec3 position)
 {
 	btVector3 boxHalfExtents(size.x, size.y, size.z);
 
@@ -207,7 +222,10 @@ void PhysicsEngine::addBox(glm::vec3 size, float mass, float bounciness, glm::ve
 
 	btVector3 inertia(0, 0, 0);
 
-	addObject(shape, mass, inertia, motion, bounciness);
+	if (friction < 0 || friction > 1)
+		friction = DEFAULT_FRICTION;
+
+	addObject(shape, mass, inertia, motion, bounciness, friction);
 }
 
 /**
@@ -265,7 +283,8 @@ void PhysicsEngine::addObject(
 	btScalar mass,
 	btVector3 inertia,
 	btDefaultMotionState *motion,
-	btScalar bounciness)
+	btScalar bounciness,
+	btScalar friction)
 {
 	shape->calculateLocalInertia(mass, inertia);
 
@@ -277,6 +296,7 @@ void PhysicsEngine::addObject(
 
 	auto *rigidBody = new btRigidBody(rigidBodyCI);
 	rigidBody->setRestitution(bounciness);
+	rigidBody->setFriction(1.0);
 
 	m_rigidBodies.push_back(rigidBody);
 	m_world->addRigidBody(rigidBody);
