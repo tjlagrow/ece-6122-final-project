@@ -4,6 +4,7 @@
 #include "ProgramConfig.h"
 #include <getopt.h> // getopt_long()
 #include <cstdio> // strncpy()
+#include <cstdlib>
 
 #define HELP_ARG  1000
 
@@ -33,7 +34,7 @@ public:
 		{
 			static struct option long_opts[] =
 			{
-				{ "models-dir", required_argument, 0, 'd' },
+				{ "dir", required_argument, 0, 'd' },
 				{ "verbose", no_argument, &cfg->verbose, 1 },
 				{ "help", no_argument, 0, HELP_ARG },
 				{ 0, 0, 0, 0 }
@@ -56,7 +57,15 @@ public:
 					break;
 				case '?':
 				case HELP_ARG:
-					printf("Print this stuff when the -?|--help arg shows up\n");
+					printf("Usage: %s [-d|--dir <MODELS DIR>] [-v|--verbose] [-h|--help]\n", argv[0]);
+					printf("\n");
+					printf("Options\n");
+					printf("  -d, --dir  <MODELS_DIR>   The directory of .obj and .mtl model files to load\n");
+					printf("  -v, --verbose             Print more messages\n");
+					printf("  -h, --help                Print this help message and exit\n");
+					printf("\n");
+					printf("Report bugs to <rory.rudolph@gatech.edu>\n");
+					exit(0);
 					break;
 				default: // Unknown argument, ignore
 					break;
