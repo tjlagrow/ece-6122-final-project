@@ -9,7 +9,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include <unordered_map>
-
+#include "objects/Mesh.h"
 
 #define MESH_MAX_INDICES         1000000
 #define MESH_MAX_BUFFER_BYTES    1000000
@@ -27,6 +27,8 @@ public:
 	Renderer(Shader *shader);
 	~Renderer();
 
+	void calculateMeshStuff(const Object *object, std::vector<Vertex> &gpuVertices,std::vector<GLuint> &gpuIndices, std::vector<Mesh> mesh,
+							std::vector<Material> materials);
 	void submit(const Object *object);
 	void flush(const glm::vec3 &eyePosition);
 
