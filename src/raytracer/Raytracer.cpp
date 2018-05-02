@@ -144,14 +144,16 @@ Vector3f trace(
  * returned, else we return the background color.
  * @param spheres TODO Document
  */
-void Raytracer::render(const std::vector<Sphere> &spheres)
+void Raytracer::render(
+	const std::vector<Sphere> &spheres,
+	unsigned int width,
+	unsigned int height,
+	float fov)
 {
-	//unsigned width = 3840, height = 2160; /* 16:9 aspect ratio, 4K image */
-	unsigned width = 3240, height = 1080; /* 3:1 aspect ratio */
 	Vector3f *image = new Vector3f[width * height], *pixel = image;
 	float invertedWidth = 1 / float(width), invertedHeight = 1 / float(height);
-	float fov = 30, aspectRatio = width / float(height);
 	float angle = tan(M_PI * 0.5 * fov / 180.);
+	float aspectRatio = width / (float) height;
 
 	for (unsigned y = 0; y < height; ++y) {
 		for (unsigned x = 0; x < width; ++x, ++pixel) {

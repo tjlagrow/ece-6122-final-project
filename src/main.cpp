@@ -22,6 +22,7 @@
 #define WINDOW_HEIGHT   600
 #define WINDOW_TITLE    "ECE6122 Final Project"
 
+static float fov = 45.0f; // Filed of View in degrees
 static float camx = -8.0f; // Camera location x
 static float camy = 04.0f; // Camera location y, this is the height
 static float camz = 26.0f; // Camera location z
@@ -46,7 +47,7 @@ struct objMetadata
 
 static std::vector<struct objMetadata> objmeta =
 {
-	{ ShapeType::Sphere,   glm::vec3(-7.0f, +30.0f, +0.0f), 4.0f, 0.6f, 0.9f, "../models/ball_simple.obj" },
+	{ ShapeType::Sphere,   glm::vec3(-7.0f, +30.0f, +0.0f), 5.0f, 0.6f, 0.9f, "../models/ball_simple.obj" },
 	{ ShapeType::Custom,   glm::vec3(-8.0f, +00.0f, +0.0f), 99.f, 0.6f, 0.9f, "../models/ramp.obj" },
 	{ ShapeType::Box,      glm::vec3(+6.0f, +02.0f, -1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
 	{ ShapeType::Box,      glm::vec3(+6.0f, +04.0f, -1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
@@ -93,9 +94,17 @@ void updateCameraPosition(float &x, float &z, float &a)
 int main(int argc, char **argv)
 {
 	// Parse program arguments and store in ProgramConfig
-	// TODO Use ProgramConfig::modelsDir to get all object files automatically
 	ProgramConfig cfg;
 	ArgParser::parse_args(argc, argv, &cfg);
+
+	if (cfg.verbose)
+	{
+		int pad = -15;
+		printf("%*s: %s", pad, "Output file", cfg.output_filename);
+		printf("%*s: %s", pad, "Raytrace", cfg.raytrace ? "yes" : "no");
+		printf("%*s: %u", pad, "Threads", cfg.num_threads);
+		printf("%*s: %s", pad, "Verbose", cfg.verbose ? "yes" : "no");
+	}
 
 	Window window(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -168,7 +177,7 @@ int main(int argc, char **argv)
 
 	// Set up the Projection matrix
 	glm::mat4 pMatrix = glm::perspective(
-		glm::radians(45.0f), // Field of view (zoom-in, zoom-out)
+		glm::radians(fov), // Field of view (zoom-in, zoom-out)
 		(float) WINDOW_WIDTH / (float) WINDOW_HEIGHT, // Aspect ratio
 		0.1f, // Near field cutoff
 		1000.f // Far field cutoff
@@ -181,7 +190,7 @@ int main(int argc, char **argv)
 		glm::vec3(0.0f, 1.0f, 0.0f)  // Y-axis is Up
 	);
 
-	// Frames per second stuff
+	// Frames per second statistics
 	size_t frames = 0;
 	char frm_str[32] = "frames: 0";
 	char sec_str[32] = "secs:   0.000";
@@ -207,6 +216,8 @@ int main(int argc, char **argv)
 	shader1.setUniformMat4("vvmat", vMatrix); // Vertexshader-View-MATrix
 	shader1.disable();
 
+	// Main loop, do everything here (render objects, update their positions,
+	// collision detection, raytracing, performance statistics, etc.)
 	while (! window.should_close())
 	{
 		// Clear the window's "back buffer" so
@@ -214,7 +225,7 @@ int main(int argc, char **argv)
 		window.clear();
 
 		// If time has elapsed, get the diagnostic text to
-		// overlay on the screen
+		// overlay on the screen, but don't print it out here yet
 		if ((tnow = window.get_time()) > tnext)
 		{
 			memset(frm_str, 0, sizeof(frm_str));
@@ -230,7 +241,7 @@ int main(int argc, char **argv)
 		std::vector<glm::vec3> positions;
 		engine.getMotionStates(positions);
 
-		// TODO Get transforms and update ALL the objects
+		// Get transforms and update all the objects
 		for (unsigned int i = 0; i < objects.size(); ++i)
 		{
 			glm::mat4 updateTransform;
@@ -246,7 +257,6 @@ int main(int argc, char **argv)
 		shader1.enable();
 		vMatrix = glm::lookAt(
 			glm::vec3(camx, camy, camz), // Camera position
-//			glm::vec3(0.0f, 0.0f, 0.0f), // Where do you look
 			objects[0]->getWorldOrigin(), // Look at the ball
 			glm::vec3(0.0f, 1.0f, 0.0f)  // Y-axis is Up
 		);
@@ -257,7 +267,7 @@ int main(int argc, char **argv)
 		stageLayer.render(glm::vec3(camx, camy, camz));
 		modelLayer.render(glm::vec3(camx, camy, camz));
 
-//		Raytracer::render(/* TODO Figure out what needs to be passed in */);
+//		Raytracer::render({}, window.get_width(), window.get_height(), fov);
 
 		// Draw text last so it is on top of the other layers
 		tw.begin();

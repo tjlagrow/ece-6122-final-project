@@ -34,33 +34,32 @@ public:
 		{
 			static struct option long_opts[] =
 			{
-				{ "dir", required_argument, 0, 'd' },
-				{ "verbose", no_argument, &cfg->verbose, 1 },
+				{ "raytrace", no_argument, &cfg->raytrace, 'r' },
+				{ "threads", required_argument, 0, 't' },
+				{ "verbose", no_argument, &cfg->verbose, 'v' },
 				{ "help", no_argument, 0, HELP_ARG },
 				{ 0, 0, 0, 0 }
 			};
 
 			int i = 0;
 
-			c = getopt_long(argc, argv, "d:hv", long_opts, &i);
+			c = getopt_long(argc, argv, "rt:v?", long_opts, &i);
 
 			if (c == -1)
 				break;
 
 			switch (c)
 			{
-				case 'd': // Models directory
-					strncpy(cfg->models_dir, optarg, sizeof(cfg->models_dir)-1);
-					break;
-				case 'v': // Verbose flag
-					cfg->verbose = 1;
+				case 't': // Number of threads to use
+					cfg->num_threads = strtod(optarg, NULL);
 					break;
 				case '?':
 				case HELP_ARG:
-					printf("Usage: %s [-d|--dir <MODELS DIR>] [-v|--verbose] [-h|--help]\n", argv[0]);
+					printf("Usage: %s [OPTIONS...]\n", argv[0]);
 					printf("\n");
 					printf("Options\n");
-					printf("  -d, --dir  <MODELS_DIR>   The directory of .obj and .mtl model files to load\n");
+					printf("  -r, --raytrace            Enable raytracing\n");
+					printf("  -t, --threads <NUM>       Number of threads to use\n");
 					printf("  -v, --verbose             Print more messages\n");
 					printf("  -h, --help                Print this help message and exit\n");
 					printf("\n");

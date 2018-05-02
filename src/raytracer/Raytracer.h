@@ -9,7 +9,12 @@
 class Raytracer
 {
 public:
-	static void render(const std::vector<Sphere> &spheres);
+	static void render(
+		const std::vector<Sphere> &spheres,
+		unsigned int width = 3240, // 3840x2160 for 16:9
+		unsigned int height = 1080, // 3840x2160 for 16:9
+		float fov = 30
+	);
 
 private:
 
