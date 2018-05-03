@@ -1,0 +1,78 @@
+\hypertarget{class_raytracer}{}\section{Raytracer Class Reference}
+\label{class_raytracer}\index{Raytracer@{Raytracer}}
+
+
+{\ttfamily \#include $<$Raytracer.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_raytracer_a6be8b2ac76c00c1a59f507ebb51a94f9}{Raytracer} (unsigned int width, unsigned int height, float fov)
+\item 
+\hyperlink{class_raytracer_a610ba0d74edf864c8ed78c5d85c4480a}{$\sim$\+Raytracer} ()
+\item 
+void \hyperlink{class_raytracer_a881ef245d223dd1c9654b6f41c3e0a10}{render} (const std\+::vector$<$ \hyperlink{class_object}{Object} $\ast$$>$ \&objects)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 10 of file Raytracer.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_raytracer_a6be8b2ac76c00c1a59f507ebb51a94f9}\label{class_raytracer_a6be8b2ac76c00c1a59f507ebb51a94f9}} 
+\index{Raytracer@{Raytracer}!Raytracer@{Raytracer}}
+\index{Raytracer@{Raytracer}!Raytracer@{Raytracer}}
+\subsubsection{\texorpdfstring{Raytracer()}{Raytracer()}}
+{\footnotesize\ttfamily Raytracer\+::\+Raytracer (\begin{DoxyParamCaption}\item[{unsigned int}]{width,  }\item[{unsigned int}]{height,  }\item[{float}]{fov }\end{DoxyParamCaption})}
+
+Constructor 
+\begin{DoxyParams}{Parameters}
+{\em width} & T\+O\+DO Document \\
+\hline
+{\em height} & T\+O\+DO Document \\
+\hline
+{\em fov} & T\+O\+DO Document \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 157 of file Raytracer.\+cpp.
+
+\mbox{\Hypertarget{class_raytracer_a610ba0d74edf864c8ed78c5d85c4480a}\label{class_raytracer_a610ba0d74edf864c8ed78c5d85c4480a}} 
+\index{Raytracer@{Raytracer}!````~Raytracer@{$\sim$\+Raytracer}}
+\index{````~Raytracer@{$\sim$\+Raytracer}!Raytracer@{Raytracer}}
+\subsubsection{\texorpdfstring{$\sim$\+Raytracer()}{~Raytracer()}}
+{\footnotesize\ttfamily Raytracer\+::$\sim$\+Raytracer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Destructor 
+
+Definition at line 173 of file Raytracer.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_raytracer_a881ef245d223dd1c9654b6f41c3e0a10}\label{class_raytracer_a881ef245d223dd1c9654b6f41c3e0a10}} 
+\index{Raytracer@{Raytracer}!render@{render}}
+\index{render@{render}!Raytracer@{Raytracer}}
+\subsubsection{\texorpdfstring{render()}{render()}}
+{\footnotesize\ttfamily void Raytracer\+::render (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \hyperlink{class_object}{Object} $\ast$$>$ \&}]{objects }\end{DoxyParamCaption})}
+
+This is the rendering function. A camera ray for each pixel of the image is computed and then traced and finally returned with a color. If the ray hits a sphere, the color of the sphere at the intersection point is returned, else we return the background color. 
+\begin{DoxyParams}{Parameters}
+{\em spheres} & T\+O\+DO Document \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 185 of file Raytracer.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/raytracer/\hyperlink{_raytracer_8h}{Raytracer.\+h}\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/raytracer/\hyperlink{_raytracer_8cpp}{Raytracer.\+cpp}\end{DoxyCompactItemize}

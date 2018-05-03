@@ -36,8 +36,8 @@ void ObjectLoader::loadFromFile(const char *filepath, Object *object)
 	std::ifstream f(filepath);
 	if (! f.good())
 	{
-		std::cout << "ERROR: Unable to open the file: " << filepath << std::endl;
-		return;
+		std::cout << "ERROR: Unable to open the object file: " << filepath << std::endl;
+		throw std::runtime_error("Unable to open the object file. Do you have the correct relative directory?");
 	}
 	f.close();
 

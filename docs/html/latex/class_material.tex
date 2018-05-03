@@ -1,0 +1,368 @@
+\hypertarget{class_material}{}\section{Material Class Reference}
+\label{class_material}\index{Material@{Material}}
+
+
+{\ttfamily \#include $<$Material.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_material_a137e987401b63eb7c6c27c3e38bc74b5}{Material} ()
+\item 
+void \hyperlink{class_material_a8d3228e94c92ffffc1c5a9504ee5fd90}{set\+Name} (std\+::string name)
+\item 
+void \hyperlink{class_material_ad166d6c2ae9bc2ae460f5912ef913914}{set\+Ambient} (glm\+::vec3 Ka)
+\item 
+void \hyperlink{class_material_a4cb374db09a8167ebf36ab17fd373fe3}{set\+Diffuse} (glm\+::vec3 Kd)
+\item 
+void \hyperlink{class_material_af55a5fefcf54ddac103e254298381c42}{set\+Specular} (glm\+::vec3 Ks)
+\item 
+void \hyperlink{class_material_a82a92812bac1ee728bd11816cb3217f5}{set\+Emission} (glm\+::vec3 Ke)
+\item 
+void \hyperlink{class_material_a329d0ae8403956a71b1d45b3284f7dd7}{set\+Shininess} (float shininess)
+\item 
+void \hyperlink{class_material_aa7eeda191689ff20ec61750440c39427}{set\+Refraction} (float Ni)
+\item 
+void \hyperlink{class_material_a76c5ad9250191eed374fb6d896efd0bb}{set\+Specular\+Exponent} (float Ns)
+\item 
+void \hyperlink{class_material_a5974bc8810af827031f0697d21418c3a}{set\+Dissolve\+Factor} (float d)
+\item 
+void \hyperlink{class_material_ae5fc41aae479cbae2b85c9f581759767}{set\+Illumination} (unsigned int illum)
+\item 
+void \hyperlink{class_material_a6b219cb34ef48da8feb6c03459a5c30d}{set\+Shading\+Model} (int model)
+\item 
+void \hyperlink{class_material_a3e20f3c7602300c54b2e8b5ee1c73c42}{set\+Blend\+Func} (int blend\+Func)
+\item 
+void \hyperlink{class_material_ab7326632dff9200c9e4e2c9aa98fed60}{set\+Wireframe} (int enable)
+\item 
+const std\+::string \& \hyperlink{class_material_ab51bcfb064df3fa0ec1a5062e873fe49}{get\+Name} () const
+\item 
+const glm\+::vec3 \& \hyperlink{class_material_a61bafc60f2755cc546f3a6dc5736a6ae}{get\+Ambient} () const
+\item 
+const glm\+::vec3 \& \hyperlink{class_material_a6d7a33e9240d886dd6e62782e380f05e}{get\+Diffuse} () const
+\item 
+const glm\+::vec3 \& \hyperlink{class_material_a1781994da525d08bfb6d48187274d0a6}{get\+Specular} () const
+\item 
+const glm\+::vec3 \& \hyperlink{class_material_a3c58519af3fdbf5bc3f5a6e1712d8fc6}{get\+Emission} () const
+\item 
+const float \& \hyperlink{class_material_ae33424535bcfceb95632e09492d33972}{get\+Shininess} () const
+\item 
+const float \& \hyperlink{class_material_a3c90133f63f8ac1ba05359461234b6a7}{get\+Refraction} () const
+\item 
+const float \& \hyperlink{class_material_a4087dd55f6d034d3011dafeeeed1ad2d}{get\+Specular\+Exponent} () const
+\item 
+const float \& \hyperlink{class_material_ae615c797e56c8ad228888e8f21fd8223}{get\+Dissolve\+Factor} () const
+\item 
+const unsigned int \& \hyperlink{class_material_a30f8ed7054d7f09c42642b28e96a6635}{get\+Illumination} () const
+\item 
+const int \& \hyperlink{class_material_a50ad1d1911490e2458f841b4e8195823}{get\+Shading\+Model} () const
+\item 
+const int \& \hyperlink{class_material_ac8bb3627639e5454d58e9a9553ed1654}{get\+Blend\+Func} () const
+\item 
+const int \& \hyperlink{class_material_ad1be512566174cd3b091a6e3479a2440}{get\+Wireframe} () const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+What do each of the material properties mean? Ka\+: Ambient T\+O\+DO briefly explain Kd\+: Diffuse T\+O\+DO briefly explain Ks\+: Specular T\+O\+DO briefly explain Ke\+: T\+O\+DO briefly explain shininess\+: T\+O\+DO briefly explain Ni\+: T\+O\+DO briefly explain Ns\+: T\+O\+DO briefly explain d\+: T\+O\+DO briefly explain illum\+: 0. \hyperlink{struct_color}{Color} on and Ambient off
+\begin{DoxyEnumerate}
+\item \hyperlink{struct_color}{Color} on and Ambient on
+\item Highlight on
+\item Reflection on and Ray trace on
+\item Transparency\+: Glass on, Reflection\+: Ray trace on
+\item Reflection\+: Fresnel on and Ray trace on
+\item Transparency\+: Refraction on, Reflection\+: Fresnel off and Ray trace on
+\item Transparency\+: Refraction on, Reflection\+: Fresnel on and Ray trace on
+\item Reflection on and Ray trace off
+\item Transparency\+: Glass on, Reflection\+: Ray trace off
+\item Casts shadows onto invisible surfaces
+\end{DoxyEnumerate}
+
+The color includes an ambient constant term, and a diffuse and specular shading term for each light source. The formula is\+: color = Ka\+Ia + Kd \{ S\+UM j=1..ls, (N$\ast$\+Lj)Ij \} + Ks \{ S\+UM j=1..ls, ((H$\ast$\+Hj)$^\wedge$\+Ns)Ij \}
+
+Term definitions are\+: Ia ambient light, Ij light j\textquotesingle{}s intensity, Ka ambient reflectance, Kd diffuse reflectance, Ks specular reflectance, H unit vector bisector between L and V, L unit light vector, N unit surface normal, V unit view vector 
+
+Definition at line 45 of file Material.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_material_a137e987401b63eb7c6c27c3e38bc74b5}\label{class_material_a137e987401b63eb7c6c27c3e38bc74b5}} 
+\index{Material@{Material}!Material@{Material}}
+\index{Material@{Material}!Material@{Material}}
+\subsubsection{\texorpdfstring{Material()}{Material()}}
+{\footnotesize\ttfamily Material\+::\+Material (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructor 
+
+Definition at line 6 of file Material.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_material_a61bafc60f2755cc546f3a6dc5736a6ae}\label{class_material_a61bafc60f2755cc546f3a6dc5736a6ae}} 
+\index{Material@{Material}!get\+Ambient@{get\+Ambient}}
+\index{get\+Ambient@{get\+Ambient}!Material@{Material}}
+\subsubsection{\texorpdfstring{get\+Ambient()}{getAmbient()}}
+{\footnotesize\ttfamily const glm\+::vec3\& Material\+::get\+Ambient (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 65 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_ac8bb3627639e5454d58e9a9553ed1654}\label{class_material_ac8bb3627639e5454d58e9a9553ed1654}} 
+\index{Material@{Material}!get\+Blend\+Func@{get\+Blend\+Func}}
+\index{get\+Blend\+Func@{get\+Blend\+Func}!Material@{Material}}
+\subsubsection{\texorpdfstring{get\+Blend\+Func()}{getBlendFunc()}}
+{\footnotesize\ttfamily const int\& Material\+::get\+Blend\+Func (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 75 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_a6d7a33e9240d886dd6e62782e380f05e}\label{class_material_a6d7a33e9240d886dd6e62782e380f05e}} 
+\index{Material@{Material}!get\+Diffuse@{get\+Diffuse}}
+\index{get\+Diffuse@{get\+Diffuse}!Material@{Material}}
+\subsubsection{\texorpdfstring{get\+Diffuse()}{getDiffuse()}}
+{\footnotesize\ttfamily const glm\+::vec3\& Material\+::get\+Diffuse (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 66 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_ae615c797e56c8ad228888e8f21fd8223}\label{class_material_ae615c797e56c8ad228888e8f21fd8223}} 
+\index{Material@{Material}!get\+Dissolve\+Factor@{get\+Dissolve\+Factor}}
+\index{get\+Dissolve\+Factor@{get\+Dissolve\+Factor}!Material@{Material}}
+\subsubsection{\texorpdfstring{get\+Dissolve\+Factor()}{getDissolveFactor()}}
+{\footnotesize\ttfamily const float\& Material\+::get\+Dissolve\+Factor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 72 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_a3c58519af3fdbf5bc3f5a6e1712d8fc6}\label{class_material_a3c58519af3fdbf5bc3f5a6e1712d8fc6}} 
+\index{Material@{Material}!get\+Emission@{get\+Emission}}
+\index{get\+Emission@{get\+Emission}!Material@{Material}}
+\subsubsection{\texorpdfstring{get\+Emission()}{getEmission()}}
+{\footnotesize\ttfamily const glm\+::vec3\& Material\+::get\+Emission (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 68 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_a30f8ed7054d7f09c42642b28e96a6635}\label{class_material_a30f8ed7054d7f09c42642b28e96a6635}} 
+\index{Material@{Material}!get\+Illumination@{get\+Illumination}}
+\index{get\+Illumination@{get\+Illumination}!Material@{Material}}
+\subsubsection{\texorpdfstring{get\+Illumination()}{getIllumination()}}
+{\footnotesize\ttfamily const unsigned int\& Material\+::get\+Illumination (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 73 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_ab51bcfb064df3fa0ec1a5062e873fe49}\label{class_material_ab51bcfb064df3fa0ec1a5062e873fe49}} 
+\index{Material@{Material}!get\+Name@{get\+Name}}
+\index{get\+Name@{get\+Name}!Material@{Material}}
+\subsubsection{\texorpdfstring{get\+Name()}{getName()}}
+{\footnotesize\ttfamily const std\+::string\& Material\+::get\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 64 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_a3c90133f63f8ac1ba05359461234b6a7}\label{class_material_a3c90133f63f8ac1ba05359461234b6a7}} 
+\index{Material@{Material}!get\+Refraction@{get\+Refraction}}
+\index{get\+Refraction@{get\+Refraction}!Material@{Material}}
+\subsubsection{\texorpdfstring{get\+Refraction()}{getRefraction()}}
+{\footnotesize\ttfamily const float\& Material\+::get\+Refraction (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 70 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_a50ad1d1911490e2458f841b4e8195823}\label{class_material_a50ad1d1911490e2458f841b4e8195823}} 
+\index{Material@{Material}!get\+Shading\+Model@{get\+Shading\+Model}}
+\index{get\+Shading\+Model@{get\+Shading\+Model}!Material@{Material}}
+\subsubsection{\texorpdfstring{get\+Shading\+Model()}{getShadingModel()}}
+{\footnotesize\ttfamily const int\& Material\+::get\+Shading\+Model (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 74 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_ae33424535bcfceb95632e09492d33972}\label{class_material_ae33424535bcfceb95632e09492d33972}} 
+\index{Material@{Material}!get\+Shininess@{get\+Shininess}}
+\index{get\+Shininess@{get\+Shininess}!Material@{Material}}
+\subsubsection{\texorpdfstring{get\+Shininess()}{getShininess()}}
+{\footnotesize\ttfamily const float\& Material\+::get\+Shininess (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 69 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_a1781994da525d08bfb6d48187274d0a6}\label{class_material_a1781994da525d08bfb6d48187274d0a6}} 
+\index{Material@{Material}!get\+Specular@{get\+Specular}}
+\index{get\+Specular@{get\+Specular}!Material@{Material}}
+\subsubsection{\texorpdfstring{get\+Specular()}{getSpecular()}}
+{\footnotesize\ttfamily const glm\+::vec3\& Material\+::get\+Specular (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 67 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_a4087dd55f6d034d3011dafeeeed1ad2d}\label{class_material_a4087dd55f6d034d3011dafeeeed1ad2d}} 
+\index{Material@{Material}!get\+Specular\+Exponent@{get\+Specular\+Exponent}}
+\index{get\+Specular\+Exponent@{get\+Specular\+Exponent}!Material@{Material}}
+\subsubsection{\texorpdfstring{get\+Specular\+Exponent()}{getSpecularExponent()}}
+{\footnotesize\ttfamily const float\& Material\+::get\+Specular\+Exponent (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 71 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_ad1be512566174cd3b091a6e3479a2440}\label{class_material_ad1be512566174cd3b091a6e3479a2440}} 
+\index{Material@{Material}!get\+Wireframe@{get\+Wireframe}}
+\index{get\+Wireframe@{get\+Wireframe}!Material@{Material}}
+\subsubsection{\texorpdfstring{get\+Wireframe()}{getWireframe()}}
+{\footnotesize\ttfamily const int\& Material\+::get\+Wireframe (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 76 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_ad166d6c2ae9bc2ae460f5912ef913914}\label{class_material_ad166d6c2ae9bc2ae460f5912ef913914}} 
+\index{Material@{Material}!set\+Ambient@{set\+Ambient}}
+\index{set\+Ambient@{set\+Ambient}!Material@{Material}}
+\subsubsection{\texorpdfstring{set\+Ambient()}{setAmbient()}}
+{\footnotesize\ttfamily void Material\+::set\+Ambient (\begin{DoxyParamCaption}\item[{glm\+::vec3}]{Ka }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 51 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_a3e20f3c7602300c54b2e8b5ee1c73c42}\label{class_material_a3e20f3c7602300c54b2e8b5ee1c73c42}} 
+\index{Material@{Material}!set\+Blend\+Func@{set\+Blend\+Func}}
+\index{set\+Blend\+Func@{set\+Blend\+Func}!Material@{Material}}
+\subsubsection{\texorpdfstring{set\+Blend\+Func()}{setBlendFunc()}}
+{\footnotesize\ttfamily void Material\+::set\+Blend\+Func (\begin{DoxyParamCaption}\item[{int}]{blend\+Func }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 61 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_a4cb374db09a8167ebf36ab17fd373fe3}\label{class_material_a4cb374db09a8167ebf36ab17fd373fe3}} 
+\index{Material@{Material}!set\+Diffuse@{set\+Diffuse}}
+\index{set\+Diffuse@{set\+Diffuse}!Material@{Material}}
+\subsubsection{\texorpdfstring{set\+Diffuse()}{setDiffuse()}}
+{\footnotesize\ttfamily void Material\+::set\+Diffuse (\begin{DoxyParamCaption}\item[{glm\+::vec3}]{Kd }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 52 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_a5974bc8810af827031f0697d21418c3a}\label{class_material_a5974bc8810af827031f0697d21418c3a}} 
+\index{Material@{Material}!set\+Dissolve\+Factor@{set\+Dissolve\+Factor}}
+\index{set\+Dissolve\+Factor@{set\+Dissolve\+Factor}!Material@{Material}}
+\subsubsection{\texorpdfstring{set\+Dissolve\+Factor()}{setDissolveFactor()}}
+{\footnotesize\ttfamily void Material\+::set\+Dissolve\+Factor (\begin{DoxyParamCaption}\item[{float}]{d }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 58 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_a82a92812bac1ee728bd11816cb3217f5}\label{class_material_a82a92812bac1ee728bd11816cb3217f5}} 
+\index{Material@{Material}!set\+Emission@{set\+Emission}}
+\index{set\+Emission@{set\+Emission}!Material@{Material}}
+\subsubsection{\texorpdfstring{set\+Emission()}{setEmission()}}
+{\footnotesize\ttfamily void Material\+::set\+Emission (\begin{DoxyParamCaption}\item[{glm\+::vec3}]{Ke }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 54 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_ae5fc41aae479cbae2b85c9f581759767}\label{class_material_ae5fc41aae479cbae2b85c9f581759767}} 
+\index{Material@{Material}!set\+Illumination@{set\+Illumination}}
+\index{set\+Illumination@{set\+Illumination}!Material@{Material}}
+\subsubsection{\texorpdfstring{set\+Illumination()}{setIllumination()}}
+{\footnotesize\ttfamily void Material\+::set\+Illumination (\begin{DoxyParamCaption}\item[{unsigned int}]{illum }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 59 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_a8d3228e94c92ffffc1c5a9504ee5fd90}\label{class_material_a8d3228e94c92ffffc1c5a9504ee5fd90}} 
+\index{Material@{Material}!set\+Name@{set\+Name}}
+\index{set\+Name@{set\+Name}!Material@{Material}}
+\subsubsection{\texorpdfstring{set\+Name()}{setName()}}
+{\footnotesize\ttfamily void Material\+::set\+Name (\begin{DoxyParamCaption}\item[{std\+::string}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 50 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_aa7eeda191689ff20ec61750440c39427}\label{class_material_aa7eeda191689ff20ec61750440c39427}} 
+\index{Material@{Material}!set\+Refraction@{set\+Refraction}}
+\index{set\+Refraction@{set\+Refraction}!Material@{Material}}
+\subsubsection{\texorpdfstring{set\+Refraction()}{setRefraction()}}
+{\footnotesize\ttfamily void Material\+::set\+Refraction (\begin{DoxyParamCaption}\item[{float}]{Ni }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 56 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_a6b219cb34ef48da8feb6c03459a5c30d}\label{class_material_a6b219cb34ef48da8feb6c03459a5c30d}} 
+\index{Material@{Material}!set\+Shading\+Model@{set\+Shading\+Model}}
+\index{set\+Shading\+Model@{set\+Shading\+Model}!Material@{Material}}
+\subsubsection{\texorpdfstring{set\+Shading\+Model()}{setShadingModel()}}
+{\footnotesize\ttfamily void Material\+::set\+Shading\+Model (\begin{DoxyParamCaption}\item[{int}]{model }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 60 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_a329d0ae8403956a71b1d45b3284f7dd7}\label{class_material_a329d0ae8403956a71b1d45b3284f7dd7}} 
+\index{Material@{Material}!set\+Shininess@{set\+Shininess}}
+\index{set\+Shininess@{set\+Shininess}!Material@{Material}}
+\subsubsection{\texorpdfstring{set\+Shininess()}{setShininess()}}
+{\footnotesize\ttfamily void Material\+::set\+Shininess (\begin{DoxyParamCaption}\item[{float}]{shininess }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 55 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_af55a5fefcf54ddac103e254298381c42}\label{class_material_af55a5fefcf54ddac103e254298381c42}} 
+\index{Material@{Material}!set\+Specular@{set\+Specular}}
+\index{set\+Specular@{set\+Specular}!Material@{Material}}
+\subsubsection{\texorpdfstring{set\+Specular()}{setSpecular()}}
+{\footnotesize\ttfamily void Material\+::set\+Specular (\begin{DoxyParamCaption}\item[{glm\+::vec3}]{Ks }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 53 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_a76c5ad9250191eed374fb6d896efd0bb}\label{class_material_a76c5ad9250191eed374fb6d896efd0bb}} 
+\index{Material@{Material}!set\+Specular\+Exponent@{set\+Specular\+Exponent}}
+\index{set\+Specular\+Exponent@{set\+Specular\+Exponent}!Material@{Material}}
+\subsubsection{\texorpdfstring{set\+Specular\+Exponent()}{setSpecularExponent()}}
+{\footnotesize\ttfamily void Material\+::set\+Specular\+Exponent (\begin{DoxyParamCaption}\item[{float}]{Ns }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 57 of file Material.\+h.
+
+\mbox{\Hypertarget{class_material_ab7326632dff9200c9e4e2c9aa98fed60}\label{class_material_ab7326632dff9200c9e4e2c9aa98fed60}} 
+\index{Material@{Material}!set\+Wireframe@{set\+Wireframe}}
+\index{set\+Wireframe@{set\+Wireframe}!Material@{Material}}
+\subsubsection{\texorpdfstring{set\+Wireframe()}{setWireframe()}}
+{\footnotesize\ttfamily void Material\+::set\+Wireframe (\begin{DoxyParamCaption}\item[{int}]{enable }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 62 of file Material.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/objects/\hyperlink{_material_8h}{Material.\+h}\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/objects/\hyperlink{_material_8cpp}{Material.\+cpp}\end{DoxyCompactItemize}

@@ -1,0 +1,165 @@
+\hypertarget{class_mesh}{}\section{Mesh Class Reference}
+\label{class_mesh}\index{Mesh@{Mesh}}
+
+
+{\ttfamily \#include $<$Mesh.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_mesh_a2af137f1571af89172b9c102302c416b}{Mesh} ()
+\item 
+\hyperlink{class_mesh_a5efe4da1a4c0971cfb037bd70304c303}{$\sim$\+Mesh} ()
+\item 
+void \hyperlink{class_mesh_a2ee41f5ae475f12dfaf34a265bff32f9}{add\+Face} (\hyperlink{struct_face}{Face} face)
+\item 
+void \hyperlink{class_mesh_ac4ec839622d374b31839b143464a2896}{add\+Face} (unsigned int px, unsigned int py, unsigned int pz, unsigned int tx, unsigned int ty, unsigned int tz, unsigned int nx, unsigned int ny, unsigned int nz)
+\item 
+void \hyperlink{class_mesh_a9b777ec35644e1e96a6c70531b3cd329}{set\+Material\+Index} (G\+Luint material\+Index)
+\item 
+void \hyperlink{class_mesh_a252f28d8a9fa95ff952ae400cfa44486}{set\+Model\+Transform} (glm\+::mat4 model\+Transform)
+\item 
+const std\+::vector$<$ \hyperlink{struct_face}{Face} $>$ \& \hyperlink{class_mesh_ad356c83c10098f1d92e7e0ed4c7a32e6}{get\+Faces} () const
+\item 
+const G\+Luint \& \hyperlink{class_mesh_a230c556491bb5d905147159b6a367b9d}{get\+Material\+Index} () const
+\item 
+const glm\+::mat4 \& \hyperlink{class_mesh_a77e5abe38ca6e9f4b7949d84cb5735a0}{get\+Model\+Transform} () const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 13 of file Mesh.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_mesh_a2af137f1571af89172b9c102302c416b}\label{class_mesh_a2af137f1571af89172b9c102302c416b}} 
+\index{Mesh@{Mesh}!Mesh@{Mesh}}
+\index{Mesh@{Mesh}!Mesh@{Mesh}}
+\subsubsection{\texorpdfstring{Mesh()}{Mesh()}}
+{\footnotesize\ttfamily Mesh\+::\+Mesh (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructor 
+
+Definition at line 6 of file Mesh.\+cpp.
+
+\mbox{\Hypertarget{class_mesh_a5efe4da1a4c0971cfb037bd70304c303}\label{class_mesh_a5efe4da1a4c0971cfb037bd70304c303}} 
+\index{Mesh@{Mesh}!````~Mesh@{$\sim$\+Mesh}}
+\index{````~Mesh@{$\sim$\+Mesh}!Mesh@{Mesh}}
+\subsubsection{\texorpdfstring{$\sim$\+Mesh()}{~Mesh()}}
+{\footnotesize\ttfamily Mesh\+::$\sim$\+Mesh (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Destructor 
+
+Definition at line 13 of file Mesh.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_mesh_a2ee41f5ae475f12dfaf34a265bff32f9}\label{class_mesh_a2ee41f5ae475f12dfaf34a265bff32f9}} 
+\index{Mesh@{Mesh}!add\+Face@{add\+Face}}
+\index{add\+Face@{add\+Face}!Mesh@{Mesh}}
+\subsubsection{\texorpdfstring{add\+Face()}{addFace()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Mesh\+::add\+Face (\begin{DoxyParamCaption}\item[{\hyperlink{struct_face}{Face}}]{face }\end{DoxyParamCaption})}
+
+T\+O\+DO 
+\begin{DoxyParams}{Parameters}
+{\em face} & T\+O\+DO \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 21 of file Mesh.\+cpp.
+
+\mbox{\Hypertarget{class_mesh_ac4ec839622d374b31839b143464a2896}\label{class_mesh_ac4ec839622d374b31839b143464a2896}} 
+\index{Mesh@{Mesh}!add\+Face@{add\+Face}}
+\index{add\+Face@{add\+Face}!Mesh@{Mesh}}
+\subsubsection{\texorpdfstring{add\+Face()}{addFace()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Mesh\+::add\+Face (\begin{DoxyParamCaption}\item[{unsigned int}]{px,  }\item[{unsigned int}]{py,  }\item[{unsigned int}]{pz,  }\item[{unsigned int}]{tx,  }\item[{unsigned int}]{ty,  }\item[{unsigned int}]{tz,  }\item[{unsigned int}]{nx,  }\item[{unsigned int}]{ny,  }\item[{unsigned int}]{nz }\end{DoxyParamCaption})}
+
+T\+O\+DO 
+\begin{DoxyParams}{Parameters}
+{\em face} & T\+O\+DO \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 30 of file Mesh.\+cpp.
+
+\mbox{\Hypertarget{class_mesh_ad356c83c10098f1d92e7e0ed4c7a32e6}\label{class_mesh_ad356c83c10098f1d92e7e0ed4c7a32e6}} 
+\index{Mesh@{Mesh}!get\+Faces@{get\+Faces}}
+\index{get\+Faces@{get\+Faces}!Mesh@{Mesh}}
+\subsubsection{\texorpdfstring{get\+Faces()}{getFaces()}}
+{\footnotesize\ttfamily const std\+::vector$<$ \hyperlink{struct_face}{Face} $>$ \& Mesh\+::get\+Faces (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Get the indices vector \begin{DoxyReturn}{Returns}
+A vector of indices for this shape 
+\end{DoxyReturn}
+
+
+Definition at line 60 of file Mesh.\+cpp.
+
+\mbox{\Hypertarget{class_mesh_a230c556491bb5d905147159b6a367b9d}\label{class_mesh_a230c556491bb5d905147159b6a367b9d}} 
+\index{Mesh@{Mesh}!get\+Material\+Index@{get\+Material\+Index}}
+\index{get\+Material\+Index@{get\+Material\+Index}!Mesh@{Mesh}}
+\subsubsection{\texorpdfstring{get\+Material\+Index()}{getMaterialIndex()}}
+{\footnotesize\ttfamily const G\+Luint \& Mesh\+::get\+Material\+Index (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+T\+O\+DO \begin{DoxyReturn}{Returns}
+T\+O\+DO 
+\end{DoxyReturn}
+
+
+Definition at line 69 of file Mesh.\+cpp.
+
+\mbox{\Hypertarget{class_mesh_a77e5abe38ca6e9f4b7949d84cb5735a0}\label{class_mesh_a77e5abe38ca6e9f4b7949d84cb5735a0}} 
+\index{Mesh@{Mesh}!get\+Model\+Transform@{get\+Model\+Transform}}
+\index{get\+Model\+Transform@{get\+Model\+Transform}!Mesh@{Mesh}}
+\subsubsection{\texorpdfstring{get\+Model\+Transform()}{getModelTransform()}}
+{\footnotesize\ttfamily const glm\+::mat4 \& Mesh\+::get\+Model\+Transform (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Get the model transform matrix for the shape \begin{DoxyReturn}{Returns}
+The model transform matrix for this shape 
+\end{DoxyReturn}
+
+
+Definition at line 78 of file Mesh.\+cpp.
+
+\mbox{\Hypertarget{class_mesh_a9b777ec35644e1e96a6c70531b3cd329}\label{class_mesh_a9b777ec35644e1e96a6c70531b3cd329}} 
+\index{Mesh@{Mesh}!set\+Material\+Index@{set\+Material\+Index}}
+\index{set\+Material\+Index@{set\+Material\+Index}!Mesh@{Mesh}}
+\subsubsection{\texorpdfstring{set\+Material\+Index()}{setMaterialIndex()}}
+{\footnotesize\ttfamily void Mesh\+::set\+Material\+Index (\begin{DoxyParamCaption}\item[{G\+Luint}]{material\+Index }\end{DoxyParamCaption})}
+
+T\+O\+DO 
+\begin{DoxyParams}{Parameters}
+{\em material\+Index} & T\+O\+DO \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 42 of file Mesh.\+cpp.
+
+\mbox{\Hypertarget{class_mesh_a252f28d8a9fa95ff952ae400cfa44486}\label{class_mesh_a252f28d8a9fa95ff952ae400cfa44486}} 
+\index{Mesh@{Mesh}!set\+Model\+Transform@{set\+Model\+Transform}}
+\index{set\+Model\+Transform@{set\+Model\+Transform}!Mesh@{Mesh}}
+\subsubsection{\texorpdfstring{set\+Model\+Transform()}{setModelTransform()}}
+{\footnotesize\ttfamily void Mesh\+::set\+Model\+Transform (\begin{DoxyParamCaption}\item[{glm\+::mat4}]{model\+Transform }\end{DoxyParamCaption})}
+
+T\+O\+DO 
+\begin{DoxyParams}{Parameters}
+{\em model\+Transform} & T\+O\+DO \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 51 of file Mesh.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/objects/\hyperlink{_mesh_8h}{Mesh.\+h}\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/objects/\hyperlink{_mesh_8cpp}{Mesh.\+cpp}\end{DoxyCompactItemize}

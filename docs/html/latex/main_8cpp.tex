@@ -1,0 +1,169 @@
+\hypertarget{main_8cpp}{}\section{/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/main.cpp File Reference}
+\label{main_8cpp}\index{/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/main.\+cpp@{/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/main.\+cpp}}
+{\ttfamily \#include \char`\"{}Arg\+Parser.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Window.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Physics\+Engine.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Shader.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Text\+Writer.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Layer.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}utils/\+Glm\+Utils.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}raytracer/\+Raytracer.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Performance\+Data.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$glm/glm.\+hpp$>$}\newline
+{\ttfamily \#include $<$glm/gtc/matrix\+\_\+transform.\+hpp$>$}\newline
+{\ttfamily \#include $<$glm/gtx/transform.\+hpp$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+Include dependency graph for main.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structobj_metadata}{obj\+Metadata}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{main_8cpp_a3ca3e9eda52e6a7fc5790d61f9427647}{V\+E\+R\+T\+E\+X\+\_\+\+S\+H\+A\+D\+E\+R\+\_\+\+P\+A\+TH}~\char`\"{}../shaders/vertex.\+glsl\char`\"{}
+\item 
+\#define \hyperlink{main_8cpp_a21b357a3c758d8a1825fe0b84aca77b7}{F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+S\+H\+A\+D\+E\+R\+\_\+\+P\+A\+TH}~\char`\"{}../shaders/fragment.\+glsl\char`\"{}
+\item 
+\#define \hyperlink{main_8cpp_a498d9f026138406895e9a34b504ac6a6}{W\+I\+N\+D\+O\+W\+\_\+\+W\+I\+D\+TH}~800
+\item 
+\#define \hyperlink{main_8cpp_a5473cf64fa979b48335079c99532e243}{W\+I\+N\+D\+O\+W\+\_\+\+H\+E\+I\+G\+HT}~600
+\item 
+\#define \hyperlink{main_8cpp_a3adf7b7b13572f2baf3379a8f2f4220a}{W\+I\+N\+D\+O\+W\+\_\+\+T\+I\+T\+LE}~\char`\"{}E\+C\+E6122 Final Project\char`\"{}
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345}{Shape\+Type} \{ \newline
+\hyperlink{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345a3cfce651e667ab85486dd42a8185f98a}{Shape\+Type\+::\+Box}, 
+\hyperlink{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345ab7095f057db3fefa7325ad93a04e14fd}{Shape\+Type\+::\+Sphere}, 
+\hyperlink{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345a2ec2c2961c7ce5a114d969c1f562a563}{Shape\+Type\+::\+Cylinder}, 
+\hyperlink{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345acd2c8bc6e5f1ea17c918ccaf89660104}{Shape\+Type\+::\+Cone}, 
+\newline
+\hyperlink{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345a90589c47f06eb971d548591f23c285af}{Shape\+Type\+::\+Custom}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{main_8cpp_a21b357a3c758d8a1825fe0b84aca77b7}\label{main_8cpp_a21b357a3c758d8a1825fe0b84aca77b7}} 
+\index{main.\+cpp@{main.\+cpp}!F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+S\+H\+A\+D\+E\+R\+\_\+\+P\+A\+TH@{F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+S\+H\+A\+D\+E\+R\+\_\+\+P\+A\+TH}}
+\index{F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+S\+H\+A\+D\+E\+R\+\_\+\+P\+A\+TH@{F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+S\+H\+A\+D\+E\+R\+\_\+\+P\+A\+TH}!main.\+cpp@{main.\+cpp}}
+\subsubsection{\texorpdfstring{F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+S\+H\+A\+D\+E\+R\+\_\+\+P\+A\+TH}{FRAGMENT\_SHADER\_PATH}}
+{\footnotesize\ttfamily \#define F\+R\+A\+G\+M\+E\+N\+T\+\_\+\+S\+H\+A\+D\+E\+R\+\_\+\+P\+A\+TH~\char`\"{}../shaders/fragment.\+glsl\char`\"{}}
+
+
+
+Definition at line 20 of file main.\+cpp.
+
+\mbox{\Hypertarget{main_8cpp_a3ca3e9eda52e6a7fc5790d61f9427647}\label{main_8cpp_a3ca3e9eda52e6a7fc5790d61f9427647}} 
+\index{main.\+cpp@{main.\+cpp}!V\+E\+R\+T\+E\+X\+\_\+\+S\+H\+A\+D\+E\+R\+\_\+\+P\+A\+TH@{V\+E\+R\+T\+E\+X\+\_\+\+S\+H\+A\+D\+E\+R\+\_\+\+P\+A\+TH}}
+\index{V\+E\+R\+T\+E\+X\+\_\+\+S\+H\+A\+D\+E\+R\+\_\+\+P\+A\+TH@{V\+E\+R\+T\+E\+X\+\_\+\+S\+H\+A\+D\+E\+R\+\_\+\+P\+A\+TH}!main.\+cpp@{main.\+cpp}}
+\subsubsection{\texorpdfstring{V\+E\+R\+T\+E\+X\+\_\+\+S\+H\+A\+D\+E\+R\+\_\+\+P\+A\+TH}{VERTEX\_SHADER\_PATH}}
+{\footnotesize\ttfamily \#define V\+E\+R\+T\+E\+X\+\_\+\+S\+H\+A\+D\+E\+R\+\_\+\+P\+A\+TH~\char`\"{}../shaders/vertex.\+glsl\char`\"{}}
+
+
+
+Definition at line 19 of file main.\+cpp.
+
+\mbox{\Hypertarget{main_8cpp_a5473cf64fa979b48335079c99532e243}\label{main_8cpp_a5473cf64fa979b48335079c99532e243}} 
+\index{main.\+cpp@{main.\+cpp}!W\+I\+N\+D\+O\+W\+\_\+\+H\+E\+I\+G\+HT@{W\+I\+N\+D\+O\+W\+\_\+\+H\+E\+I\+G\+HT}}
+\index{W\+I\+N\+D\+O\+W\+\_\+\+H\+E\+I\+G\+HT@{W\+I\+N\+D\+O\+W\+\_\+\+H\+E\+I\+G\+HT}!main.\+cpp@{main.\+cpp}}
+\subsubsection{\texorpdfstring{W\+I\+N\+D\+O\+W\+\_\+\+H\+E\+I\+G\+HT}{WINDOW\_HEIGHT}}
+{\footnotesize\ttfamily \#define W\+I\+N\+D\+O\+W\+\_\+\+H\+E\+I\+G\+HT~600}
+
+
+
+Definition at line 23 of file main.\+cpp.
+
+\mbox{\Hypertarget{main_8cpp_a3adf7b7b13572f2baf3379a8f2f4220a}\label{main_8cpp_a3adf7b7b13572f2baf3379a8f2f4220a}} 
+\index{main.\+cpp@{main.\+cpp}!W\+I\+N\+D\+O\+W\+\_\+\+T\+I\+T\+LE@{W\+I\+N\+D\+O\+W\+\_\+\+T\+I\+T\+LE}}
+\index{W\+I\+N\+D\+O\+W\+\_\+\+T\+I\+T\+LE@{W\+I\+N\+D\+O\+W\+\_\+\+T\+I\+T\+LE}!main.\+cpp@{main.\+cpp}}
+\subsubsection{\texorpdfstring{W\+I\+N\+D\+O\+W\+\_\+\+T\+I\+T\+LE}{WINDOW\_TITLE}}
+{\footnotesize\ttfamily \#define W\+I\+N\+D\+O\+W\+\_\+\+T\+I\+T\+LE~\char`\"{}E\+C\+E6122 Final Project\char`\"{}}
+
+
+
+Definition at line 24 of file main.\+cpp.
+
+\mbox{\Hypertarget{main_8cpp_a498d9f026138406895e9a34b504ac6a6}\label{main_8cpp_a498d9f026138406895e9a34b504ac6a6}} 
+\index{main.\+cpp@{main.\+cpp}!W\+I\+N\+D\+O\+W\+\_\+\+W\+I\+D\+TH@{W\+I\+N\+D\+O\+W\+\_\+\+W\+I\+D\+TH}}
+\index{W\+I\+N\+D\+O\+W\+\_\+\+W\+I\+D\+TH@{W\+I\+N\+D\+O\+W\+\_\+\+W\+I\+D\+TH}!main.\+cpp@{main.\+cpp}}
+\subsubsection{\texorpdfstring{W\+I\+N\+D\+O\+W\+\_\+\+W\+I\+D\+TH}{WINDOW\_WIDTH}}
+{\footnotesize\ttfamily \#define W\+I\+N\+D\+O\+W\+\_\+\+W\+I\+D\+TH~800}
+
+
+
+Definition at line 22 of file main.\+cpp.
+
+
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345}\label{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345}} 
+\index{main.\+cpp@{main.\+cpp}!Shape\+Type@{Shape\+Type}}
+\index{Shape\+Type@{Shape\+Type}!main.\+cpp@{main.\+cpp}}
+\subsubsection{\texorpdfstring{Shape\+Type}{ShapeType}}
+{\footnotesize\ttfamily enum \hyperlink{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345}{Shape\+Type}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Box@{Box}!main.\+cpp@{main.\+cpp}}\index{main.\+cpp@{main.\+cpp}!Box@{Box}}}\mbox{\Hypertarget{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345a3cfce651e667ab85486dd42a8185f98a}\label{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345a3cfce651e667ab85486dd42a8185f98a}} 
+Box&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Sphere@{Sphere}!main.\+cpp@{main.\+cpp}}\index{main.\+cpp@{main.\+cpp}!Sphere@{Sphere}}}\mbox{\Hypertarget{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345ab7095f057db3fefa7325ad93a04e14fd}\label{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345ab7095f057db3fefa7325ad93a04e14fd}} 
+Sphere&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Cylinder@{Cylinder}!main.\+cpp@{main.\+cpp}}\index{main.\+cpp@{main.\+cpp}!Cylinder@{Cylinder}}}\mbox{\Hypertarget{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345a2ec2c2961c7ce5a114d969c1f562a563}\label{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345a2ec2c2961c7ce5a114d969c1f562a563}} 
+Cylinder&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Cone@{Cone}!main.\+cpp@{main.\+cpp}}\index{main.\+cpp@{main.\+cpp}!Cone@{Cone}}}\mbox{\Hypertarget{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345acd2c8bc6e5f1ea17c918ccaf89660104}\label{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345acd2c8bc6e5f1ea17c918ccaf89660104}} 
+Cone&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Custom@{Custom}!main.\+cpp@{main.\+cpp}}\index{main.\+cpp@{main.\+cpp}!Custom@{Custom}}}\mbox{\Hypertarget{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345a90589c47f06eb971d548591f23c285af}\label{main_8cpp_a5a4538eeab397888d88a4eefcc5a1345a90589c47f06eb971d548591f23c285af}} 
+Custom&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 31 of file main.\+cpp.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{main_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+\index{main.\+cpp@{main.\+cpp}!main@{main}}
+\index{main@{main}!main.\+cpp@{main.\+cpp}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+Main program entry point 
+\begin{DoxyParams}{Parameters}
+{\em argc} & Number of command-\/line arguments \\
+\hline
+{\em argv} & Command line arguments array \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns 0 on success, else error 
+\end{DoxyReturn}
+
+
+Definition at line 76 of file main.\+cpp.
+

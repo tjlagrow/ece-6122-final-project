@@ -1,0 +1,282 @@
+\hypertarget{class_shader}{}\section{Shader Class Reference}
+\label{class_shader}\index{Shader@{Shader}}
+
+
+{\ttfamily \#include $<$Shader.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_shader_ae2a0af7abf90c72ab25a394a24ea92f1}{Shader} (const char $\ast$vert\+\_\+path, const char $\ast$frag\+\_\+path)
+\item 
+\hyperlink{class_shader_aff01df87e8a102f270b5b135a295e59d}{$\sim$\+Shader} ()
+\item 
+void \hyperlink{class_shader_a048e3e3d86daff7b8f61432a866c529f}{enable} () const
+\item 
+void \hyperlink{class_shader_af962c95adc950bd28afbc81631ad3957}{disable} () const
+\item 
+G\+Luint \hyperlink{class_shader_a3e18d47a57e86322c1e76bf78f13ca17}{get\+\_\+id} () const
+\item 
+G\+Lint \hyperlink{class_shader_a6dda73168720b8d4871f9a2340c914d0}{get\+Attrib\+Location} (const char $\ast$name)
+\item 
+void \hyperlink{class_shader_aee904a5bc799d32e28a9007f82f7c8f3}{enable\+Vertex\+Attrib\+Array} (const G\+Lchar $\ast$name)
+\item 
+void \hyperlink{class_shader_a7f5da760f0edbd72487f8d7905cf4216}{disable\+Vertex\+Attrib\+Array} (const G\+Lchar $\ast$name)
+\item 
+void \hyperlink{class_shader_af496d61361a0bde57ccb34e2d5933c43}{set\+Uniform1f} (const G\+Lchar $\ast$name, const float val)
+\item 
+void \hyperlink{class_shader_a9e34828e84023305a0a9454b20ebae8e}{set\+Uniform1i} (const G\+Lchar $\ast$name, const int val)
+\item 
+void \hyperlink{class_shader_a80c178459f4ac07e83c53a95dc1c5ec8}{set\+Uniform2f} (const G\+Lchar $\ast$name, const glm\+::vec2 \&val)
+\item 
+void \hyperlink{class_shader_a3ea68dd9c68a88fcc2d7abe873c9ecf2}{set\+Uniform3f} (const G\+Lchar $\ast$name, const glm\+::vec3 \&val)
+\item 
+void \hyperlink{class_shader_a3ae217faa57e267bfd54fe91cd72b6ba}{set\+Uniform4f} (const G\+Lchar $\ast$name, const glm\+::vec4 \&val)
+\item 
+void \hyperlink{class_shader_a15647c94eb01764b51527eb00f85c9c3}{set\+Uniform4fv} (const G\+Lchar $\ast$name, G\+Lsizei count, const G\+Lfloat $\ast$val)
+\item 
+void \hyperlink{class_shader_a15a1246f61f63dd1d202bb59447dc191}{set\+Uniform\+Mat4} (const G\+Lchar $\ast$name, const glm\+::mat4 \&val)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 8 of file Shader.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_shader_ae2a0af7abf90c72ab25a394a24ea92f1}\label{class_shader_ae2a0af7abf90c72ab25a394a24ea92f1}} 
+\index{Shader@{Shader}!Shader@{Shader}}
+\index{Shader@{Shader}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{Shader()}{Shader()}}
+{\footnotesize\ttfamily Shader\+::\+Shader (\begin{DoxyParamCaption}\item[{const char $\ast$}]{vert\+\_\+path,  }\item[{const char $\ast$}]{frag\+\_\+path }\end{DoxyParamCaption})}
+
+Constructor 
+\begin{DoxyParams}{Parameters}
+{\em vert\+\_\+path} & File path to the vertex shader \\
+\hline
+{\em frag\+\_\+path} & File path to the fragment shader \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 13 of file Shader.\+cpp.
+
+\mbox{\Hypertarget{class_shader_aff01df87e8a102f270b5b135a295e59d}\label{class_shader_aff01df87e8a102f270b5b135a295e59d}} 
+\index{Shader@{Shader}!````~Shader@{$\sim$\+Shader}}
+\index{````~Shader@{$\sim$\+Shader}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{$\sim$\+Shader()}{~Shader()}}
+{\footnotesize\ttfamily Shader\+::$\sim$\+Shader (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Destructor 
+
+Definition at line 22 of file Shader.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_shader_af962c95adc950bd28afbc81631ad3957}\label{class_shader_af962c95adc950bd28afbc81631ad3957}} 
+\index{Shader@{Shader}!disable@{disable}}
+\index{disable@{disable}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{disable()}{disable()}}
+{\footnotesize\ttfamily void Shader\+::disable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Disables use of the shader program 
+
+Definition at line 38 of file Shader.\+cpp.
+
+\mbox{\Hypertarget{class_shader_a7f5da760f0edbd72487f8d7905cf4216}\label{class_shader_a7f5da760f0edbd72487f8d7905cf4216}} 
+\index{Shader@{Shader}!disable\+Vertex\+Attrib\+Array@{disable\+Vertex\+Attrib\+Array}}
+\index{disable\+Vertex\+Attrib\+Array@{disable\+Vertex\+Attrib\+Array}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{disable\+Vertex\+Attrib\+Array()}{disableVertexAttribArray()}}
+{\footnotesize\ttfamily void Shader\+::disable\+Vertex\+Attrib\+Array (\begin{DoxyParamCaption}\item[{const G\+Lchar $\ast$}]{name }\end{DoxyParamCaption})}
+
+Enables a vertex attrib array 
+\begin{DoxyParams}{Parameters}
+{\em name} & Points to a null terminated string containing the name of the attribute variable to enable \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 223 of file Shader.\+cpp.
+
+\mbox{\Hypertarget{class_shader_a048e3e3d86daff7b8f61432a866c529f}\label{class_shader_a048e3e3d86daff7b8f61432a866c529f}} 
+\index{Shader@{Shader}!enable@{enable}}
+\index{enable@{enable}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{enable()}{enable()}}
+{\footnotesize\ttfamily void Shader\+::enable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Enables use of the shader program 
+
+Definition at line 30 of file Shader.\+cpp.
+
+\mbox{\Hypertarget{class_shader_aee904a5bc799d32e28a9007f82f7c8f3}\label{class_shader_aee904a5bc799d32e28a9007f82f7c8f3}} 
+\index{Shader@{Shader}!enable\+Vertex\+Attrib\+Array@{enable\+Vertex\+Attrib\+Array}}
+\index{enable\+Vertex\+Attrib\+Array@{enable\+Vertex\+Attrib\+Array}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{enable\+Vertex\+Attrib\+Array()}{enableVertexAttribArray()}}
+{\footnotesize\ttfamily void Shader\+::enable\+Vertex\+Attrib\+Array (\begin{DoxyParamCaption}\item[{const G\+Lchar $\ast$}]{name }\end{DoxyParamCaption})}
+
+Enables a vertex attrib array 
+\begin{DoxyParams}{Parameters}
+{\em name} & Points to a null terminated string containing the name of the attribute variable to enable \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 211 of file Shader.\+cpp.
+
+\mbox{\Hypertarget{class_shader_a3e18d47a57e86322c1e76bf78f13ca17}\label{class_shader_a3e18d47a57e86322c1e76bf78f13ca17}} 
+\index{Shader@{Shader}!get\+\_\+id@{get\+\_\+id}}
+\index{get\+\_\+id@{get\+\_\+id}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{get\+\_\+id()}{get\_id()}}
+{\footnotesize\ttfamily G\+Luint Shader\+::get\+\_\+id (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 17 of file Shader.\+h.
+
+\mbox{\Hypertarget{class_shader_a6dda73168720b8d4871f9a2340c914d0}\label{class_shader_a6dda73168720b8d4871f9a2340c914d0}} 
+\index{Shader@{Shader}!get\+Attrib\+Location@{get\+Attrib\+Location}}
+\index{get\+Attrib\+Location@{get\+Attrib\+Location}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{get\+Attrib\+Location()}{getAttribLocation()}}
+{\footnotesize\ttfamily G\+Lint Shader\+::get\+Attrib\+Location (\begin{DoxyParamCaption}\item[{const char $\ast$}]{name }\end{DoxyParamCaption})}
+
+Returns the location of an attribute variable 
+\begin{DoxyParams}{Parameters}
+{\em name} & Points to a null terminated string containing the name of the attribute variable whose location is to be queried \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the location of the attribute variable on success, else -\/1 or error 
+\end{DoxyReturn}
+
+
+Definition at line 201 of file Shader.\+cpp.
+
+\mbox{\Hypertarget{class_shader_af496d61361a0bde57ccb34e2d5933c43}\label{class_shader_af496d61361a0bde57ccb34e2d5933c43}} 
+\index{Shader@{Shader}!set\+Uniform1f@{set\+Uniform1f}}
+\index{set\+Uniform1f@{set\+Uniform1f}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{set\+Uniform1f()}{setUniform1f()}}
+{\footnotesize\ttfamily void Shader\+::set\+Uniform1f (\begin{DoxyParamCaption}\item[{const G\+Lchar $\ast$}]{name,  }\item[{const float}]{val }\end{DoxyParamCaption})}
+
+Specify the value of a uniform variable for the current program object 
+\begin{DoxyParams}{Parameters}
+{\em name} & T\+O\+DO \\
+\hline
+{\em val} & T\+O\+DO \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 48 of file Shader.\+cpp.
+
+\mbox{\Hypertarget{class_shader_a9e34828e84023305a0a9454b20ebae8e}\label{class_shader_a9e34828e84023305a0a9454b20ebae8e}} 
+\index{Shader@{Shader}!set\+Uniform1i@{set\+Uniform1i}}
+\index{set\+Uniform1i@{set\+Uniform1i}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{set\+Uniform1i()}{setUniform1i()}}
+{\footnotesize\ttfamily void Shader\+::set\+Uniform1i (\begin{DoxyParamCaption}\item[{const G\+Lchar $\ast$}]{name,  }\item[{const int}]{val }\end{DoxyParamCaption})}
+
+Specify the value of a uniform variable for the current program object 
+\begin{DoxyParams}{Parameters}
+{\em name} & T\+O\+DO \\
+\hline
+{\em val} & T\+O\+DO \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 58 of file Shader.\+cpp.
+
+\mbox{\Hypertarget{class_shader_a80c178459f4ac07e83c53a95dc1c5ec8}\label{class_shader_a80c178459f4ac07e83c53a95dc1c5ec8}} 
+\index{Shader@{Shader}!set\+Uniform2f@{set\+Uniform2f}}
+\index{set\+Uniform2f@{set\+Uniform2f}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{set\+Uniform2f()}{setUniform2f()}}
+{\footnotesize\ttfamily void Shader\+::set\+Uniform2f (\begin{DoxyParamCaption}\item[{const G\+Lchar $\ast$}]{name,  }\item[{const glm\+::vec2 \&}]{val }\end{DoxyParamCaption})}
+
+Specify the value of a uniform variable for the current program object 
+\begin{DoxyParams}{Parameters}
+{\em name} & T\+O\+DO \\
+\hline
+{\em val} & T\+O\+DO \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 68 of file Shader.\+cpp.
+
+\mbox{\Hypertarget{class_shader_a3ea68dd9c68a88fcc2d7abe873c9ecf2}\label{class_shader_a3ea68dd9c68a88fcc2d7abe873c9ecf2}} 
+\index{Shader@{Shader}!set\+Uniform3f@{set\+Uniform3f}}
+\index{set\+Uniform3f@{set\+Uniform3f}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{set\+Uniform3f()}{setUniform3f()}}
+{\footnotesize\ttfamily void Shader\+::set\+Uniform3f (\begin{DoxyParamCaption}\item[{const G\+Lchar $\ast$}]{name,  }\item[{const glm\+::vec3 \&}]{val }\end{DoxyParamCaption})}
+
+Specify the value of a uniform variable for the current program object 
+\begin{DoxyParams}{Parameters}
+{\em name} & T\+O\+DO \\
+\hline
+{\em val} & T\+O\+DO \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 78 of file Shader.\+cpp.
+
+\mbox{\Hypertarget{class_shader_a3ae217faa57e267bfd54fe91cd72b6ba}\label{class_shader_a3ae217faa57e267bfd54fe91cd72b6ba}} 
+\index{Shader@{Shader}!set\+Uniform4f@{set\+Uniform4f}}
+\index{set\+Uniform4f@{set\+Uniform4f}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{set\+Uniform4f()}{setUniform4f()}}
+{\footnotesize\ttfamily void Shader\+::set\+Uniform4f (\begin{DoxyParamCaption}\item[{const G\+Lchar $\ast$}]{name,  }\item[{const glm\+::vec4 \&}]{val }\end{DoxyParamCaption})}
+
+Specify the value of a uniform variable for the current program object 
+\begin{DoxyParams}{Parameters}
+{\em name} & T\+O\+DO \\
+\hline
+{\em val} & T\+O\+DO \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 88 of file Shader.\+cpp.
+
+\mbox{\Hypertarget{class_shader_a15647c94eb01764b51527eb00f85c9c3}\label{class_shader_a15647c94eb01764b51527eb00f85c9c3}} 
+\index{Shader@{Shader}!set\+Uniform4fv@{set\+Uniform4fv}}
+\index{set\+Uniform4fv@{set\+Uniform4fv}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{set\+Uniform4fv()}{setUniform4fv()}}
+{\footnotesize\ttfamily void Shader\+::set\+Uniform4fv (\begin{DoxyParamCaption}\item[{const G\+Lchar $\ast$}]{name,  }\item[{G\+Lsizei}]{count,  }\item[{const G\+Lfloat $\ast$}]{val }\end{DoxyParamCaption})}
+
+Specify the value of a uniform variable for the current program object 
+\begin{DoxyParams}{Parameters}
+{\em name} & T\+O\+DO \\
+\hline
+{\em val} & T\+O\+DO \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 102 of file Shader.\+cpp.
+
+\mbox{\Hypertarget{class_shader_a15a1246f61f63dd1d202bb59447dc191}\label{class_shader_a15a1246f61f63dd1d202bb59447dc191}} 
+\index{Shader@{Shader}!set\+Uniform\+Mat4@{set\+Uniform\+Mat4}}
+\index{set\+Uniform\+Mat4@{set\+Uniform\+Mat4}!Shader@{Shader}}
+\subsubsection{\texorpdfstring{set\+Uniform\+Mat4()}{setUniformMat4()}}
+{\footnotesize\ttfamily void Shader\+::set\+Uniform\+Mat4 (\begin{DoxyParamCaption}\item[{const G\+Lchar $\ast$}]{name,  }\item[{const glm\+::mat4 \&}]{val }\end{DoxyParamCaption})}
+
+Specify the value of a uniform variable for the current program object 
+\begin{DoxyParams}{Parameters}
+{\em name} & T\+O\+DO \\
+\hline
+{\em val} & T\+O\+DO \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 112 of file Shader.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/\hyperlink{_shader_8h}{Shader.\+h}\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/\hyperlink{_shader_8cpp}{Shader.\+cpp}\end{DoxyCompactItemize}

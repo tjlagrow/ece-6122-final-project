@@ -7,11 +7,16 @@
 #include <fstream>
 #include <vector>
 #include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtx/vector_angle.hpp>
 
 /* Variable tp help control maximum recursion depth.  Important for speed.
    Without a k-d tree or some type of time improvement, I usually don't go
    over 35. */
-#define MAX_RAY_DEPTH 25
+#define MAX_RAY_DEPTH  5
+
+static unsigned int imageIndex = 0;
+
 
 /**
  * Helper function for color mixing based on weight
@@ -48,14 +53,14 @@ Vector3f trace(
 	const std::vector<Sphere> &spheres,
 	const int &depth)
 {
-	/* initialize */
 	float tnear = INFINITY;
 	const Sphere* sphere = NULL;
 
-	/* find intersection of this ray with the sphere in the scene */
-	for (unsigned i = 0; i < spheres.size(); ++i)
-	{
-		float t0 = INFINITY, t1 = INFINITY;
+	// Test if this ray intersects any object in the scene
+	for (unsigned i = 0; i < spheres.size(); ++i) {
+		float t0 = INFINITY;
+		float t1 = INFINITY;
+
 		if (spheres[i].intersect(rayOrigin, rayDirection, t0, t1))
 		{
 			if (t0 < 0) t0 = t1;
@@ -67,34 +72,40 @@ Vector3f trace(
 		}
 	}
 
-	/* return black or background color if there is no intersection */
-	if (!sphere)
+	// Return black or background color if there is no intersection
+	if (! sphere)
 	{
-		return Vector3f(2);
+		return Vector3f(0.3f);
 	}
 
-	Vector3f surfaceColor = 0;  /* intialize color of the ray/surfaceof the object intersected by the ray */
-	Vector3f pointOfIntersection = rayOrigin + rayDirection * tnear; /* point of intersection */
-	Vector3f normalOfIntersection = pointOfIntersection - sphere->position; /* normal at the intersection */
-	normalOfIntersection.normalize(); /* normalize */
+	Vector3f surfaceColor = 0;  // Intialize color of the object intersected by the ray
+	Vector3f pointOfIntersection = rayOrigin + rayDirection * tnear;
+	Vector3f normalOfIntersection = pointOfIntersection - sphere->position;
+	normalOfIntersection.normalize(); // Normalize the normal
 
 	/* Start the checks and headaches */
 
-	/* If the normal and the view direction are not opposite to each other, reverse the normal direction.
-	   That means we are inside the sphere... so set the inside bool to true. Finally reverse the sign
-	   of IdotN which we want positive.                                                                   */
+	/* If the normal and the view direction are not opposite to each other,
+	 * reverse the normal direction. That means we are inside the sphere...
+	 * so set the inside bool to true. Finally reverse the sign of IdotN
+	 * which we want positive.
+	 */
 
-	float bias = 1e-4; /* add some bias to the point from which we will be tracing to retain some color   */
-	bool inside = false; /* initalize */
+	// Add some bias to the point from which we will be tracing to retain some color   */
+	float bias = 1e-4;
+	bool inside = false; /* initialize */
 	if (rayDirection.dot(normalOfIntersection) > 0)
 	{
-		normalOfIntersection = -normalOfIntersection, inside = true;
+		normalOfIntersection = -normalOfIntersection;
+		inside = true;
 	}
 
-	if ((sphere->transparency > 0 || sphere->reflection > 0) && depth < MAX_RAY_DEPTH) {
+	if ((sphere->transparency > 0 || sphere->reflection > 0) && depth < MAX_RAY_DEPTH)
+	{
 		float facingRatio = -rayDirection.dot(normalOfIntersection);
+
 		/* change the color mixing value to maximize the effect */
-		float fresnelEffect = weightDistribution(pow(1 - facingRatio, 3), 1, 0.1); /* this equation is everywhere */
+		float fresnelEffect = weightDistribution(pow(1 - facingRatio, 3), 1, 0.1);
 
 		/* since all of the vectors are already normalized, the reflection direction is computed  */
 		Vector3f reflectionDirection = rayDirection - normalOfIntersection * 2 * rayDirection.dot(normalOfIntersection);
@@ -103,7 +114,8 @@ Vector3f trace(
 		Vector3f refraction = 0;
 
 		/* if the sphere is also transparent compute refraction ray (transmission) */
-		if (sphere->transparency) {
+		if (sphere->transparency)
+		{
 			float ior = 1.1, eta = (inside) ? ior : 1 / ior; // are we inside or outside the surface?
 			float co = -normalOfIntersection.dot(rayDirection);
 			float k = 1 - eta * eta * (1 - co * co);
@@ -114,18 +126,24 @@ Vector3f trace(
 		/* the result is a weighted color distrobution value of reflection and refraction (if the sphere is transparent) */
 		surfaceColor = (reflection * fresnelEffect + refraction * (1 - fresnelEffect) * sphere->transparency) * sphere->surfaceColor;
 	}
-	else {
+	else
+	{
 		/* a diffuse object, we can stop marching */
-		for (unsigned i = 0; i < spheres.size(); ++i) {
-			if (spheres[i].emissionColor.x > 0) {
+		for (unsigned i = 0; i < spheres.size(); ++i)
+		{
+			if (spheres[i].emissionColor.x > 0)
+			{
 				// this is a light
 				Vector3f transmission = 1;
 				Vector3f lightDirection = spheres[i].position - pointOfIntersection;
 				lightDirection.normalize(); /* normalize */
-				for (unsigned j = 0; j < spheres.size(); ++j) {
-					if (i != j) {
+				for (unsigned j = 0; j < spheres.size(); ++j)
+				{
+					if (i != j)
+					{
 						float t0, t1;
-						if (spheres[j].intersect(pointOfIntersection + normalOfIntersection * bias, lightDirection, t0, t1)) {
+						if (spheres[j].intersect(pointOfIntersection + normalOfIntersection * bias, lightDirection, t0, t1))
+						{
 							transmission = 0;
 							break;
 						}
@@ -153,7 +171,8 @@ Raytracer::Raytracer(unsigned int width, unsigned int height, float fov)
 	m_aspectRatio = (float)width / (float)height;
 	m_invertedWidth = 1 / float(width);
 	m_invertedHeight = 1 / float(height);
-	m_angle = tan(M_PI * 0.5 * fov / 180.);
+	m_image = (Vector3f *)calloc(width * height, sizeof(Vector3f));
+	m_angle = tan(M_PI * 0.5 * m_fov / 180.);
 }
 
 /**
@@ -161,7 +180,7 @@ Raytracer::Raytracer(unsigned int width, unsigned int height, float fov)
  */
 Raytracer::~Raytracer()
 {
-
+	free(m_image);
 }
 
 /**
@@ -169,41 +188,92 @@ Raytracer::~Raytracer()
  * is computed and then traced and finally returned with a color. If the ray
  * hits a sphere, the color of the sphere at the intersection point is
  * returned, else we return the background color.
- * @param spheres TODO Document
+ * @param objects A vector of objects in the scene
  */
-void Raytracer::render(const std::vector<Sphere> &spheres)
+void Raytracer::render(
+	glm::vec3 camPos,
+	glm::vec3 lookAt,
+	const std::vector<Object *> &objects)
 {
-	Vector3f *image = new Vector3f[m_width * m_height];
-	Vector3f *pixel = image;
+	Vector3f *pixel = &m_image[0];
 
-	// Loop over the column pixels in the image
+	std::vector<Sphere> spheres;
+	for (unsigned int i = 0; i < objects.size(); ++i)
+	{
+		glm::vec3 origin = objects[i]->getWorldOrigin();
+		Vector3f originVec3f(origin.x, origin.z, origin.y);
+
+		float radius = objects[i]->getSize().x / 2.0f;
+		glm::vec3 color = objects[i]->getMaterials()[1].getDiffuse();
+		Vector3f surfaceColor(color.x, color.y, color.z);
+		float reflection = 1;
+		float transparency = 0;
+		float emissionColor = 0;
+
+		spheres.push_back(Sphere(
+			originVec3f,
+			radius,
+			surfaceColor,
+			reflection,
+			transparency,
+			emissionColor
+		));
+	}
+
+	// Push back light ball
+	spheres.push_back(Sphere(
+		Vector3f(4, 4, 4), // Origin position of light source
+		4, // Radius
+		Vector3f(0.00, 0.00, 0.00), // Surface color
+		0, // Reflection
+		0.0, // Transparency
+		Vector3f(3) // Emission color
+	));
+
+////////////////////////////////////////////
+	for (unsigned int i = 0; i < spheres.size(); ++i)
+	{
+		printf("[%d] Sphere at (%f, %f, %f), r=%f, color=(%f,%f,%f)\n",
+			i,
+			spheres[i].position.x, spheres[i].position.y, spheres[i].position.z,
+			spheres[i].radius,
+			spheres[i].surfaceColor.x, spheres[i].surfaceColor.y, spheres[i].surfaceColor.z
+		);
+	}
+////////////////////////////////////////////
+
+	// Loop over the row pixels in the image
 	for (unsigned y = 0; y < m_height; ++y)
 	{
-		// Loop over the row pixels in the image
+		// Loop over the column pixels in the image
 		for (unsigned x = 0; x < m_width; ++x, ++pixel)
 		{
 			float xx = (2 * ((x + 0.5) * m_invertedWidth) - 1) * m_angle * m_aspectRatio;
 			float yy = (1 - 2 * ((y + 0.5) * m_invertedHeight)) * m_angle;
+
 			Vector3f rayDirection(xx, yy, -1);
 			rayDirection.normalize();
-			*pixel = trace(Vector3f(0), rayDirection, spheres, 0);
+
+			*pixel = trace(Vector3f(camPos.x, camPos.z, camPos.y), rayDirection, spheres, 0);
 		}
 	}
 
 	/* Save result to a pmm image. This method of saving works for mac,
 	 * but you need to save to .ppm for window/linux
 	 */
-	std::ofstream ppm("./sphere_primitive_example.ppm", std::ios::out | std::ios::binary);
+	char imageFilename[32];
+	snprintf(imageFilename, sizeof(imageFilename), "./image%04u.ppm", imageIndex++);
+	std::ofstream ppm(imageFilename, std::ios::out | std::ios::binary);
 	ppm << "P6\n" << m_width << " " << m_height << "\n255\n";
 	for (unsigned i = 0; i < m_width * m_height; ++i)
 	{
-		ppm << (unsigned char)(std::min(float(1), image[i].x) * 255) <<
-			(unsigned char)(std::min(float(1), image[i].y) * 255) <<
-			(unsigned char)(std::min(float(1), image[i].z) * 255);
+		ppm << (unsigned char)(std::min(float(1), m_image[i].x) * 255) <<
+			(unsigned char)(std::min(float(1), m_image[i].y) * 255) <<
+			(unsigned char)(std::min(float(1), m_image[i].z) * 255);
 	}
 	ppm.close();
-	delete [] image;
 }
+
 
 // FOR REFERENCE ONLY ////////////////////////////////////////////////////////
 

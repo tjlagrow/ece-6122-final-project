@@ -1,0 +1,93 @@
+\hypertarget{_raytracer_8cpp}{}\section{/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/raytracer/\+Raytracer.cpp File Reference}
+\label{_raytracer_8cpp}\index{/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/raytracer/\+Raytracer.\+cpp@{/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/raytracer/\+Raytracer.\+cpp}}
+{\ttfamily \#include \char`\"{}Raytracer.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Sphere.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$glm/glm.\+hpp$>$}\newline
+Include dependency graph for Raytracer.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_raytracer_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_raytracer_8cpp_a84517de5b8b5515dc6631fd07500751a}{M\+A\+X\+\_\+\+R\+A\+Y\+\_\+\+D\+E\+P\+TH}~25
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+float \hyperlink{_raytracer_8cpp_a874c09319b800d9eea74030236a3b4bc}{weight\+Distribution} (const float \&a, const float \&b, const float \&weight)
+\item 
+\hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} \hyperlink{_raytracer_8cpp_ac0cc70e5f6a25d676cbcf2813d60c6a0}{trace} (const \hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} \&ray\+Origin, const \hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} \&ray\+Direction, const std\+::vector$<$ \hyperlink{class_sphere}{Sphere} $>$ \&spheres, const int \&depth)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{_raytracer_8cpp_a84517de5b8b5515dc6631fd07500751a}\label{_raytracer_8cpp_a84517de5b8b5515dc6631fd07500751a}} 
+\index{Raytracer.\+cpp@{Raytracer.\+cpp}!M\+A\+X\+\_\+\+R\+A\+Y\+\_\+\+D\+E\+P\+TH@{M\+A\+X\+\_\+\+R\+A\+Y\+\_\+\+D\+E\+P\+TH}}
+\index{M\+A\+X\+\_\+\+R\+A\+Y\+\_\+\+D\+E\+P\+TH@{M\+A\+X\+\_\+\+R\+A\+Y\+\_\+\+D\+E\+P\+TH}!Raytracer.\+cpp@{Raytracer.\+cpp}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+R\+A\+Y\+\_\+\+D\+E\+P\+TH}{MAX\_RAY\_DEPTH}}
+{\footnotesize\ttfamily \#define M\+A\+X\+\_\+\+R\+A\+Y\+\_\+\+D\+E\+P\+TH~25}
+
+
+
+Definition at line 15 of file Raytracer.\+cpp.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_raytracer_8cpp_ac0cc70e5f6a25d676cbcf2813d60c6a0}\label{_raytracer_8cpp_ac0cc70e5f6a25d676cbcf2813d60c6a0}} 
+\index{Raytracer.\+cpp@{Raytracer.\+cpp}!trace@{trace}}
+\index{trace@{trace}!Raytracer.\+cpp@{Raytracer.\+cpp}}
+\subsubsection{\texorpdfstring{trace()}{trace()}}
+{\footnotesize\ttfamily \hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} trace (\begin{DoxyParamCaption}\item[{const \hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} \&}]{ray\+Origin,  }\item[{const \hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} \&}]{ray\+Direction,  }\item[{const std\+::vector$<$ \hyperlink{class_sphere}{Sphere} $>$ \&}]{spheres,  }\item[{const int \&}]{depth }\end{DoxyParamCaption})}
+
+The main trace function! It takes a standard ray as argument which is defined by its origin and direction. There is a test if this ray intersects any of the geometry in the scene (the geometry will be created later). If the ray intersects an object, the intersection point is computed, the normal at the intersection point is computed, and thus shade this point using this newly calculated information. Shading depends on the surface property of the primitive which is transparency, reflectiveness, diffuseablity. The function returns a color for the ray. If the ray intersects an object that is the color of the object at the intersection point, otherwise it returns the background color. 
+\begin{DoxyParams}{Parameters}
+{\em ray\+Origin} & T\+O\+DO Document \\
+\hline
+{\em ray\+Direction} & T\+O\+DO Document \\
+\hline
+{\em spheres} & T\+O\+DO Document \\
+\hline
+{\em depth} & T\+O\+DO Document \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 46 of file Raytracer.\+cpp.
+
+\mbox{\Hypertarget{_raytracer_8cpp_a874c09319b800d9eea74030236a3b4bc}\label{_raytracer_8cpp_a874c09319b800d9eea74030236a3b4bc}} 
+\index{Raytracer.\+cpp@{Raytracer.\+cpp}!weight\+Distribution@{weight\+Distribution}}
+\index{weight\+Distribution@{weight\+Distribution}!Raytracer.\+cpp@{Raytracer.\+cpp}}
+\subsubsection{\texorpdfstring{weight\+Distribution()}{weightDistribution()}}
+{\footnotesize\ttfamily float weight\+Distribution (\begin{DoxyParamCaption}\item[{const float \&}]{a,  }\item[{const float \&}]{b,  }\item[{const float \&}]{weight }\end{DoxyParamCaption})}
+
+Helper function for color mixing based on weight 
+\begin{DoxyParams}{Parameters}
+{\em a} & T\+O\+DO Document \\
+\hline
+{\em b} & T\+O\+DO Document \\
+\hline
+{\em weight} & T\+O\+DO Document \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 24 of file Raytracer.\+cpp.
+

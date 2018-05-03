@@ -1,0 +1,172 @@
+\hypertarget{_object_loader_8cpp}{}\section{/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/objects/\+Object\+Loader.cpp File Reference}
+\label{_object_loader_8cpp}\index{/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/objects/\+Object\+Loader.\+cpp@{/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/objects/\+Object\+Loader.\+cpp}}
+{\ttfamily \#include \char`\"{}Object\+Loader.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Mesh.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Material.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$assimp/\+Importer.\+hpp$>$}\newline
+{\ttfamily \#include $<$assimp/postprocess.\+h$>$}\newline
+{\ttfamily \#include $<$assimp/scene.\+h$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+Include dependency graph for Object\+Loader.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_object_loader_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{_object_loader_8cpp_a2d2da26d9aa37424cc2837ce3eb3ee96}{create\+Meshes\+From\+Ai\+Scene} (const ai\+Scene $\ast$scene, \hyperlink{class_object}{Object} $\ast$object)
+\item 
+void \hyperlink{_object_loader_8cpp_a26dbd3b0aee54e7eec20e7d9695c169a}{create\+Materials\+From\+Ai\+Scene} (const ai\+Scene $\ast$scene, \hyperlink{class_object}{Object} $\ast$object)
+\item 
+void \hyperlink{_object_loader_8cpp_ab750877f926b1943508db516d72eba47}{print\+Ai\+Scene\+Info} (const ai\+Scene $\ast$scene)
+\item 
+void \hyperlink{_object_loader_8cpp_a1d57b7e7c673c74a54574ab2237eaf0e}{print\+Vector3D} (string name, ai\+Vector3D vector)
+\item 
+void \hyperlink{_object_loader_8cpp_a284eaf64f035f96f14d923256f0dca79}{print\+Color3D} (string name, ai\+Color3D color)
+\item 
+void \hyperlink{_object_loader_8cpp_a2f1e5dd30e5903db9ee29e2d4efdd933}{indent} (unsigned int layer)
+\item 
+void \hyperlink{_object_loader_8cpp_ac886656c40740bc679804ee79b73a609}{print\+Matrix4x4} (ai\+Matrix4x4 matrix, unsigned int layer=0)
+\item 
+void \hyperlink{_object_loader_8cpp_a2d827d20b346b6b38aa4623f4fd3f633}{print\+Node\+Tree} (const ai\+Node $\ast$node, unsigned int layer)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{_object_loader_8cpp_a26dbd3b0aee54e7eec20e7d9695c169a}\label{_object_loader_8cpp_a26dbd3b0aee54e7eec20e7d9695c169a}} 
+\index{Object\+Loader.\+cpp@{Object\+Loader.\+cpp}!create\+Materials\+From\+Ai\+Scene@{create\+Materials\+From\+Ai\+Scene}}
+\index{create\+Materials\+From\+Ai\+Scene@{create\+Materials\+From\+Ai\+Scene}!Object\+Loader.\+cpp@{Object\+Loader.\+cpp}}
+\subsubsection{\texorpdfstring{create\+Materials\+From\+Ai\+Scene()}{createMaterialsFromAiScene()}}
+{\footnotesize\ttfamily void create\+Materials\+From\+Ai\+Scene (\begin{DoxyParamCaption}\item[{const ai\+Scene $\ast$}]{scene,  }\item[{\hyperlink{class_object}{Object} $\ast$}]{object }\end{DoxyParamCaption})}
+
+Create material objects from an ai\+Scene 
+\begin{DoxyParams}{Parameters}
+{\em scene} & The ai\+Scene containing the materials \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 170 of file Object\+Loader.\+cpp.
+
+\mbox{\Hypertarget{_object_loader_8cpp_a2d2da26d9aa37424cc2837ce3eb3ee96}\label{_object_loader_8cpp_a2d2da26d9aa37424cc2837ce3eb3ee96}} 
+\index{Object\+Loader.\+cpp@{Object\+Loader.\+cpp}!create\+Meshes\+From\+Ai\+Scene@{create\+Meshes\+From\+Ai\+Scene}}
+\index{create\+Meshes\+From\+Ai\+Scene@{create\+Meshes\+From\+Ai\+Scene}!Object\+Loader.\+cpp@{Object\+Loader.\+cpp}}
+\subsubsection{\texorpdfstring{create\+Meshes\+From\+Ai\+Scene()}{createMeshesFromAiScene()}}
+{\footnotesize\ttfamily void create\+Meshes\+From\+Ai\+Scene (\begin{DoxyParamCaption}\item[{const ai\+Scene $\ast$}]{scene,  }\item[{\hyperlink{class_object}{Object} $\ast$}]{object }\end{DoxyParamCaption})}
+
+T\+O\+DO 
+\begin{DoxyParams}{Parameters}
+{\em scene} & T\+O\+DO \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T\+O\+DO 
+\end{DoxyReturn}
+
+
+Definition at line 71 of file Object\+Loader.\+cpp.
+
+\mbox{\Hypertarget{_object_loader_8cpp_a2f1e5dd30e5903db9ee29e2d4efdd933}\label{_object_loader_8cpp_a2f1e5dd30e5903db9ee29e2d4efdd933}} 
+\index{Object\+Loader.\+cpp@{Object\+Loader.\+cpp}!indent@{indent}}
+\index{indent@{indent}!Object\+Loader.\+cpp@{Object\+Loader.\+cpp}}
+\subsubsection{\texorpdfstring{indent()}{indent()}}
+{\footnotesize\ttfamily void indent (\begin{DoxyParamCaption}\item[{unsigned int}]{layer }\end{DoxyParamCaption})}
+
+T\+O\+DO 
+\begin{DoxyParams}{Parameters}
+{\em layer} & T\+O\+DO \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 312 of file Object\+Loader.\+cpp.
+
+\mbox{\Hypertarget{_object_loader_8cpp_ab750877f926b1943508db516d72eba47}\label{_object_loader_8cpp_ab750877f926b1943508db516d72eba47}} 
+\index{Object\+Loader.\+cpp@{Object\+Loader.\+cpp}!print\+Ai\+Scene\+Info@{print\+Ai\+Scene\+Info}}
+\index{print\+Ai\+Scene\+Info@{print\+Ai\+Scene\+Info}!Object\+Loader.\+cpp@{Object\+Loader.\+cpp}}
+\subsubsection{\texorpdfstring{print\+Ai\+Scene\+Info()}{printAiSceneInfo()}}
+{\footnotesize\ttfamily void print\+Ai\+Scene\+Info (\begin{DoxyParamCaption}\item[{const ai\+Scene $\ast$}]{scene }\end{DoxyParamCaption})}
+
+T\+O\+DO 
+\begin{DoxyParams}{Parameters}
+{\em scene} & T\+O\+DO \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 386 of file Object\+Loader.\+cpp.
+
+\mbox{\Hypertarget{_object_loader_8cpp_a284eaf64f035f96f14d923256f0dca79}\label{_object_loader_8cpp_a284eaf64f035f96f14d923256f0dca79}} 
+\index{Object\+Loader.\+cpp@{Object\+Loader.\+cpp}!print\+Color3D@{print\+Color3D}}
+\index{print\+Color3D@{print\+Color3D}!Object\+Loader.\+cpp@{Object\+Loader.\+cpp}}
+\subsubsection{\texorpdfstring{print\+Color3\+D()}{printColor3D()}}
+{\footnotesize\ttfamily void print\+Color3D (\begin{DoxyParamCaption}\item[{string}]{name,  }\item[{ai\+Color3D}]{color }\end{DoxyParamCaption})}
+
+T\+O\+DO 
+\begin{DoxyParams}{Parameters}
+{\em name} & T\+O\+DO \\
+\hline
+{\em color} & T\+O\+DO \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 301 of file Object\+Loader.\+cpp.
+
+\mbox{\Hypertarget{_object_loader_8cpp_ac886656c40740bc679804ee79b73a609}\label{_object_loader_8cpp_ac886656c40740bc679804ee79b73a609}} 
+\index{Object\+Loader.\+cpp@{Object\+Loader.\+cpp}!print\+Matrix4x4@{print\+Matrix4x4}}
+\index{print\+Matrix4x4@{print\+Matrix4x4}!Object\+Loader.\+cpp@{Object\+Loader.\+cpp}}
+\subsubsection{\texorpdfstring{print\+Matrix4x4()}{printMatrix4x4()}}
+{\footnotesize\ttfamily void print\+Matrix4x4 (\begin{DoxyParamCaption}\item[{ai\+Matrix4x4}]{matrix,  }\item[{unsigned int}]{layer = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+T\+O\+DO 
+\begin{DoxyParams}{Parameters}
+{\em matrix} & T\+O\+DO \\
+\hline
+{\em layer} & T\+O\+DO \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 325 of file Object\+Loader.\+cpp.
+
+\mbox{\Hypertarget{_object_loader_8cpp_a2d827d20b346b6b38aa4623f4fd3f633}\label{_object_loader_8cpp_a2d827d20b346b6b38aa4623f4fd3f633}} 
+\index{Object\+Loader.\+cpp@{Object\+Loader.\+cpp}!print\+Node\+Tree@{print\+Node\+Tree}}
+\index{print\+Node\+Tree@{print\+Node\+Tree}!Object\+Loader.\+cpp@{Object\+Loader.\+cpp}}
+\subsubsection{\texorpdfstring{print\+Node\+Tree()}{printNodeTree()}}
+{\footnotesize\ttfamily void print\+Node\+Tree (\begin{DoxyParamCaption}\item[{const ai\+Node $\ast$}]{node,  }\item[{unsigned int}]{layer }\end{DoxyParamCaption})}
+
+T\+O\+DO 
+\begin{DoxyParams}{Parameters}
+{\em node} & T\+O\+DO \\
+\hline
+{\em layer} & T\+O\+DO \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 342 of file Object\+Loader.\+cpp.
+
+\mbox{\Hypertarget{_object_loader_8cpp_a1d57b7e7c673c74a54574ab2237eaf0e}\label{_object_loader_8cpp_a1d57b7e7c673c74a54574ab2237eaf0e}} 
+\index{Object\+Loader.\+cpp@{Object\+Loader.\+cpp}!print\+Vector3D@{print\+Vector3D}}
+\index{print\+Vector3D@{print\+Vector3D}!Object\+Loader.\+cpp@{Object\+Loader.\+cpp}}
+\subsubsection{\texorpdfstring{print\+Vector3\+D()}{printVector3D()}}
+{\footnotesize\ttfamily void print\+Vector3D (\begin{DoxyParamCaption}\item[{string}]{name,  }\item[{ai\+Vector3D}]{vector }\end{DoxyParamCaption})}
+
+T\+O\+DO 
+\begin{DoxyParams}{Parameters}
+{\em name} & T\+O\+DO \\
+\hline
+{\em vector} & T\+O\+DO \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 289 of file Object\+Loader.\+cpp.
+

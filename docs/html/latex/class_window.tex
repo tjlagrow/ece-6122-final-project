@@ -1,0 +1,163 @@
+\hypertarget{class_window}{}\section{Window Class Reference}
+\label{class_window}\index{Window@{Window}}
+
+
+{\ttfamily \#include $<$Window.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_window_a315084d17424d10fe4a77c581084b65a}{Window} (const char $\ast$title, int width, int height)
+\item 
+\hyperlink{class_window_a245d821e6016fa1f6970ccbbedd635f6}{$\sim$\+Window} ()
+\item 
+void \hyperlink{class_window_a38bc43bdd1a97e5de7f346ba4c3957ef}{clear} ()
+\item 
+void \hyperlink{class_window_a59515fc5a56e86d5a46d771595daac55}{update} ()
+\item 
+double \hyperlink{class_window_a8a828ebd82becbc53c7754916be02b79}{get\+Time} ()
+\item 
+bool \hyperlink{class_window_a1caaf150558c0c35a8811f19ccac817d}{should\+Close} () const
+\item 
+void \hyperlink{class_window_a35055c04498121d39741bfcd5082705b}{close} ()
+\item 
+int \hyperlink{class_window_aee31a875d654a8c8f7d796d072657791}{get\+Width} () const
+\item 
+int \hyperlink{class_window_a60757b2b0dbcec9889e3a09f5655adbe}{get\+Height} () const
+\item 
+glm\+::vec2 \hyperlink{class_window_ab276bf3630d294d6eee8c5992b93e721}{get\+Cursor\+Pos} () const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 8 of file Window.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_window_a315084d17424d10fe4a77c581084b65a}\label{class_window_a315084d17424d10fe4a77c581084b65a}} 
+\index{Window@{Window}!Window@{Window}}
+\index{Window@{Window}!Window@{Window}}
+\subsubsection{\texorpdfstring{Window()}{Window()}}
+{\footnotesize\ttfamily Window\+::\+Window (\begin{DoxyParamCaption}\item[{const char $\ast$}]{title,  }\item[{int}]{width,  }\item[{int}]{height }\end{DoxyParamCaption})}
+
+Constructor 
+\begin{DoxyParams}{Parameters}
+{\em title} & The window title \\
+\hline
+{\em width} & The width of the window in pixels \\
+\hline
+{\em height} & T\+He height of the window in pixels \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 11 of file Window.\+cpp.
+
+\mbox{\Hypertarget{class_window_a245d821e6016fa1f6970ccbbedd635f6}\label{class_window_a245d821e6016fa1f6970ccbbedd635f6}} 
+\index{Window@{Window}!````~Window@{$\sim$\+Window}}
+\index{````~Window@{$\sim$\+Window}!Window@{Window}}
+\subsubsection{\texorpdfstring{$\sim$\+Window()}{~Window()}}
+{\footnotesize\ttfamily Window\+::$\sim$\+Window (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Destructor 
+
+Definition at line 71 of file Window.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_window_a38bc43bdd1a97e5de7f346ba4c3957ef}\label{class_window_a38bc43bdd1a97e5de7f346ba4c3957ef}} 
+\index{Window@{Window}!clear@{clear}}
+\index{clear@{clear}!Window@{Window}}
+\subsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily void Window\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 77 of file Window.\+cpp.
+
+\mbox{\Hypertarget{class_window_a35055c04498121d39741bfcd5082705b}\label{class_window_a35055c04498121d39741bfcd5082705b}} 
+\index{Window@{Window}!close@{close}}
+\index{close@{close}!Window@{Window}}
+\subsubsection{\texorpdfstring{close()}{close()}}
+{\footnotesize\ttfamily void Window\+::close (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets the flag to close the window 
+
+Definition at line 135 of file Window.\+cpp.
+
+\mbox{\Hypertarget{class_window_ab276bf3630d294d6eee8c5992b93e721}\label{class_window_ab276bf3630d294d6eee8c5992b93e721}} 
+\index{Window@{Window}!get\+Cursor\+Pos@{get\+Cursor\+Pos}}
+\index{get\+Cursor\+Pos@{get\+Cursor\+Pos}!Window@{Window}}
+\subsubsection{\texorpdfstring{get\+Cursor\+Pos()}{getCursorPos()}}
+{\footnotesize\ttfamily glm\+::vec2 Window\+::get\+Cursor\+Pos (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 23 of file Window.\+h.
+
+\mbox{\Hypertarget{class_window_a60757b2b0dbcec9889e3a09f5655adbe}\label{class_window_a60757b2b0dbcec9889e3a09f5655adbe}} 
+\index{Window@{Window}!get\+Height@{get\+Height}}
+\index{get\+Height@{get\+Height}!Window@{Window}}
+\subsubsection{\texorpdfstring{get\+Height()}{getHeight()}}
+{\footnotesize\ttfamily int Window\+::get\+Height (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 22 of file Window.\+h.
+
+\mbox{\Hypertarget{class_window_a8a828ebd82becbc53c7754916be02b79}\label{class_window_a8a828ebd82becbc53c7754916be02b79}} 
+\index{Window@{Window}!get\+Time@{get\+Time}}
+\index{get\+Time@{get\+Time}!Window@{Window}}
+\subsubsection{\texorpdfstring{get\+Time()}{getTime()}}
+{\footnotesize\ttfamily double Window\+::get\+Time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns a double representing the current timestamp \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 221 of file Window.\+cpp.
+
+\mbox{\Hypertarget{class_window_aee31a875d654a8c8f7d796d072657791}\label{class_window_aee31a875d654a8c8f7d796d072657791}} 
+\index{Window@{Window}!get\+Width@{get\+Width}}
+\index{get\+Width@{get\+Width}!Window@{Window}}
+\subsubsection{\texorpdfstring{get\+Width()}{getWidth()}}
+{\footnotesize\ttfamily int Window\+::get\+Width (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 21 of file Window.\+h.
+
+\mbox{\Hypertarget{class_window_a1caaf150558c0c35a8811f19ccac817d}\label{class_window_a1caaf150558c0c35a8811f19ccac817d}} 
+\index{Window@{Window}!should\+Close@{should\+Close}}
+\index{should\+Close@{should\+Close}!Window@{Window}}
+\subsubsection{\texorpdfstring{should\+Close()}{shouldClose()}}
+{\footnotesize\ttfamily bool Window\+::should\+Close (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns whether the window is set to close or not \begin{DoxyReturn}{Returns}
+Returns T\+R\+UE if the window is set to close, else F\+A\+L\+SE 
+\end{DoxyReturn}
+
+
+Definition at line 127 of file Window.\+cpp.
+
+\mbox{\Hypertarget{class_window_a59515fc5a56e86d5a46d771595daac55}\label{class_window_a59515fc5a56e86d5a46d771595daac55}} 
+\index{Window@{Window}!update@{update}}
+\index{update@{update}!Window@{Window}}
+\subsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily void Window\+::update (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Checks for Open\+GL errors, updates input events, and draws the window buffer 
+
+Definition at line 85 of file Window.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/\hyperlink{_window_8h}{Window.\+h}\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/\hyperlink{_window_8cpp}{Window.\+cpp}\end{DoxyCompactItemize}

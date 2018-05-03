@@ -24,9 +24,9 @@
 #define WINDOW_TITLE    "ECE6122 Final Project"
 
 static float fov = 45.0f; // Filed of View in degrees
-static float camx = -10.0f; // Camera location x
+static float camx = 10.0f; // Camera location x
 static float camy = 10.0f; // Camera location y, this is the height
-static float camz = 20.0f; // Camera location z
+static float camz = 10.0f; // Camera location z
 
 enum class ShapeType { Box, Sphere, Cylinder, Cone, Custom };
 
@@ -42,7 +42,9 @@ struct objMetadata
 
 static std::vector<struct objMetadata> objmeta =
 {
-	{ ShapeType::Sphere,   glm::vec3(-7.0f, +30.0f, +0.0f), 10.f, 0.6f, 0.9f, "../models/ball_simple.obj" },
+//	{ ShapeType::Sphere,   glm::vec3(-7.0f, +30.0f, +0.0f), 10.f, 0.6f, 0.9f, "../models/ball_simple.obj" },
+	{ ShapeType::Sphere,   glm::vec3(+0.0f, -05.0f, +0.0f), 10.f, 0.6f, 0.9f, "../models/greenball.obj" },
+	{ ShapeType::Sphere,   glm::vec3(+0.0f, +00.0f, +0.0f), 10.f, 0.6f, 0.9f, "../models/redball.obj" },
 	{ ShapeType::Custom,   glm::vec3(-8.0f, +00.0f, +0.0f), 99.f, 0.6f, 0.9f, "../models/ramp.obj" },
 	{ ShapeType::Box,      glm::vec3(+6.0f, +02.0f, -1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
 	{ ShapeType::Box,      glm::vec3(+6.0f, +04.0f, -1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
@@ -56,10 +58,6 @@ static std::vector<struct objMetadata> objmeta =
 	{ ShapeType::Box,      glm::vec3(+6.0f, +08.0f, +1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
 	{ ShapeType::Box,      glm::vec3(+6.0f, +10.0f, +1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
 	{ ShapeType::Box,      glm::vec3(+6.0f, +12.0f, +1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
-//	{ ShapeType::Cone,     glm::vec3(+7.0f, +00.0f, +7.0f), 1.0f, 0.1f, 0.5f, "../models/cone.obj" },
-//	{ ShapeType::Cone,     glm::vec3(-7.0f, +00.0f, -7.0f), 1.0f, 0.1f, 0.5f, "../models/cone.obj" },
-//	{ ShapeType::Cylinder, glm::vec3(-7.0f, +00.0f, +7.0f), 1.0f, 0.1f, 0.5f, "../models/cylinder.obj" },
-//	{ ShapeType::Cylinder, glm::vec3(+7.0f, +00.0f, -7.0f), 1.0f, 0.1f, 0.5f, "../models/cylinder.obj" },
 };
 
 ////////////////////////////////////////////////////////
@@ -194,7 +192,6 @@ int main(int argc, char **argv)
 	// Mainly used for frames per second statistics
 	// but could very easily be extended in the future
 	PerformanceData perf;
-	double elapsedTime;
 	double sx = 2.0f / window.getWidth();
 	double sy = 2.0f / window.getHeight();
 
@@ -208,7 +205,7 @@ int main(int argc, char **argv)
 
 		// If time has elapsed, get the diagnostic text to
 		// overlay on the screen, but don't print it out here yet
-		if ((elapsedTime = perf.getElapsedTime()) > 1.0f)
+		if (perf.getElapsedTime() > 1.0f)
 		{
 			perf.updateStats(); // Update the performance statistics
 			perf.reset();
@@ -218,7 +215,7 @@ int main(int argc, char **argv)
 		std::vector<glm::vec3> positions;
 		engine.getMotionStates(positions);
 
-		// Get transforms and update all the objects
+		// Get transforms and tell OpenGL about new object positions
 		for (unsigned int i = 0; i < objects.size(); ++i)
 		{
 			glm::mat4 updateTransform;
@@ -241,8 +238,16 @@ int main(int argc, char **argv)
 		stageLayer.render(glm::vec3(camx, camy, camz));
 		modelLayer.render(glm::vec3(camx, camy, camz));
 
-		if (cfg.raytrace)
-			raytracer.render({});
+		/////////////////////////////// TODO Don't forget to change back
+//		if (cfg.raytrace)
+		if (1)
+		///////////////////////////////
+			raytracer.render(
+				glm::vec3(camx, camy, camz), // Camera position
+//				objects[0]->getWorldOrigin(), // Look at
+				glm::vec3(0.0f, 0.0f, 0.0f), // Look at
+				std::vector<Object *>{ objects[0], objects[1] }
+			);
 
 		// Draw text last so it is on top of the other layers
 		tw.begin();
@@ -255,6 +260,8 @@ int main(int argc, char **argv)
 		window.update();
 
 		perf.incrementFrames();
+
+		window.close();
 	}
 
 	for (unsigned int i = 0; i < objects.size(); ++i)

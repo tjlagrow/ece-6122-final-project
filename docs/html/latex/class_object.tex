@@ -1,0 +1,461 @@
+\hypertarget{class_object}{}\section{Object Class Reference}
+\label{class_object}\index{Object@{Object}}
+
+
+{\ttfamily \#include $<$Object.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_object_a8524d31fc25bf997ae127b85ffebe23e}{Object} (const char $\ast$filepath)
+\item 
+\hyperlink{class_object_ae8f5483f459e46687bd01e6f9977afd3}{$\sim$\+Object} ()
+\item 
+void \hyperlink{class_object_abcecd0a84919c1abeee1f95044fbf1c1}{submit} (\hyperlink{class_renderer}{Renderer} $\ast$renderer) const
+\item 
+const std\+::vector$<$ \hyperlink{class_mesh}{Mesh} $>$ \& \hyperlink{class_object_a0c73a3e0bcadac01866e022cbe327082}{get\+Meshes} () const
+\item 
+const std\+::vector$<$ \hyperlink{class_material}{Material} $>$ \& \hyperlink{class_object_a69844ac34730373cb824a608727fa6ff}{get\+Materials} () const
+\item 
+const std\+::vector$<$ \hyperlink{struct_position}{Position} $>$ \& \hyperlink{class_object_a7dde4f00d9004f52ddcd12077dbd71b8}{get\+Positions} () const
+\item 
+std\+::vector$<$ glm\+::vec3 $>$ \hyperlink{class_object_a1d0e144917e58aab0c97e15c796c08dd}{get\+Positions\+Glm\+Vec3} () const
+\item 
+const std\+::vector$<$ \hyperlink{struct_normal}{Normal} $>$ \& \hyperlink{class_object_afc89c45ef455b9e1fc95d49514d48373}{get\+Normals} () const
+\item 
+const std\+::vector$<$ \hyperlink{struct_tex_coord}{Tex\+Coord} $>$ \& \hyperlink{class_object_a215c16f0d10edb9d21d41eca96a782d7}{get\+Tex\+Coords} () const
+\item 
+const glm\+::vec3 \& \hyperlink{class_object_a1054369eab029c63e58de78b88bbd627}{get\+World\+Origin} () const
+\item 
+const float \& \hyperlink{class_object_a334afec6a91a5c6473d75858771597a2}{get\+Mass} () const
+\item 
+const glm\+::vec3 \& \hyperlink{class_object_a2d23e6dad9e8c355dda6b3f466d202f3}{get\+Inertia} () const
+\item 
+const glm\+::vec3 \& \hyperlink{class_object_ac4f74b9b50fb83829b6844a2591ba50f}{get\+Size} () const
+\item 
+const \hyperlink{struct_position}{Position} $\ast$ \hyperlink{class_object_a247968a9aa55c670e2d462876f5e2cb6}{get\+Position} (unsigned int index) const
+\item 
+const \hyperlink{struct_normal}{Normal} $\ast$ \hyperlink{class_object_a096f8e6bd78d8f6d31b8897fad9b8e78}{get\+Normal} (unsigned int index) const
+\item 
+const \hyperlink{struct_tex_coord}{Tex\+Coord} $\ast$ \hyperlink{class_object_a703e8fc9f5aa16d5b657ed8f03f4cf02}{get\+Tex\+Coord} (unsigned int index) const
+\item 
+int \hyperlink{class_object_acc363689a681f08be8492107ab6ab2f4}{get\+Position\+Index} (\hyperlink{struct_position}{Position} position) const
+\item 
+int \hyperlink{class_object_a877e446e1e1af8bbe11db702221bc194}{get\+Normal\+Index} (\hyperlink{struct_normal}{Normal} normal) const
+\item 
+int \hyperlink{class_object_af99105478aba428c8c252598707323b6}{get\+Tex\+Coord\+Index} (\hyperlink{struct_tex_coord}{Tex\+Coord} texcoord) const
+\item 
+void \hyperlink{class_object_a426314ec1a1e0ae48cbb2b3667c63bb6}{set\+Mass} (const float \&mass)
+\item 
+void \hyperlink{class_object_a1a82190deb7c8c2da2f3e82562aa7b17}{set\+Inertia} (const glm\+::vec3 \&inertia)
+\item 
+void \hyperlink{class_object_ac1d7782db71b581a3dd60f25c00bdfd7}{set\+Transform} (glm\+::mat4 transform)
+\item 
+void \hyperlink{class_object_a1ef8f20019002996c0c62f2b6a38b4f6}{add\+Mesh} (\hyperlink{class_mesh}{Mesh} mesh)
+\item 
+void \hyperlink{class_object_aa8246a72ca14daf6627b44eaa422c4fb}{add\+Material} (\hyperlink{class_material}{Material} material)
+\item 
+unsigned int \hyperlink{class_object_aed6fb1a005f657408604c2c2c41e7cd1}{add\+Position} (\hyperlink{struct_position}{Position} position)
+\item 
+unsigned int \hyperlink{class_object_aeac027a860fad228b5cd3fa4c1a477f8}{add\+Normal} (\hyperlink{struct_normal}{Normal} normal)
+\item 
+unsigned int \hyperlink{class_object_af978ee81ebe44916aadc434a84fdf1bf}{add\+Tex\+Coord} (\hyperlink{struct_tex_coord}{Tex\+Coord} texcoord)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 13 of file Object.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_object_a8524d31fc25bf997ae127b85ffebe23e}\label{class_object_a8524d31fc25bf997ae127b85ffebe23e}} 
+\index{Object@{Object}!Object@{Object}}
+\index{Object@{Object}!Object@{Object}}
+\subsubsection{\texorpdfstring{Object()}{Object()}}
+{\footnotesize\ttfamily Object\+::\+Object (\begin{DoxyParamCaption}\item[{const char $\ast$}]{filepath }\end{DoxyParamCaption})}
+
+Constructor 
+\begin{DoxyParams}{Parameters}
+{\em filepath} & T\+O\+DO Document \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 17 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_ae8f5483f459e46687bd01e6f9977afd3}\label{class_object_ae8f5483f459e46687bd01e6f9977afd3}} 
+\index{Object@{Object}!````~Object@{$\sim$\+Object}}
+\index{````~Object@{$\sim$\+Object}!Object@{Object}}
+\subsubsection{\texorpdfstring{$\sim$\+Object()}{~Object()}}
+{\footnotesize\ttfamily Object\+::$\sim$\+Object (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Destructor 
+
+Definition at line 49 of file Object.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_object_aa8246a72ca14daf6627b44eaa422c4fb}\label{class_object_aa8246a72ca14daf6627b44eaa422c4fb}} 
+\index{Object@{Object}!add\+Material@{add\+Material}}
+\index{add\+Material@{add\+Material}!Object@{Object}}
+\subsubsection{\texorpdfstring{add\+Material()}{addMaterial()}}
+{\footnotesize\ttfamily void Object\+::add\+Material (\begin{DoxyParamCaption}\item[{\hyperlink{class_material}{Material}}]{material }\end{DoxyParamCaption})}
+
+T\+O\+DO Document 
+\begin{DoxyParams}{Parameters}
+{\em position} & T\+O\+DO Document \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 283 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_a1ef8f20019002996c0c62f2b6a38b4f6}\label{class_object_a1ef8f20019002996c0c62f2b6a38b4f6}} 
+\index{Object@{Object}!add\+Mesh@{add\+Mesh}}
+\index{add\+Mesh@{add\+Mesh}!Object@{Object}}
+\subsubsection{\texorpdfstring{add\+Mesh()}{addMesh()}}
+{\footnotesize\ttfamily void Object\+::add\+Mesh (\begin{DoxyParamCaption}\item[{\hyperlink{class_mesh}{Mesh}}]{mesh }\end{DoxyParamCaption})}
+
+T\+O\+DO Document 
+\begin{DoxyParams}{Parameters}
+{\em position} & T\+O\+DO Document \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 274 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_aeac027a860fad228b5cd3fa4c1a477f8}\label{class_object_aeac027a860fad228b5cd3fa4c1a477f8}} 
+\index{Object@{Object}!add\+Normal@{add\+Normal}}
+\index{add\+Normal@{add\+Normal}!Object@{Object}}
+\subsubsection{\texorpdfstring{add\+Normal()}{addNormal()}}
+{\footnotesize\ttfamily unsigned int Object\+::add\+Normal (\begin{DoxyParamCaption}\item[{\hyperlink{struct_normal}{Normal}}]{normal }\end{DoxyParamCaption})}
+
+T\+O\+DO Document 
+\begin{DoxyParams}{Parameters}
+{\em position} & T\+O\+DO Document \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 306 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_aed6fb1a005f657408604c2c2c41e7cd1}\label{class_object_aed6fb1a005f657408604c2c2c41e7cd1}} 
+\index{Object@{Object}!add\+Position@{add\+Position}}
+\index{add\+Position@{add\+Position}!Object@{Object}}
+\subsubsection{\texorpdfstring{add\+Position()}{addPosition()}}
+{\footnotesize\ttfamily unsigned int Object\+::add\+Position (\begin{DoxyParamCaption}\item[{\hyperlink{struct_position}{Position}}]{position }\end{DoxyParamCaption})}
+
+T\+O\+DO Document 
+\begin{DoxyParams}{Parameters}
+{\em position} & T\+O\+DO Document \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 291 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_af978ee81ebe44916aadc434a84fdf1bf}\label{class_object_af978ee81ebe44916aadc434a84fdf1bf}} 
+\index{Object@{Object}!add\+Tex\+Coord@{add\+Tex\+Coord}}
+\index{add\+Tex\+Coord@{add\+Tex\+Coord}!Object@{Object}}
+\subsubsection{\texorpdfstring{add\+Tex\+Coord()}{addTexCoord()}}
+{\footnotesize\ttfamily unsigned int Object\+::add\+Tex\+Coord (\begin{DoxyParamCaption}\item[{\hyperlink{struct_tex_coord}{Tex\+Coord}}]{texcoord }\end{DoxyParamCaption})}
+
+T\+O\+DO Document 
+\begin{DoxyParams}{Parameters}
+{\em position} & T\+O\+DO Document \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 321 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_a2d23e6dad9e8c355dda6b3f466d202f3}\label{class_object_a2d23e6dad9e8c355dda6b3f466d202f3}} 
+\index{Object@{Object}!get\+Inertia@{get\+Inertia}}
+\index{get\+Inertia@{get\+Inertia}!Object@{Object}}
+\subsubsection{\texorpdfstring{get\+Inertia()}{getInertia()}}
+{\footnotesize\ttfamily const glm\+::vec3 \& Object\+::get\+Inertia (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+T\+O\+DO Document \begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 143 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_a334afec6a91a5c6473d75858771597a2}\label{class_object_a334afec6a91a5c6473d75858771597a2}} 
+\index{Object@{Object}!get\+Mass@{get\+Mass}}
+\index{get\+Mass@{get\+Mass}!Object@{Object}}
+\subsubsection{\texorpdfstring{get\+Mass()}{getMass()}}
+{\footnotesize\ttfamily const float \& Object\+::get\+Mass (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+T\+O\+DO Document \begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 134 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_a69844ac34730373cb824a608727fa6ff}\label{class_object_a69844ac34730373cb824a608727fa6ff}} 
+\index{Object@{Object}!get\+Materials@{get\+Materials}}
+\index{get\+Materials@{get\+Materials}!Object@{Object}}
+\subsubsection{\texorpdfstring{get\+Materials()}{getMaterials()}}
+{\footnotesize\ttfamily const std\+::vector$<$ \hyperlink{class_material}{Material} $>$ \& Object\+::get\+Materials (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+T\+O\+DO Document \begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 77 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_a0c73a3e0bcadac01866e022cbe327082}\label{class_object_a0c73a3e0bcadac01866e022cbe327082}} 
+\index{Object@{Object}!get\+Meshes@{get\+Meshes}}
+\index{get\+Meshes@{get\+Meshes}!Object@{Object}}
+\subsubsection{\texorpdfstring{get\+Meshes()}{getMeshes()}}
+{\footnotesize\ttfamily const std\+::vector$<$ \hyperlink{class_mesh}{Mesh} $>$ \& Object\+::get\+Meshes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Get the meshes that make up this object \begin{DoxyReturn}{Returns}
+Returns this object\textquotesingle{}s meshes 
+\end{DoxyReturn}
+
+
+Definition at line 68 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_a096f8e6bd78d8f6d31b8897fad9b8e78}\label{class_object_a096f8e6bd78d8f6d31b8897fad9b8e78}} 
+\index{Object@{Object}!get\+Normal@{get\+Normal}}
+\index{get\+Normal@{get\+Normal}!Object@{Object}}
+\subsubsection{\texorpdfstring{get\+Normal()}{getNormal()}}
+{\footnotesize\ttfamily const \hyperlink{struct_normal}{Normal} $\ast$ Object\+::get\+Normal (\begin{DoxyParamCaption}\item[{unsigned int}]{index }\end{DoxyParamCaption}) const}
+
+T\+O\+DO Document 
+\begin{DoxyParams}{Parameters}
+{\em index} & T\+O\+DO Document \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 174 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_a877e446e1e1af8bbe11db702221bc194}\label{class_object_a877e446e1e1af8bbe11db702221bc194}} 
+\index{Object@{Object}!get\+Normal\+Index@{get\+Normal\+Index}}
+\index{get\+Normal\+Index@{get\+Normal\+Index}!Object@{Object}}
+\subsubsection{\texorpdfstring{get\+Normal\+Index()}{getNormalIndex()}}
+{\footnotesize\ttfamily int Object\+::get\+Normal\+Index (\begin{DoxyParamCaption}\item[{\hyperlink{struct_normal}{Normal}}]{normal }\end{DoxyParamCaption}) const}
+
+T\+O\+DO Document \begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 213 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_afc89c45ef455b9e1fc95d49514d48373}\label{class_object_afc89c45ef455b9e1fc95d49514d48373}} 
+\index{Object@{Object}!get\+Normals@{get\+Normals}}
+\index{get\+Normals@{get\+Normals}!Object@{Object}}
+\subsubsection{\texorpdfstring{get\+Normals()}{getNormals()}}
+{\footnotesize\ttfamily const std\+::vector$<$ \hyperlink{struct_normal}{Normal} $>$ \& Object\+::get\+Normals (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+T\+O\+DO Document \begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 107 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_a247968a9aa55c670e2d462876f5e2cb6}\label{class_object_a247968a9aa55c670e2d462876f5e2cb6}} 
+\index{Object@{Object}!get\+Position@{get\+Position}}
+\index{get\+Position@{get\+Position}!Object@{Object}}
+\subsubsection{\texorpdfstring{get\+Position()}{getPosition()}}
+{\footnotesize\ttfamily const \hyperlink{struct_position}{Position} $\ast$ Object\+::get\+Position (\begin{DoxyParamCaption}\item[{unsigned int}]{index }\end{DoxyParamCaption}) const}
+
+T\+O\+DO Document 
+\begin{DoxyParams}{Parameters}
+{\em index} & T\+O\+DO Document \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 162 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_acc363689a681f08be8492107ab6ab2f4}\label{class_object_acc363689a681f08be8492107ab6ab2f4}} 
+\index{Object@{Object}!get\+Position\+Index@{get\+Position\+Index}}
+\index{get\+Position\+Index@{get\+Position\+Index}!Object@{Object}}
+\subsubsection{\texorpdfstring{get\+Position\+Index()}{getPositionIndex()}}
+{\footnotesize\ttfamily int Object\+::get\+Position\+Index (\begin{DoxyParamCaption}\item[{\hyperlink{struct_position}{Position}}]{position }\end{DoxyParamCaption}) const}
+
+T\+O\+DO Document \begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 197 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_a7dde4f00d9004f52ddcd12077dbd71b8}\label{class_object_a7dde4f00d9004f52ddcd12077dbd71b8}} 
+\index{Object@{Object}!get\+Positions@{get\+Positions}}
+\index{get\+Positions@{get\+Positions}!Object@{Object}}
+\subsubsection{\texorpdfstring{get\+Positions()}{getPositions()}}
+{\footnotesize\ttfamily const std\+::vector$<$ \hyperlink{struct_position}{Position} $>$ \& Object\+::get\+Positions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+T\+O\+DO Document \begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 86 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_a1d0e144917e58aab0c97e15c796c08dd}\label{class_object_a1d0e144917e58aab0c97e15c796c08dd}} 
+\index{Object@{Object}!get\+Positions\+Glm\+Vec3@{get\+Positions\+Glm\+Vec3}}
+\index{get\+Positions\+Glm\+Vec3@{get\+Positions\+Glm\+Vec3}!Object@{Object}}
+\subsubsection{\texorpdfstring{get\+Positions\+Glm\+Vec3()}{getPositionsGlmVec3()}}
+{\footnotesize\ttfamily std\+::vector$<$ glm\+::vec3 $>$ Object\+::get\+Positions\+Glm\+Vec3 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+T\+O\+DO Document \begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 95 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_ac4f74b9b50fb83829b6844a2591ba50f}\label{class_object_ac4f74b9b50fb83829b6844a2591ba50f}} 
+\index{Object@{Object}!get\+Size@{get\+Size}}
+\index{get\+Size@{get\+Size}!Object@{Object}}
+\subsubsection{\texorpdfstring{get\+Size()}{getSize()}}
+{\footnotesize\ttfamily const glm\+::vec3 \& Object\+::get\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+T\+O\+DO Document \begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 152 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_a703e8fc9f5aa16d5b657ed8f03f4cf02}\label{class_object_a703e8fc9f5aa16d5b657ed8f03f4cf02}} 
+\index{Object@{Object}!get\+Tex\+Coord@{get\+Tex\+Coord}}
+\index{get\+Tex\+Coord@{get\+Tex\+Coord}!Object@{Object}}
+\subsubsection{\texorpdfstring{get\+Tex\+Coord()}{getTexCoord()}}
+{\footnotesize\ttfamily const \hyperlink{struct_tex_coord}{Tex\+Coord} $\ast$ Object\+::get\+Tex\+Coord (\begin{DoxyParamCaption}\item[{unsigned int}]{index }\end{DoxyParamCaption}) const}
+
+T\+O\+DO Document 
+\begin{DoxyParams}{Parameters}
+{\em index} & T\+O\+DO Document \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 186 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_af99105478aba428c8c252598707323b6}\label{class_object_af99105478aba428c8c252598707323b6}} 
+\index{Object@{Object}!get\+Tex\+Coord\+Index@{get\+Tex\+Coord\+Index}}
+\index{get\+Tex\+Coord\+Index@{get\+Tex\+Coord\+Index}!Object@{Object}}
+\subsubsection{\texorpdfstring{get\+Tex\+Coord\+Index()}{getTexCoordIndex()}}
+{\footnotesize\ttfamily int Object\+::get\+Tex\+Coord\+Index (\begin{DoxyParamCaption}\item[{\hyperlink{struct_tex_coord}{Tex\+Coord}}]{texcoord }\end{DoxyParamCaption}) const}
+
+T\+O\+DO Document \begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 229 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_a215c16f0d10edb9d21d41eca96a782d7}\label{class_object_a215c16f0d10edb9d21d41eca96a782d7}} 
+\index{Object@{Object}!get\+Tex\+Coords@{get\+Tex\+Coords}}
+\index{get\+Tex\+Coords@{get\+Tex\+Coords}!Object@{Object}}
+\subsubsection{\texorpdfstring{get\+Tex\+Coords()}{getTexCoords()}}
+{\footnotesize\ttfamily const std\+::vector$<$ \hyperlink{struct_tex_coord}{Tex\+Coord} $>$ \& Object\+::get\+Tex\+Coords (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+T\+O\+DO Document \begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 116 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_a1054369eab029c63e58de78b88bbd627}\label{class_object_a1054369eab029c63e58de78b88bbd627}} 
+\index{Object@{Object}!get\+World\+Origin@{get\+World\+Origin}}
+\index{get\+World\+Origin@{get\+World\+Origin}!Object@{Object}}
+\subsubsection{\texorpdfstring{get\+World\+Origin()}{getWorldOrigin()}}
+{\footnotesize\ttfamily const glm\+::vec3 \& Object\+::get\+World\+Origin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+T\+O\+DO Document \begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 125 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_a1a82190deb7c8c2da2f3e82562aa7b17}\label{class_object_a1a82190deb7c8c2da2f3e82562aa7b17}} 
+\index{Object@{Object}!set\+Inertia@{set\+Inertia}}
+\index{set\+Inertia@{set\+Inertia}!Object@{Object}}
+\subsubsection{\texorpdfstring{set\+Inertia()}{setInertia()}}
+{\footnotesize\ttfamily void Object\+::set\+Inertia (\begin{DoxyParamCaption}\item[{const glm\+::vec3 \&}]{inertia }\end{DoxyParamCaption})}
+
+T\+O\+DO Document \begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 253 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_a426314ec1a1e0ae48cbb2b3667c63bb6}\label{class_object_a426314ec1a1e0ae48cbb2b3667c63bb6}} 
+\index{Object@{Object}!set\+Mass@{set\+Mass}}
+\index{set\+Mass@{set\+Mass}!Object@{Object}}
+\subsubsection{\texorpdfstring{set\+Mass()}{setMass()}}
+{\footnotesize\ttfamily void Object\+::set\+Mass (\begin{DoxyParamCaption}\item[{const float \&}]{mass }\end{DoxyParamCaption})}
+
+T\+O\+DO Document \begin{DoxyReturn}{Returns}
+T\+O\+DO Document 
+\end{DoxyReturn}
+
+
+Definition at line 244 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_ac1d7782db71b581a3dd60f25c00bdfd7}\label{class_object_ac1d7782db71b581a3dd60f25c00bdfd7}} 
+\index{Object@{Object}!set\+Transform@{set\+Transform}}
+\index{set\+Transform@{set\+Transform}!Object@{Object}}
+\subsubsection{\texorpdfstring{set\+Transform()}{setTransform()}}
+{\footnotesize\ttfamily void Object\+::set\+Transform (\begin{DoxyParamCaption}\item[{glm\+::mat4}]{transform }\end{DoxyParamCaption})}
+
+T\+O\+DO Document 
+\begin{DoxyParams}{Parameters}
+{\em transform} & T\+O\+DO Document \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 262 of file Object.\+cpp.
+
+\mbox{\Hypertarget{class_object_abcecd0a84919c1abeee1f95044fbf1c1}\label{class_object_abcecd0a84919c1abeee1f95044fbf1c1}} 
+\index{Object@{Object}!submit@{submit}}
+\index{submit@{submit}!Object@{Object}}
+\subsubsection{\texorpdfstring{submit()}{submit()}}
+{\footnotesize\ttfamily void Object\+::submit (\begin{DoxyParamCaption}\item[{\hyperlink{class_renderer}{Renderer} $\ast$}]{renderer }\end{DoxyParamCaption}) const}
+
+This function simply submits this shape to its renderer. It is up to the renderer to actually draw it 
+\begin{DoxyParams}{Parameters}
+{\em renderer} & The renderer to use for drawing \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 59 of file Object.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/objects/\hyperlink{_object_8h}{Object.\+h}\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/objects/\hyperlink{_object_8cpp}{Object.\+cpp}\end{DoxyCompactItemize}

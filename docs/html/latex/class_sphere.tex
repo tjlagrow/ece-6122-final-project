@@ -1,0 +1,151 @@
+\hypertarget{class_sphere}{}\section{Sphere Class Reference}
+\label{class_sphere}\index{Sphere@{Sphere}}
+
+
+{\ttfamily \#include $<$Sphere.\+h$>$}
+
+
+
+Collaboration diagram for Sphere\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{class_sphere__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_sphere_a46b4e530fe3204b5dfc0547cec96dbaa}{Sphere} (const \hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} \&c, const float \&r, const \hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} \&sc, const float \&refl=0, const float \&transp=0, const \hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} \&ec=0)
+\item 
+bool \hyperlink{class_sphere_a35ba0414bedd68d86349273db13cca7d}{intersect} (const \hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} \&ray\+Origin, const \hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} \&ray\+Direction, float \&t0, float \&t1) const
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} \hyperlink{class_sphere_a0458c2e8cd2b6472e6b32b4304b353d6}{position}
+\item 
+float \hyperlink{class_sphere_ae6f42f0da6679a2f0b4a22681ccccf38}{radius}
+\item 
+float \hyperlink{class_sphere_a676be49a940d037ac298e7010f03d416}{radius2}
+\item 
+\hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} \hyperlink{class_sphere_accdb6ecbf2c62a19c495debfe7c3685a}{surface\+Color}
+\item 
+\hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} \hyperlink{class_sphere_ab3bc31c7c6cd80578e755c85eb6e5894}{emission\+Color}
+\item 
+float \hyperlink{class_sphere_a93f7757b497ba9f0f93b9927e5d96e5d}{transparency}
+\item 
+float \hyperlink{class_sphere_a7b8835ace79e36f2cacf9ff0cb962fae}{reflection}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 12 of file Sphere.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_sphere_a46b4e530fe3204b5dfc0547cec96dbaa}\label{class_sphere_a46b4e530fe3204b5dfc0547cec96dbaa}} 
+\index{Sphere@{Sphere}!Sphere@{Sphere}}
+\index{Sphere@{Sphere}!Sphere@{Sphere}}
+\subsubsection{\texorpdfstring{Sphere()}{Sphere()}}
+{\footnotesize\ttfamily Sphere\+::\+Sphere (\begin{DoxyParamCaption}\item[{const \hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} \&}]{c,  }\item[{const float \&}]{r,  }\item[{const \hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} \&}]{sc,  }\item[{const float \&}]{refl = {\ttfamily 0},  }\item[{const float \&}]{transp = {\ttfamily 0},  }\item[{const \hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} \&}]{ec = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 22 of file Sphere.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_sphere_a35ba0414bedd68d86349273db13cca7d}\label{class_sphere_a35ba0414bedd68d86349273db13cca7d}} 
+\index{Sphere@{Sphere}!intersect@{intersect}}
+\index{intersect@{intersect}!Sphere@{Sphere}}
+\subsubsection{\texorpdfstring{intersect()}{intersect()}}
+{\footnotesize\ttfamily bool Sphere\+::intersect (\begin{DoxyParamCaption}\item[{const \hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} \&}]{ray\+Origin,  }\item[{const \hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} \&}]{ray\+Direction,  }\item[{float \&}]{t0,  }\item[{float \&}]{t1 }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 33 of file Sphere.\+h.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_sphere_ab3bc31c7c6cd80578e755c85eb6e5894}\label{class_sphere_ab3bc31c7c6cd80578e755c85eb6e5894}} 
+\index{Sphere@{Sphere}!emission\+Color@{emission\+Color}}
+\index{emission\+Color@{emission\+Color}!Sphere@{Sphere}}
+\subsubsection{\texorpdfstring{emission\+Color}{emissionColor}}
+{\footnotesize\ttfamily \hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} Sphere\+::emission\+Color}
+
+
+
+Definition at line 18 of file Sphere.\+h.
+
+\mbox{\Hypertarget{class_sphere_a0458c2e8cd2b6472e6b32b4304b353d6}\label{class_sphere_a0458c2e8cd2b6472e6b32b4304b353d6}} 
+\index{Sphere@{Sphere}!position@{position}}
+\index{position@{position}!Sphere@{Sphere}}
+\subsubsection{\texorpdfstring{position}{position}}
+{\footnotesize\ttfamily \hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} Sphere\+::position}
+
+
+
+Definition at line 16 of file Sphere.\+h.
+
+\mbox{\Hypertarget{class_sphere_ae6f42f0da6679a2f0b4a22681ccccf38}\label{class_sphere_ae6f42f0da6679a2f0b4a22681ccccf38}} 
+\index{Sphere@{Sphere}!radius@{radius}}
+\index{radius@{radius}!Sphere@{Sphere}}
+\subsubsection{\texorpdfstring{radius}{radius}}
+{\footnotesize\ttfamily float Sphere\+::radius}
+
+
+
+Definition at line 17 of file Sphere.\+h.
+
+\mbox{\Hypertarget{class_sphere_a676be49a940d037ac298e7010f03d416}\label{class_sphere_a676be49a940d037ac298e7010f03d416}} 
+\index{Sphere@{Sphere}!radius2@{radius2}}
+\index{radius2@{radius2}!Sphere@{Sphere}}
+\subsubsection{\texorpdfstring{radius2}{radius2}}
+{\footnotesize\ttfamily float Sphere\+::radius2}
+
+
+
+Definition at line 17 of file Sphere.\+h.
+
+\mbox{\Hypertarget{class_sphere_a7b8835ace79e36f2cacf9ff0cb962fae}\label{class_sphere_a7b8835ace79e36f2cacf9ff0cb962fae}} 
+\index{Sphere@{Sphere}!reflection@{reflection}}
+\index{reflection@{reflection}!Sphere@{Sphere}}
+\subsubsection{\texorpdfstring{reflection}{reflection}}
+{\footnotesize\ttfamily float Sphere\+::reflection}
+
+
+
+Definition at line 19 of file Sphere.\+h.
+
+\mbox{\Hypertarget{class_sphere_accdb6ecbf2c62a19c495debfe7c3685a}\label{class_sphere_accdb6ecbf2c62a19c495debfe7c3685a}} 
+\index{Sphere@{Sphere}!surface\+Color@{surface\+Color}}
+\index{surface\+Color@{surface\+Color}!Sphere@{Sphere}}
+\subsubsection{\texorpdfstring{surface\+Color}{surfaceColor}}
+{\footnotesize\ttfamily \hyperlink{_vector3_8h_af345ad77ba5e240c7ab72b4b2077e754}{Vector3f} Sphere\+::surface\+Color}
+
+
+
+Definition at line 18 of file Sphere.\+h.
+
+\mbox{\Hypertarget{class_sphere_a93f7757b497ba9f0f93b9927e5d96e5d}\label{class_sphere_a93f7757b497ba9f0f93b9927e5d96e5d}} 
+\index{Sphere@{Sphere}!transparency@{transparency}}
+\index{transparency@{transparency}!Sphere@{Sphere}}
+\subsubsection{\texorpdfstring{transparency}{transparency}}
+{\footnotesize\ttfamily float Sphere\+::transparency}
+
+
+
+Definition at line 19 of file Sphere.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/raytracer/\hyperlink{_sphere_8h}{Sphere.\+h}\end{DoxyCompactItemize}

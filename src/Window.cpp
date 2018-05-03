@@ -130,6 +130,15 @@ bool Window::shouldClose() const
 }
 
 /**
+ * Sets the flag to close the window
+ */
+void Window::close()
+{
+	glfwSetWindowShouldClose(m_window, 1);
+}
+
+
+/**
  * Cursor enter/exit callback
  * @param window The window that received the event
  * @param entered GLFW_TRUE if the cursor entered the window's client area, or GLFW_FALSE if it left it

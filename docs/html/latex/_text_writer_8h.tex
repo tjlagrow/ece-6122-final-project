@@ -1,0 +1,70 @@
+\hypertarget{_text_writer_8h}{}\section{/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/\+Text\+Writer.h File Reference}
+\label{_text_writer_8h}\index{/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/\+Text\+Writer.\+h@{/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/\+Text\+Writer.\+h}}
+{\ttfamily \#include \char`\"{}Shader.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$G\+L/glew.\+h$>$}\newline
+{\ttfamily \#include $<$glm/gtc/matrix\+\_\+transform.\+hpp$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$freetype2/ft2build.\+h$>$}\newline
+Include dependency graph for Text\+Writer.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_text_writer_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=324pt]{_text_writer_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_text_writer}{Text\+Writer}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_text_writer_8h_a9637a0724be7b808d4fe0010c21a930f}{V\+S\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+TH}~\char`\"{}../shaders/vs\+\_\+font.\+glsl\char`\"{}
+\item 
+\#define \hyperlink{_text_writer_8h_af5dc9c45ada29cf021a27dc531cb4a80}{F\+S\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+TH}~\char`\"{}../shaders/fs\+\_\+font.\+glsl\char`\"{}
+\item 
+\#define \hyperlink{_text_writer_8h_a3d544d6580b8b8a6703277cefe5ce915}{T\+T\+F\+\_\+\+P\+A\+TH}~\char`\"{}/usr/share/fonts/truetype/freefont/Free\+Mono\+Bold.\+ttf\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{_text_writer_8h_af5dc9c45ada29cf021a27dc531cb4a80}\label{_text_writer_8h_af5dc9c45ada29cf021a27dc531cb4a80}} 
+\index{Text\+Writer.\+h@{Text\+Writer.\+h}!F\+S\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+TH@{F\+S\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+TH}}
+\index{F\+S\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+TH@{F\+S\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+TH}!Text\+Writer.\+h@{Text\+Writer.\+h}}
+\subsubsection{\texorpdfstring{F\+S\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+TH}{FS\_FONT\_PATH}}
+{\footnotesize\ttfamily \#define F\+S\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+TH~\char`\"{}../shaders/fs\+\_\+font.\+glsl\char`\"{}}
+
+
+
+Definition at line 12 of file Text\+Writer.\+h.
+
+\mbox{\Hypertarget{_text_writer_8h_a3d544d6580b8b8a6703277cefe5ce915}\label{_text_writer_8h_a3d544d6580b8b8a6703277cefe5ce915}} 
+\index{Text\+Writer.\+h@{Text\+Writer.\+h}!T\+T\+F\+\_\+\+P\+A\+TH@{T\+T\+F\+\_\+\+P\+A\+TH}}
+\index{T\+T\+F\+\_\+\+P\+A\+TH@{T\+T\+F\+\_\+\+P\+A\+TH}!Text\+Writer.\+h@{Text\+Writer.\+h}}
+\subsubsection{\texorpdfstring{T\+T\+F\+\_\+\+P\+A\+TH}{TTF\_PATH}}
+{\footnotesize\ttfamily \#define T\+T\+F\+\_\+\+P\+A\+TH~\char`\"{}/usr/share/fonts/truetype/freefont/Free\+Mono\+Bold.\+ttf\char`\"{}}
+
+
+
+Definition at line 13 of file Text\+Writer.\+h.
+
+\mbox{\Hypertarget{_text_writer_8h_a9637a0724be7b808d4fe0010c21a930f}\label{_text_writer_8h_a9637a0724be7b808d4fe0010c21a930f}} 
+\index{Text\+Writer.\+h@{Text\+Writer.\+h}!V\+S\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+TH@{V\+S\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+TH}}
+\index{V\+S\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+TH@{V\+S\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+TH}!Text\+Writer.\+h@{Text\+Writer.\+h}}
+\subsubsection{\texorpdfstring{V\+S\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+TH}{VS\_FONT\_PATH}}
+{\footnotesize\ttfamily \#define V\+S\+\_\+\+F\+O\+N\+T\+\_\+\+P\+A\+TH~\char`\"{}../shaders/vs\+\_\+font.\+glsl\char`\"{}}
+
+
+
+Definition at line 11 of file Text\+Writer.\+h.
+

@@ -1,0 +1,110 @@
+\hypertarget{_renderer_8h}{}\section{/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/\+Renderer.h File Reference}
+\label{_renderer_8h}\index{/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/\+Renderer.\+h@{/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/\+Renderer.\+h}}
+{\ttfamily \#include \char`\"{}Vertex.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Shader.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}objects/\+Material.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}objects/\+Object.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$G\+L/glew.\+h$>$}\newline
+{\ttfamily \#include $<$glm/glm.\+hpp$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include \char`\"{}objects/\+Mesh.\+h\char`\"{}}\newline
+Include dependency graph for Renderer.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_renderer_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_renderer_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_renderer}{Renderer}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_renderer_8h_a1222715d70ab6ad1c82a6effafc04f50}{M\+E\+S\+H\+\_\+\+M\+A\+X\+\_\+\+I\+N\+D\+I\+C\+ES}~1000000
+\item 
+\#define \hyperlink{_renderer_8h_ab708ba001cad140d470df55643718f9a}{M\+E\+S\+H\+\_\+\+M\+A\+X\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+B\+Y\+T\+ES}~1000000
+\item 
+\#define \hyperlink{_renderer_8h_aaa7dbbfc587f9c9270b26b71f6e52c9d}{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+P\+O\+S\+I\+T\+I\+ON}~0
+\item 
+\#define \hyperlink{_renderer_8h_afb97290f0bc78c2373fdddd65f8c4385}{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+UV}~1
+\item 
+\#define \hyperlink{_renderer_8h_a9f231c0b3172592598f8dbbca1108ab2}{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+C\+O\+L\+OR}~2
+\item 
+\#define \hyperlink{_renderer_8h_af1814c4492cd4c2ddc46f0f7ad9dcbad}{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+N\+O\+R\+M\+AL}~3
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{_renderer_8h_ab708ba001cad140d470df55643718f9a}\label{_renderer_8h_ab708ba001cad140d470df55643718f9a}} 
+\index{Renderer.\+h@{Renderer.\+h}!M\+E\+S\+H\+\_\+\+M\+A\+X\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+B\+Y\+T\+ES@{M\+E\+S\+H\+\_\+\+M\+A\+X\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+B\+Y\+T\+ES}}
+\index{M\+E\+S\+H\+\_\+\+M\+A\+X\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+B\+Y\+T\+ES@{M\+E\+S\+H\+\_\+\+M\+A\+X\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+B\+Y\+T\+ES}!Renderer.\+h@{Renderer.\+h}}
+\subsubsection{\texorpdfstring{M\+E\+S\+H\+\_\+\+M\+A\+X\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+B\+Y\+T\+ES}{MESH\_MAX\_BUFFER\_BYTES}}
+{\footnotesize\ttfamily \#define M\+E\+S\+H\+\_\+\+M\+A\+X\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+B\+Y\+T\+ES~1000000}
+
+
+
+Definition at line 15 of file Renderer.\+h.
+
+\mbox{\Hypertarget{_renderer_8h_a1222715d70ab6ad1c82a6effafc04f50}\label{_renderer_8h_a1222715d70ab6ad1c82a6effafc04f50}} 
+\index{Renderer.\+h@{Renderer.\+h}!M\+E\+S\+H\+\_\+\+M\+A\+X\+\_\+\+I\+N\+D\+I\+C\+ES@{M\+E\+S\+H\+\_\+\+M\+A\+X\+\_\+\+I\+N\+D\+I\+C\+ES}}
+\index{M\+E\+S\+H\+\_\+\+M\+A\+X\+\_\+\+I\+N\+D\+I\+C\+ES@{M\+E\+S\+H\+\_\+\+M\+A\+X\+\_\+\+I\+N\+D\+I\+C\+ES}!Renderer.\+h@{Renderer.\+h}}
+\subsubsection{\texorpdfstring{M\+E\+S\+H\+\_\+\+M\+A\+X\+\_\+\+I\+N\+D\+I\+C\+ES}{MESH\_MAX\_INDICES}}
+{\footnotesize\ttfamily \#define M\+E\+S\+H\+\_\+\+M\+A\+X\+\_\+\+I\+N\+D\+I\+C\+ES~1000000}
+
+
+
+Definition at line 14 of file Renderer.\+h.
+
+\mbox{\Hypertarget{_renderer_8h_a9f231c0b3172592598f8dbbca1108ab2}\label{_renderer_8h_a9f231c0b3172592598f8dbbca1108ab2}} 
+\index{Renderer.\+h@{Renderer.\+h}!S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+C\+O\+L\+OR@{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+C\+O\+L\+OR}}
+\index{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+C\+O\+L\+OR@{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+C\+O\+L\+OR}!Renderer.\+h@{Renderer.\+h}}
+\subsubsection{\texorpdfstring{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+C\+O\+L\+OR}{SHADER\_INDEX\_COLOR}}
+{\footnotesize\ttfamily \#define S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+C\+O\+L\+OR~2}
+
+
+
+Definition at line 19 of file Renderer.\+h.
+
+\mbox{\Hypertarget{_renderer_8h_af1814c4492cd4c2ddc46f0f7ad9dcbad}\label{_renderer_8h_af1814c4492cd4c2ddc46f0f7ad9dcbad}} 
+\index{Renderer.\+h@{Renderer.\+h}!S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+N\+O\+R\+M\+AL@{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+N\+O\+R\+M\+AL}}
+\index{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+N\+O\+R\+M\+AL@{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+N\+O\+R\+M\+AL}!Renderer.\+h@{Renderer.\+h}}
+\subsubsection{\texorpdfstring{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+N\+O\+R\+M\+AL}{SHADER\_INDEX\_NORMAL}}
+{\footnotesize\ttfamily \#define S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+N\+O\+R\+M\+AL~3}
+
+
+
+Definition at line 20 of file Renderer.\+h.
+
+\mbox{\Hypertarget{_renderer_8h_aaa7dbbfc587f9c9270b26b71f6e52c9d}\label{_renderer_8h_aaa7dbbfc587f9c9270b26b71f6e52c9d}} 
+\index{Renderer.\+h@{Renderer.\+h}!S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+P\+O\+S\+I\+T\+I\+ON@{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+P\+O\+S\+I\+T\+I\+ON}}
+\index{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+P\+O\+S\+I\+T\+I\+ON@{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+P\+O\+S\+I\+T\+I\+ON}!Renderer.\+h@{Renderer.\+h}}
+\subsubsection{\texorpdfstring{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+P\+O\+S\+I\+T\+I\+ON}{SHADER\_INDEX\_POSITION}}
+{\footnotesize\ttfamily \#define S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+P\+O\+S\+I\+T\+I\+ON~0}
+
+
+
+Definition at line 17 of file Renderer.\+h.
+
+\mbox{\Hypertarget{_renderer_8h_afb97290f0bc78c2373fdddd65f8c4385}\label{_renderer_8h_afb97290f0bc78c2373fdddd65f8c4385}} 
+\index{Renderer.\+h@{Renderer.\+h}!S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+UV@{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+UV}}
+\index{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+UV@{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+UV}!Renderer.\+h@{Renderer.\+h}}
+\subsubsection{\texorpdfstring{S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+UV}{SHADER\_INDEX\_UV}}
+{\footnotesize\ttfamily \#define S\+H\+A\+D\+E\+R\+\_\+\+I\+N\+D\+E\+X\+\_\+\+UV~1}
+
+
+
+Definition at line 18 of file Renderer.\+h.
+

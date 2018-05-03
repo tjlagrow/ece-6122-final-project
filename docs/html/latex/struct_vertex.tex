@@ -1,0 +1,155 @@
+\hypertarget{struct_vertex}{}\section{Vertex Struct Reference}
+\label{struct_vertex}\index{Vertex@{Vertex}}
+
+
+{\ttfamily \#include $<$Vertex.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{struct_vertex_a97488994a2482d70da74e1b91d40e169}{Vertex} ()
+\item 
+\hyperlink{struct_vertex_a30e022efb3a5d01ab1e1451ca871264e}{Vertex} (glm\+::vec4 \hyperlink{struct_vertex_a6814af2586248942604e8edd28d950a9}{position}, glm\+::vec2 \hyperlink{struct_vertex_a8d5cc8548016889746f251d98377ec8a}{uv}, glm\+::vec4 \hyperlink{struct_vertex_aa7ecd21578677765699b8831e0011696}{color}, glm\+::vec3 \hyperlink{struct_vertex_a3aa35fe84025ecf1acccb5f65f5577fd}{normal})
+\item 
+\hyperlink{struct_vertex_a2947e9185be83a2142f5676ed101d727}{Vertex} (float x, float y, float z, float w, float u, float v, float r, float g, float b, float a, float m, float n, float o)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+glm\+::vec4 \hyperlink{struct_vertex_a6814af2586248942604e8edd28d950a9}{position}
+\item 
+glm\+::vec2 \hyperlink{struct_vertex_a8d5cc8548016889746f251d98377ec8a}{uv}
+\item 
+glm\+::vec4 \hyperlink{struct_vertex_aa7ecd21578677765699b8831e0011696}{color}
+\item 
+glm\+::vec3 \hyperlink{struct_vertex_a3aa35fe84025ecf1acccb5f65f5577fd}{normal}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 8 of file Vertex.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{struct_vertex_a97488994a2482d70da74e1b91d40e169}\label{struct_vertex_a97488994a2482d70da74e1b91d40e169}} 
+\index{Vertex@{Vertex}!Vertex@{Vertex}}
+\index{Vertex@{Vertex}!Vertex@{Vertex}}
+\subsubsection{\texorpdfstring{Vertex()}{Vertex()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily Vertex\+::\+Vertex (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructor 
+
+Definition at line 6 of file Vertex.\+cpp.
+
+\mbox{\Hypertarget{struct_vertex_a30e022efb3a5d01ab1e1451ca871264e}\label{struct_vertex_a30e022efb3a5d01ab1e1451ca871264e}} 
+\index{Vertex@{Vertex}!Vertex@{Vertex}}
+\index{Vertex@{Vertex}!Vertex@{Vertex}}
+\subsubsection{\texorpdfstring{Vertex()}{Vertex()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily Vertex\+::\+Vertex (\begin{DoxyParamCaption}\item[{glm\+::vec4}]{position,  }\item[{glm\+::vec2}]{uv,  }\item[{glm\+::vec4}]{color,  }\item[{glm\+::vec3}]{normal }\end{DoxyParamCaption})}
+
+Constructor 
+\begin{DoxyParams}{Parameters}
+{\em position} & The vertex position in model space \\
+\hline
+{\em uv} & The texture coordinate mapping for this vertex \\
+\hline
+{\em color} & The color of this vertex \\
+\hline
+{\em normal} & The normal for this vertex \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 21 of file Vertex.\+cpp.
+
+\mbox{\Hypertarget{struct_vertex_a2947e9185be83a2142f5676ed101d727}\label{struct_vertex_a2947e9185be83a2142f5676ed101d727}} 
+\index{Vertex@{Vertex}!Vertex@{Vertex}}
+\index{Vertex@{Vertex}!Vertex@{Vertex}}
+\subsubsection{\texorpdfstring{Vertex()}{Vertex()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily Vertex\+::\+Vertex (\begin{DoxyParamCaption}\item[{float}]{x,  }\item[{float}]{y,  }\item[{float}]{z,  }\item[{float}]{w,  }\item[{float}]{u,  }\item[{float}]{v,  }\item[{float}]{r,  }\item[{float}]{g,  }\item[{float}]{b,  }\item[{float}]{a,  }\item[{float}]{m,  }\item[{float}]{n,  }\item[{float}]{o }\end{DoxyParamCaption})}
+
+Constructor 
+\begin{DoxyParams}{Parameters}
+{\em x} & \hyperlink{struct_position}{Position} in x-\/direction \\
+\hline
+{\em y} & \hyperlink{struct_position}{Position} in y-\/direction \\
+\hline
+{\em z} & \hyperlink{struct_position}{Position} in z-\/direction \\
+\hline
+{\em w} & 1 means a point, 0 means a vector (usually=1) \\
+\hline
+{\em u} & \hyperlink{class_texture}{Texture} coordinate in x-\/direction \\
+\hline
+{\em v} & \hyperlink{class_texture}{Texture} coordinate in y-\/direction \\
+\hline
+{\em r} & Red color value \\
+\hline
+{\em g} & Green color value \\
+\hline
+{\em b} & Blue color value \\
+\hline
+{\em a} & Alpha value \\
+\hline
+{\em m} & \hyperlink{struct_normal}{Normal} coordinate in x-\/direction \\
+\hline
+{\em n} & \hyperlink{struct_normal}{Normal} coordinate in y-\/direction \\
+\hline
+{\em o} & \hyperlink{struct_normal}{Normal} coordinate in z-\/direction \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 45 of file Vertex.\+cpp.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{struct_vertex_aa7ecd21578677765699b8831e0011696}\label{struct_vertex_aa7ecd21578677765699b8831e0011696}} 
+\index{Vertex@{Vertex}!color@{color}}
+\index{color@{color}!Vertex@{Vertex}}
+\subsubsection{\texorpdfstring{color}{color}}
+{\footnotesize\ttfamily glm\+::vec4 Vertex\+::color}
+
+
+
+Definition at line 13 of file Vertex.\+h.
+
+\mbox{\Hypertarget{struct_vertex_a3aa35fe84025ecf1acccb5f65f5577fd}\label{struct_vertex_a3aa35fe84025ecf1acccb5f65f5577fd}} 
+\index{Vertex@{Vertex}!normal@{normal}}
+\index{normal@{normal}!Vertex@{Vertex}}
+\subsubsection{\texorpdfstring{normal}{normal}}
+{\footnotesize\ttfamily glm\+::vec3 Vertex\+::normal}
+
+
+
+Definition at line 14 of file Vertex.\+h.
+
+\mbox{\Hypertarget{struct_vertex_a6814af2586248942604e8edd28d950a9}\label{struct_vertex_a6814af2586248942604e8edd28d950a9}} 
+\index{Vertex@{Vertex}!position@{position}}
+\index{position@{position}!Vertex@{Vertex}}
+\subsubsection{\texorpdfstring{position}{position}}
+{\footnotesize\ttfamily glm\+::vec4 Vertex\+::position}
+
+
+
+Definition at line 10 of file Vertex.\+h.
+
+\mbox{\Hypertarget{struct_vertex_a8d5cc8548016889746f251d98377ec8a}\label{struct_vertex_a8d5cc8548016889746f251d98377ec8a}} 
+\index{Vertex@{Vertex}!uv@{uv}}
+\index{uv@{uv}!Vertex@{Vertex}}
+\subsubsection{\texorpdfstring{uv}{uv}}
+{\footnotesize\ttfamily glm\+::vec2 Vertex\+::uv}
+
+
+
+Definition at line 11 of file Vertex.\+h.
+
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/\hyperlink{_vertex_8h}{Vertex.\+h}\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/\hyperlink{_vertex_8cpp}{Vertex.\+cpp}\end{DoxyCompactItemize}

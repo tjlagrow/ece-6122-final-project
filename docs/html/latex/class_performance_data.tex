@@ -1,0 +1,166 @@
+\hypertarget{class_performance_data}{}\section{Performance\+Data Class Reference}
+\label{class_performance_data}\index{Performance\+Data@{Performance\+Data}}
+
+
+{\ttfamily \#include $<$Performance\+Data.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_performance_data_a7766088fec48f94afcf784c027e0ee5d}{Performance\+Data} ()
+\item 
+void \hyperlink{class_performance_data_ac852244b141ba327f30da7a5fd586d49}{increment\+Frames} ()
+\item 
+const unsigned int \& \hyperlink{class_performance_data_a9ffcce90095cc9614f88b6ac25ff129d}{get\+Frames} () const
+\item 
+void \hyperlink{class_performance_data_a622d01a9d885596c79a799f03676c990}{update\+Stats} ()
+\item 
+void \hyperlink{class_performance_data_a5a19e35de26351c6983f069d25ec5a95}{reset} ()
+\item 
+double \hyperlink{class_performance_data_a54bcba973a7989024433e6d905140362}{get\+Elapsed\+Time} ()
+\item 
+double \hyperlink{class_performance_data_a803d0b8ed600dff6100c8c486c599527}{get\+Elapsed\+Time\+Since\+Creation} ()
+\item 
+const char $\ast$ \hyperlink{class_performance_data_a9f96571086d202296dd4bc3d799b4ac0}{get\+Frames\+Str} () const
+\item 
+const char $\ast$ \hyperlink{class_performance_data_a083aeabd3aa06b3420b2afdbc6e0e3d1}{get\+Elapsed\+Str} () const
+\item 
+const char $\ast$ \hyperlink{class_performance_data_aa30d1d2ea4889a3cacc726e4487c7b78}{get\+Fps\+Str} () const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 8 of file Performance\+Data.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_performance_data_a7766088fec48f94afcf784c027e0ee5d}\label{class_performance_data_a7766088fec48f94afcf784c027e0ee5d}} 
+\index{Performance\+Data@{Performance\+Data}!Performance\+Data@{Performance\+Data}}
+\index{Performance\+Data@{Performance\+Data}!Performance\+Data@{Performance\+Data}}
+\subsubsection{\texorpdfstring{Performance\+Data()}{PerformanceData()}}
+{\footnotesize\ttfamily Performance\+Data\+::\+Performance\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructor 
+
+Definition at line 9 of file Performance\+Data.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_performance_data_a083aeabd3aa06b3420b2afdbc6e0e3d1}\label{class_performance_data_a083aeabd3aa06b3420b2afdbc6e0e3d1}} 
+\index{Performance\+Data@{Performance\+Data}!get\+Elapsed\+Str@{get\+Elapsed\+Str}}
+\index{get\+Elapsed\+Str@{get\+Elapsed\+Str}!Performance\+Data@{Performance\+Data}}
+\subsubsection{\texorpdfstring{get\+Elapsed\+Str()}{getElapsedStr()}}
+{\footnotesize\ttfamily const char $\ast$ Performance\+Data\+::get\+Elapsed\+Str (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the string of the elapsed time since creation \begin{DoxyReturn}{Returns}
+Returns the elapsed time since creation string 
+\end{DoxyReturn}
+
+
+Definition at line 130 of file Performance\+Data.\+cpp.
+
+\mbox{\Hypertarget{class_performance_data_a54bcba973a7989024433e6d905140362}\label{class_performance_data_a54bcba973a7989024433e6d905140362}} 
+\index{Performance\+Data@{Performance\+Data}!get\+Elapsed\+Time@{get\+Elapsed\+Time}}
+\index{get\+Elapsed\+Time@{get\+Elapsed\+Time}!Performance\+Data@{Performance\+Data}}
+\subsubsection{\texorpdfstring{get\+Elapsed\+Time()}{getElapsedTime()}}
+{\footnotesize\ttfamily double Performance\+Data\+::get\+Elapsed\+Time (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Updates the current timestamp and returns the elapsed time since \hyperlink{class_performance_data_a5a19e35de26351c6983f069d25ec5a95}{reset()} was called \begin{DoxyReturn}{Returns}
+Returns the elapsed time in seconds since \hyperlink{class_performance_data_a5a19e35de26351c6983f069d25ec5a95}{reset()} 
+\end{DoxyReturn}
+
+
+Definition at line 83 of file Performance\+Data.\+cpp.
+
+\mbox{\Hypertarget{class_performance_data_a803d0b8ed600dff6100c8c486c599527}\label{class_performance_data_a803d0b8ed600dff6100c8c486c599527}} 
+\index{Performance\+Data@{Performance\+Data}!get\+Elapsed\+Time\+Since\+Creation@{get\+Elapsed\+Time\+Since\+Creation}}
+\index{get\+Elapsed\+Time\+Since\+Creation@{get\+Elapsed\+Time\+Since\+Creation}!Performance\+Data@{Performance\+Data}}
+\subsubsection{\texorpdfstring{get\+Elapsed\+Time\+Since\+Creation()}{getElapsedTimeSinceCreation()}}
+{\footnotesize\ttfamily double Performance\+Data\+::get\+Elapsed\+Time\+Since\+Creation (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Updates the current timestamp and returns the elapsed time since class creation was called \begin{DoxyReturn}{Returns}
+Returns the elapsed time in seconds since class creation 
+\end{DoxyReturn}
+
+
+Definition at line 94 of file Performance\+Data.\+cpp.
+
+\mbox{\Hypertarget{class_performance_data_aa30d1d2ea4889a3cacc726e4487c7b78}\label{class_performance_data_aa30d1d2ea4889a3cacc726e4487c7b78}} 
+\index{Performance\+Data@{Performance\+Data}!get\+Fps\+Str@{get\+Fps\+Str}}
+\index{get\+Fps\+Str@{get\+Fps\+Str}!Performance\+Data@{Performance\+Data}}
+\subsubsection{\texorpdfstring{get\+Fps\+Str()}{getFpsStr()}}
+{\footnotesize\ttfamily const char $\ast$ Performance\+Data\+::get\+Fps\+Str (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the string of the frames per second since the last time \hyperlink{class_performance_data_a622d01a9d885596c79a799f03676c990}{update\+Stats()} was called \begin{DoxyReturn}{Returns}
+Returns the frames per second string 
+\end{DoxyReturn}
+
+
+Definition at line 140 of file Performance\+Data.\+cpp.
+
+\mbox{\Hypertarget{class_performance_data_a9ffcce90095cc9614f88b6ac25ff129d}\label{class_performance_data_a9ffcce90095cc9614f88b6ac25ff129d}} 
+\index{Performance\+Data@{Performance\+Data}!get\+Frames@{get\+Frames}}
+\index{get\+Frames@{get\+Frames}!Performance\+Data@{Performance\+Data}}
+\subsubsection{\texorpdfstring{get\+Frames()}{getFrames()}}
+{\footnotesize\ttfamily const unsigned int \& Performance\+Data\+::get\+Frames (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Return the number of frames \begin{DoxyReturn}{Returns}
+Return the number of frames 
+\end{DoxyReturn}
+
+
+Definition at line 63 of file Performance\+Data.\+cpp.
+
+\mbox{\Hypertarget{class_performance_data_a9f96571086d202296dd4bc3d799b4ac0}\label{class_performance_data_a9f96571086d202296dd4bc3d799b4ac0}} 
+\index{Performance\+Data@{Performance\+Data}!get\+Frames\+Str@{get\+Frames\+Str}}
+\index{get\+Frames\+Str@{get\+Frames\+Str}!Performance\+Data@{Performance\+Data}}
+\subsubsection{\texorpdfstring{get\+Frames\+Str()}{getFramesStr()}}
+{\footnotesize\ttfamily const char $\ast$ Performance\+Data\+::get\+Frames\+Str (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Returns the string of the frame counter since the last time \hyperlink{class_performance_data_a622d01a9d885596c79a799f03676c990}{update\+Stats()} was called \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 121 of file Performance\+Data.\+cpp.
+
+\mbox{\Hypertarget{class_performance_data_ac852244b141ba327f30da7a5fd586d49}\label{class_performance_data_ac852244b141ba327f30da7a5fd586d49}} 
+\index{Performance\+Data@{Performance\+Data}!increment\+Frames@{increment\+Frames}}
+\index{increment\+Frames@{increment\+Frames}!Performance\+Data@{Performance\+Data}}
+\subsubsection{\texorpdfstring{increment\+Frames()}{incrementFrames()}}
+{\footnotesize\ttfamily void Performance\+Data\+::increment\+Frames (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Increment the frames counter 
+
+Definition at line 54 of file Performance\+Data.\+cpp.
+
+\mbox{\Hypertarget{class_performance_data_a5a19e35de26351c6983f069d25ec5a95}\label{class_performance_data_a5a19e35de26351c6983f069d25ec5a95}} 
+\index{Performance\+Data@{Performance\+Data}!reset@{reset}}
+\index{reset@{reset}!Performance\+Data@{Performance\+Data}}
+\subsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily void Performance\+Data\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Resets the performance counters 
+
+Definition at line 71 of file Performance\+Data.\+cpp.
+
+\mbox{\Hypertarget{class_performance_data_a622d01a9d885596c79a799f03676c990}\label{class_performance_data_a622d01a9d885596c79a799f03676c990}} 
+\index{Performance\+Data@{Performance\+Data}!update\+Stats@{update\+Stats}}
+\index{update\+Stats@{update\+Stats}!Performance\+Data@{Performance\+Data}}
+\subsubsection{\texorpdfstring{update\+Stats()}{updateStats()}}
+{\footnotesize\ttfamily void Performance\+Data\+::update\+Stats (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Set all the performance statistics 
+
+Definition at line 103 of file Performance\+Data.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/\hyperlink{_performance_data_8h}{Performance\+Data.\+h}\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/\hyperlink{_performance_data_8cpp}{Performance\+Data.\+cpp}\end{DoxyCompactItemize}

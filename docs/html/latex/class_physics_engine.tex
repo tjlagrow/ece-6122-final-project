@@ -1,0 +1,203 @@
+\hypertarget{class_physics_engine}{}\section{Physics\+Engine Class Reference}
+\label{class_physics_engine}\index{Physics\+Engine@{Physics\+Engine}}
+
+
+{\ttfamily \#include $<$Physics\+Engine.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_physics_engine_a7fc9180ea453680df0b863fa157c5b92}{Physics\+Engine} ()
+\item 
+\hyperlink{class_physics_engine_ae5f076ee99bbfdbc79ab2d27366d8476}{$\sim$\+Physics\+Engine} ()
+\item 
+void \hyperlink{class_physics_engine_ac9895c911f76466da7a7980d72cf9b08}{step\+Simulation} (const double \&delta\+Time)
+\item 
+void \hyperlink{class_physics_engine_a1ffbe330ee66c22fde2a8516dc9fc84e}{add\+Sphere} (float radius, float mass, float bounciness, float friction, glm\+::vec3 position)
+\item 
+void \hyperlink{class_physics_engine_a31a8857189ef80c1dc65a09298dcb9bf}{add\+Box} (glm\+::vec3 size, float mass, float bounciness, float friction, glm\+::vec3 position)
+\item 
+void \hyperlink{class_physics_engine_ad5e3e5508a2bf990241ad8d12e65e8b6}{add\+Hull} (std\+::vector$<$ glm\+::vec3 $>$ points, float mass, float bounciness, float friction, glm\+::vec3 position)
+\item 
+void \hyperlink{class_physics_engine_ae51b6b3b006443af2dfd8a2c3ee503bb}{add\+Wall} ()
+\item 
+void \hyperlink{class_physics_engine_a89715c2d36c8ab11960c5c1effe3ff57}{get\+Motion\+States} (std\+::vector$<$ glm\+::vec3 $>$ \&states)
+\item 
+void \hyperlink{class_physics_engine_af272bdb214ae594852c8457e45e2b7e3}{get\+Open\+G\+L\+Matrix} (int index, glm\+::mat4 \&matrix)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{class_physics_engine_a78f7f38916d7781c79b7818658c4619a}{simple\+\_\+ball\+\_\+drop} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 14 of file Physics\+Engine.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_physics_engine_a7fc9180ea453680df0b863fa157c5b92}\label{class_physics_engine_a7fc9180ea453680df0b863fa157c5b92}} 
+\index{Physics\+Engine@{Physics\+Engine}!Physics\+Engine@{Physics\+Engine}}
+\index{Physics\+Engine@{Physics\+Engine}!Physics\+Engine@{Physics\+Engine}}
+\subsubsection{\texorpdfstring{Physics\+Engine()}{PhysicsEngine()}}
+{\footnotesize\ttfamily Physics\+Engine\+::\+Physics\+Engine (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructor 
+
+Definition at line 20 of file Physics\+Engine.\+cpp.
+
+\mbox{\Hypertarget{class_physics_engine_ae5f076ee99bbfdbc79ab2d27366d8476}\label{class_physics_engine_ae5f076ee99bbfdbc79ab2d27366d8476}} 
+\index{Physics\+Engine@{Physics\+Engine}!````~Physics\+Engine@{$\sim$\+Physics\+Engine}}
+\index{````~Physics\+Engine@{$\sim$\+Physics\+Engine}!Physics\+Engine@{Physics\+Engine}}
+\subsubsection{\texorpdfstring{$\sim$\+Physics\+Engine()}{~PhysicsEngine()}}
+{\footnotesize\ttfamily Physics\+Engine\+::$\sim$\+Physics\+Engine (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Destructor 
+
+Definition at line 65 of file Physics\+Engine.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_physics_engine_a31a8857189ef80c1dc65a09298dcb9bf}\label{class_physics_engine_a31a8857189ef80c1dc65a09298dcb9bf}} 
+\index{Physics\+Engine@{Physics\+Engine}!add\+Box@{add\+Box}}
+\index{add\+Box@{add\+Box}!Physics\+Engine@{Physics\+Engine}}
+\subsubsection{\texorpdfstring{add\+Box()}{addBox()}}
+{\footnotesize\ttfamily void Physics\+Engine\+::add\+Box (\begin{DoxyParamCaption}\item[{glm\+::vec3}]{size,  }\item[{float}]{mass,  }\item[{float}]{bounciness,  }\item[{float}]{friction,  }\item[{glm\+::vec3}]{position }\end{DoxyParamCaption})}
+
+Adds a box to the physics engine 
+\begin{DoxyParams}{Parameters}
+{\em size} & The size of the box as measured from the origin \\
+\hline
+{\em mass} & The box\textquotesingle{}s mass \\
+\hline
+{\em bounciness} & The sphere\textquotesingle{}s bounciness from 0=none to 1=bouncy \\
+\hline
+{\em friction} & The sphere\textquotesingle{}s friction coefficient from 0=low to 1=high \href{https://www.thoughtspike.com/friction-coefficients-for-bullet-physics/}{\tt https\+://www.\+thoughtspike.\+com/friction-\/coefficients-\/for-\/bullet-\/physics/} \\
+\hline
+{\em position} & The box\textquotesingle{}s initial position as measured by the origin \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 143 of file Physics\+Engine.\+cpp.
+
+\mbox{\Hypertarget{class_physics_engine_ad5e3e5508a2bf990241ad8d12e65e8b6}\label{class_physics_engine_ad5e3e5508a2bf990241ad8d12e65e8b6}} 
+\index{Physics\+Engine@{Physics\+Engine}!add\+Hull@{add\+Hull}}
+\index{add\+Hull@{add\+Hull}!Physics\+Engine@{Physics\+Engine}}
+\subsubsection{\texorpdfstring{add\+Hull()}{addHull()}}
+{\footnotesize\ttfamily void Physics\+Engine\+::add\+Hull (\begin{DoxyParamCaption}\item[{std\+::vector$<$ glm\+::vec3 $>$}]{points,  }\item[{float}]{mass,  }\item[{float}]{bounciness,  }\item[{float}]{friction,  }\item[{glm\+::vec3}]{position }\end{DoxyParamCaption})}
+
+Add a convex hull shape to the physics engine 
+\begin{DoxyParams}{Parameters}
+{\em points} & T\+O\+DO Document \\
+\hline
+{\em mass} & T\+O\+DO Document \\
+\hline
+{\em bounciness} & T\+O\+DO Document \\
+\hline
+{\em friction} & T\+O\+DO Document \\
+\hline
+{\em position} & T\+O\+DO Document \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 172 of file Physics\+Engine.\+cpp.
+
+\mbox{\Hypertarget{class_physics_engine_a1ffbe330ee66c22fde2a8516dc9fc84e}\label{class_physics_engine_a1ffbe330ee66c22fde2a8516dc9fc84e}} 
+\index{Physics\+Engine@{Physics\+Engine}!add\+Sphere@{add\+Sphere}}
+\index{add\+Sphere@{add\+Sphere}!Physics\+Engine@{Physics\+Engine}}
+\subsubsection{\texorpdfstring{add\+Sphere()}{addSphere()}}
+{\footnotesize\ttfamily void Physics\+Engine\+::add\+Sphere (\begin{DoxyParamCaption}\item[{float}]{radius,  }\item[{float}]{mass,  }\item[{float}]{bounciness,  }\item[{float}]{friction,  }\item[{glm\+::vec3}]{position }\end{DoxyParamCaption})}
+
+Adds a sphere to the physics engine 
+\begin{DoxyParams}{Parameters}
+{\em radius} & The radius of the sphere \\
+\hline
+{\em mass} & The sphere\textquotesingle{}s mass \\
+\hline
+{\em bounciness} & The sphere\textquotesingle{}s bounciness from 0=none to 1=bouncy \\
+\hline
+{\em friction} & The sphere\textquotesingle{}s friction coefficient from 0=low to 1=high \href{https://www.thoughtspike.com/friction-coefficients-for-bullet-physics/}{\tt https\+://www.\+thoughtspike.\+com/friction-\/coefficients-\/for-\/bullet-\/physics/} \\
+\hline
+{\em position} & The sphere\textquotesingle{}s initial position as measured from the origin \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 113 of file Physics\+Engine.\+cpp.
+
+\mbox{\Hypertarget{class_physics_engine_ae51b6b3b006443af2dfd8a2c3ee503bb}\label{class_physics_engine_ae51b6b3b006443af2dfd8a2c3ee503bb}} 
+\index{Physics\+Engine@{Physics\+Engine}!add\+Wall@{add\+Wall}}
+\index{add\+Wall@{add\+Wall}!Physics\+Engine@{Physics\+Engine}}
+\subsubsection{\texorpdfstring{add\+Wall()}{addWall()}}
+{\footnotesize\ttfamily void Physics\+Engine\+::add\+Wall (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Add a wall (plane) to the physics engine 
+
+Definition at line 197 of file Physics\+Engine.\+cpp.
+
+\mbox{\Hypertarget{class_physics_engine_a89715c2d36c8ab11960c5c1effe3ff57}\label{class_physics_engine_a89715c2d36c8ab11960c5c1effe3ff57}} 
+\index{Physics\+Engine@{Physics\+Engine}!get\+Motion\+States@{get\+Motion\+States}}
+\index{get\+Motion\+States@{get\+Motion\+States}!Physics\+Engine@{Physics\+Engine}}
+\subsubsection{\texorpdfstring{get\+Motion\+States()}{getMotionStates()}}
+{\footnotesize\ttfamily void Physics\+Engine\+::get\+Motion\+States (\begin{DoxyParamCaption}\item[{std\+::vector$<$ glm\+::vec3 $>$ \&}]{states }\end{DoxyParamCaption})}
+
+T\+O\+DO Document 
+\begin{DoxyParams}{Parameters}
+{\em states} & T\+O\+DO Document \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 225 of file Physics\+Engine.\+cpp.
+
+\mbox{\Hypertarget{class_physics_engine_af272bdb214ae594852c8457e45e2b7e3}\label{class_physics_engine_af272bdb214ae594852c8457e45e2b7e3}} 
+\index{Physics\+Engine@{Physics\+Engine}!get\+Open\+G\+L\+Matrix@{get\+Open\+G\+L\+Matrix}}
+\index{get\+Open\+G\+L\+Matrix@{get\+Open\+G\+L\+Matrix}!Physics\+Engine@{Physics\+Engine}}
+\subsubsection{\texorpdfstring{get\+Open\+G\+L\+Matrix()}{getOpenGLMatrix()}}
+{\footnotesize\ttfamily void Physics\+Engine\+::get\+Open\+G\+L\+Matrix (\begin{DoxyParamCaption}\item[{int}]{index,  }\item[{glm\+::mat4 \&}]{matrix }\end{DoxyParamCaption})}
+
+T\+O\+DO Document 
+\begin{DoxyParams}{Parameters}
+{\em index} & T\+O\+DO Document \\
+\hline
+{\em matrix} & T\+O\+DO Document \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 248 of file Physics\+Engine.\+cpp.
+
+\mbox{\Hypertarget{class_physics_engine_a78f7f38916d7781c79b7818658c4619a}\label{class_physics_engine_a78f7f38916d7781c79b7818658c4619a}} 
+\index{Physics\+Engine@{Physics\+Engine}!simple\+\_\+ball\+\_\+drop@{simple\+\_\+ball\+\_\+drop}}
+\index{simple\+\_\+ball\+\_\+drop@{simple\+\_\+ball\+\_\+drop}!Physics\+Engine@{Physics\+Engine}}
+\subsubsection{\texorpdfstring{simple\+\_\+ball\+\_\+drop()}{simple\_ball\_drop()}}
+{\footnotesize\ttfamily static void Physics\+Engine\+::simple\+\_\+ball\+\_\+drop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_physics_engine_ac9895c911f76466da7a7980d72cf9b08}\label{class_physics_engine_ac9895c911f76466da7a7980d72cf9b08}} 
+\index{Physics\+Engine@{Physics\+Engine}!step\+Simulation@{step\+Simulation}}
+\index{step\+Simulation@{step\+Simulation}!Physics\+Engine@{Physics\+Engine}}
+\subsubsection{\texorpdfstring{step\+Simulation()}{stepSimulation()}}
+{\footnotesize\ttfamily void Physics\+Engine\+::step\+Simulation (\begin{DoxyParamCaption}\item[{const double \&}]{delta\+Time }\end{DoxyParamCaption})}
+
+Advance the simulation 
+\begin{DoxyParams}{Parameters}
+{\em delta\+Time} & Change in time from the last time step (usually something like 1/60.\+0f to 1/20.\+0f) \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 99 of file Physics\+Engine.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/\hyperlink{_physics_engine_8h}{Physics\+Engine.\+h}\item 
+/home/rory/\+Projects/ece-\/6122-\/final-\/project/src/\hyperlink{_physics_engine_8cpp}{Physics\+Engine.\+cpp}\end{DoxyCompactItemize}
