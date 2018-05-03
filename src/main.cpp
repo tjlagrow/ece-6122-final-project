@@ -6,6 +6,7 @@
 #include "Layer.h"
 #include "utils/GlmUtils.h"
 #include "raytracer/Raytracer.h"
+#include "PerformanceData.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
@@ -23,15 +24,9 @@
 #define WINDOW_TITLE    "ECE6122 Final Project"
 
 static float fov = 45.0f; // Filed of View in degrees
-static float camx = -8.0f; // Camera location x
-static float camy = 04.0f; // Camera location y, this is the height
-static float camz = 26.0f; // Camera location z
-static float camr = 10.0f; // Camera radius
-static float cama = -3 * M_PI / 4; // Camera angle in radians
-
-// Delta multiplier for camera angle; affects speed of movement. Not exactly
-// sure what units it's is, but a larger number means faster movement
-static float camdt = 0.002f;
+static float camx = -10.0f; // Camera location x
+static float camy = 10.0f; // Camera location y, this is the height
+static float camz = 20.0f; // Camera location z
 
 enum class ShapeType { Box, Sphere, Cylinder, Cone, Custom };
 
@@ -47,7 +42,7 @@ struct objMetadata
 
 static std::vector<struct objMetadata> objmeta =
 {
-	{ ShapeType::Sphere,   glm::vec3(-7.0f, +30.0f, +0.0f), 5.0f, 0.6f, 0.9f, "../models/ball_simple.obj" },
+	{ ShapeType::Sphere,   glm::vec3(-7.0f, +30.0f, +0.0f), 10.f, 0.6f, 0.9f, "../models/ball_simple.obj" },
 	{ ShapeType::Custom,   glm::vec3(-8.0f, +00.0f, +0.0f), 99.f, 0.6f, 0.9f, "../models/ramp.obj" },
 	{ ShapeType::Box,      glm::vec3(+6.0f, +02.0f, -1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
 	{ ShapeType::Box,      glm::vec3(+6.0f, +04.0f, -1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
@@ -72,20 +67,6 @@ static std::vector<struct objMetadata> objmeta =
 ////////////////////////////////////////////////////////
 
 /**
- * Calculates a new camera position based on the current. The camera
- * is set up to rotate in a circle at a circle height
- * @param x The camera's x-position
- * @param z The camera's z-position
- * @param a The camera's angle (in radians)
- */
-void updateCameraPosition(float &x, float &z, float &a)
-{
-	x = std::cos(a) * camr;
-	z = std::sin(a) * camr;
-	a += camdt;
-}
-
-/**
  * Main program entry point
  * @param argc Number of command-line arguments
  * @param argv Command line arguments array
@@ -100,10 +81,11 @@ int main(int argc, char **argv)
 	if (cfg.verbose)
 	{
 		int pad = -15;
-		printf("%*s: %s", pad, "Output file", cfg.output_filename);
-		printf("%*s: %s", pad, "Raytrace", cfg.raytrace ? "yes" : "no");
-		printf("%*s: %u", pad, "Threads", cfg.num_threads);
-		printf("%*s: %s", pad, "Verbose", cfg.verbose ? "yes" : "no");
+		printf("%*s: %s\n", pad, "Output file", cfg.output_filename);
+		printf("%*s: %s\n", pad, "Raytrace", cfg.raytrace ? "yes" : "no");
+		printf("%*s: %d\n", pad, "Threads", cfg.numThreads);
+		printf("%*s: %d\n", pad, "Time", cfg.stopTime_s);
+		printf("%*s: %s\n", pad, "Verbose", cfg.verbose ? "yes" : "no");
 	}
 
 	Window window(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -126,6 +108,7 @@ int main(int argc, char **argv)
 
 	Object stage("../models/stage.obj");
 	stageLayer.add(&stage);
+	engine.addWall();
 
 	// Load the objects from file into the layer
 	std::vector<Object *> objects;
@@ -193,17 +176,6 @@ int main(int argc, char **argv)
 		glm::vec3(0.0f, 1.0f, 0.0f)  // Y-axis is Up
 	);
 
-	// Frames per second statistics
-	size_t frames = 0;
-	char frm_str[32] = "frames: 0";
-	char sec_str[32] = "secs:   0.000";
-	char fps_str[32] = "fps:    0.000";
-	double tnow = window.getTime();
-	double tnext = tnow + 1.0f;
-	float sx = 2.0f / window.getWidth();
-	float sy = 2.0f / window.getHeight();
-	glm::vec4 color_white(1.0f, 1.0f, 1.0f, 1.0f);
-
 ////////////////////////////////////////////////////////
 // END - TODO Find a better home for this stuff
 ////////////////////////////////////////////////////////
@@ -219,9 +191,16 @@ int main(int argc, char **argv)
 	shader1.setUniformMat4("vvmat", vMatrix); // Vertexshader-View-MATrix
 	shader1.disable();
 
+	// Mainly used for frames per second statistics
+	// but could very easily be extended in the future
+	PerformanceData perf;
+	double elapsedTime;
+	double sx = 2.0f / window.getWidth();
+	double sy = 2.0f / window.getHeight();
+
 	// Main loop, do everything here (render objects, update their positions,
 	// collision detection, raytracing, performance statistics, etc.)
-	while (!window.shouldClose())
+	while (! window.shouldClose())
 	{
 		// Clear the window's "back buffer" so
 		// we can begin drawing a new scene
@@ -229,15 +208,10 @@ int main(int argc, char **argv)
 
 		// If time has elapsed, get the diagnostic text to
 		// overlay on the screen, but don't print it out here yet
-		if ((tnow = window.getTime()) > tnext)
+		if ((elapsedTime = perf.getElapsedTime()) > 1.0f)
 		{
-			memset(frm_str, 0, sizeof(frm_str));
-			memset(sec_str, 0, sizeof(sec_str));
-			memset(fps_str, 0, sizeof(fps_str));
-			snprintf(frm_str, sizeof(frm_str)-1, "frames: %lu", frames);
-			snprintf(sec_str, sizeof(sec_str)-1, "secs:   %06.3f", tnow);
-			snprintf(fps_str, sizeof(fps_str)-1, "fps:    %06.3f", frames / tnow);
-			tnext = tnow + 1.0f;
+			perf.updateStats(); // Update the performance statistics
+			perf.reset();
 		}
 
 		engine.stepSimulation(1 / 60.0f); // Speed up to like 1/24 if too slow
@@ -251,9 +225,6 @@ int main(int argc, char **argv)
 			engine.getOpenGLMatrix(i, updateTransform);
 			objects[i]->setTransform(updateTransform);
 		}
-
-		// Enable camera rotation
-//		updateCameraPosition(camx, camz, cama);
 
 		// Set the camera position by applying a "view matrix"
 		// (as part of the model-view-projection graphics scheme)
@@ -270,18 +241,20 @@ int main(int argc, char **argv)
 		stageLayer.render(glm::vec3(camx, camy, camz));
 		modelLayer.render(glm::vec3(camx, camy, camz));
 
-//		raytracer.render({});
+		if (cfg.raytrace)
+			raytracer.render({});
 
 		// Draw text last so it is on top of the other layers
 		tw.begin();
-		tw.write(frm_str, -0.99f, +0.95f, sx, sy, color_white);
-		tw.write(sec_str, -0.99f, +0.90f, sx, sy, color_white);
-		tw.write(fps_str, -0.99f, +0.85f, sx, sy, color_white);
+		tw.write(perf.getFramesStr(),  -0.99f, +0.95f, sx, sy, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		tw.write(perf.getElapsedStr(), -0.99f, +0.90f, sx, sy, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		tw.write(perf.getFpsStr(),     -0.99f, +0.85f, sx, sy, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		tw.end();
 
 		// Finally, update the window buffers to see what we've drawn
 		window.update();
-		frames++;
+
+		perf.incrementFrames();
 	}
 
 	for (unsigned int i = 0; i < objects.size(); ++i)

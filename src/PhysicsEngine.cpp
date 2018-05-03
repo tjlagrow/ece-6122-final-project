@@ -15,78 +15,6 @@ glm::mat4 btScalar2glmMat4(btScalar* matrix)
 }
 
 /**
- * Demo getting started function
- */
-void PhysicsEngine::simple_ball_drop()
-{
-	// Choose the broadphase algorithm
-	// http://www.bulletphysics.org/mediawiki-1.5.8/index.php/Broadphase
-	btBroadphaseInterface *broadphase = new btDbvtBroadphase();
-
-	// The collision configuration allows you to fine tune the algorithms used for the full (not broadphase)
-	// collision detection. http://www.bulletphysics.org/mediawiki-1.5.8/index.php/Collision_Things
-	btDefaultCollisionConfiguration *colConfig = new btDefaultCollisionConfiguration();
-	btCollisionDispatcher *dispatcher = new btCollisionDispatcher(colConfig);
-
-	// We also need a "solver". This is what causes the objects to interact properly, taking into account gravity,
-	// game logic supplied forces, collisions, and hinge constraints. It does a good job as long as you don't push
-	// it to extremes, and is one of the bottlenecks in any high performance simulation. There are parallel versions
-	// available for some threading models.
-	btSequentialImpulseConstraintSolver *solver = new btSequentialImpulseConstraintSolver();
-
-	// Instantiate the dynamics world
-	btDiscreteDynamicsWorld *world = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, colConfig);
-
-	// Choose Y-axis to be up
-	world->setGravity(btVector3(0, -10, 0));
-
-	btCollisionShape *groundShape = new btStaticPlaneShape(btVector3(0, 1, 0), 1);
-	btDefaultMotionState *groundMotionState = new btDefaultMotionState(
-		btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
-	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(0, groundMotionState, groundShape, btVector3(0, 0, 0));
-	btRigidBody *groundRigidBody = new btRigidBody(groundRigidBodyCI);
-	world->addRigidBody(groundRigidBody);
-
-	btCollisionShape *sphereShape = new btSphereShape(1);
-	btDefaultMotionState *sphereMotionState = new btDefaultMotionState(
-		btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 50, 0)));
-	btScalar sphereMass = 1;
-	btVector3 sphereInertia(0, 0, 0);
-	sphereShape->calculateLocalInertia(sphereMass, sphereInertia);
-	btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(sphereMass, sphereMotionState, sphereShape,
-															   sphereInertia);
-	btRigidBody *sphereRigidBody = new btRigidBody(sphereRigidBodyCI);
-	world->addRigidBody(sphereRigidBody);
-
-	for (int i = 0; i < 300; i++)
-	{
-		world->stepSimulation(1 / 60.0f, 10);
-		btTransform trans;
-		sphereRigidBody->getMotionState()->getWorldTransform(trans);
-		printf("%f\n", trans.getOrigin().getY());
-	}
-
-	// Clean up all the bullet memory
-
-	world->removeRigidBody(sphereRigidBody);
-	delete sphereRigidBody->getMotionState();
-	delete sphereRigidBody;
-
-	world->removeRigidBody(groundRigidBody);
-	delete groundRigidBody->getMotionState();
-	delete groundRigidBody;
-
-	delete sphereShape;
-	delete groundShape;
-
-	delete world;
-	delete solver;
-	delete dispatcher;
-	delete colConfig;
-	delete broadphase;
-}
-
-/**
  * Constructor
  */
 PhysicsEngine::PhysicsEngine()
@@ -146,10 +74,14 @@ PhysicsEngine::~PhysicsEngine()
 	for (auto &shape : m_shapes)
 		delete shape;
 
+	m_world->removeRigidBody(m_wallRigidBody);
+	delete m_wallRigidBody->getMotionState();
+	delete m_wallRigidBody;
+	delete m_wall;
+
 	m_world->removeRigidBody(m_groundRigidBody);
 	delete m_groundRigidBody->getMotionState();
 	delete m_groundRigidBody;
-
 	delete m_ground;
 
 	delete m_world;
@@ -229,6 +161,14 @@ void PhysicsEngine::addBox(glm::vec3 size, float mass, float bounciness, float f
 	addObject(shape, mass, inertia, motion, bounciness, friction);
 }
 
+/**
+ * Add a convex hull shape to the physics engine
+ * @param points TODO Document
+ * @param mass TODO Document
+ * @param bounciness TODO Document
+ * @param friction TODO Document
+ * @param position TODO Document
+ */
 void PhysicsEngine::addHull(std::vector<glm::vec3> points, float mass, float bounciness, float friction, glm::vec3 position)
 {
 	btConvexHullShape *shape = new btConvexHullShape();
@@ -250,6 +190,34 @@ void PhysicsEngine::addHull(std::vector<glm::vec3> points, float mass, float bou
 
 	addObject(shape, mass, inertia, motion, bounciness, friction);
 }
+
+/**
+ * Add a wall (plane) to the physics engine
+ */
+void PhysicsEngine::addWall()
+{
+//	m_ground = new btStaticPlaneShape(btVector3(0, 1, 0), 1);
+//	btDefaultMotionState *groundMotionState = new btDefaultMotionState(
+//		btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
+
+	m_wall = new btStaticPlaneShape(btVector3(-1, 0, 0), 1);
+
+	btDefaultMotionState *wallMotionState = new btDefaultMotionState(
+		btTransform(btQuaternion(0, 0, 0, 1), btVector3(20, 0, 0)));
+
+	btRigidBody::btRigidBodyConstructionInfo wallRigidBodyCI(
+		0, // Walls have 0 mass
+		wallMotionState,
+		m_wall,
+		btVector3(0, 0, 0) // Walls havae 0 inertia
+	);
+
+	m_wallRigidBody = new btRigidBody(wallRigidBodyCI);
+	m_wallRigidBody->setFriction(1.0);
+
+	m_world->addRigidBody(m_wallRigidBody);
+}
+
 /**
  * TODO Document
  * @param states TODO Document
@@ -318,7 +286,7 @@ void PhysicsEngine::addObject(
 
 	auto *rigidBody = new btRigidBody(rigidBodyCI);
 	rigidBody->setRestitution(bounciness);
-	rigidBody->setFriction(1.0);
+	rigidBody->setFriction(friction);
 
 	m_rigidBodies.push_back(rigidBody);
 	m_world->addRigidBody(rigidBody);
