@@ -2,6 +2,8 @@
 #include <string.h>
 #include <cstdio>
 
+extern int verbose;
+
 /**
  * Constructor
  * @param title The window title
@@ -45,7 +47,8 @@ Window::Window(const char *title, int width, int height)
 		throw "Could not initialize GLEW";
 	}
 
-	printf("OpenGL Version: %s\n", glGetString(GL_VERSION));
+	if (verbose)
+		printf("OpenGL Version: %s\n", glGetString(GL_VERSION));
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

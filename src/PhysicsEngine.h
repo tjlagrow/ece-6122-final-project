@@ -19,10 +19,10 @@ public:
 	~PhysicsEngine();
 
 	void stepSimulation(const double &deltaTime);
-	void addSphere(float radius, float mass, float bounciness, float friction, glm::vec3 position);
-	void addBox(glm::vec3 size, float mass, float bounciness, float friction, glm::vec3 position);
-	void addHull(std::vector<glm::vec3> points, float mass, float bounciness, float friction, glm::vec3 position);
-	void addWall();
+	void addSphere(float radius, float mass, float bounciness, float friction, glm::vec3 velocity, glm::vec3 position);
+	void addBox(glm::vec3 size, float mass, float bounciness, float friction, glm::vec3 velocity, glm::vec3 position);
+	void addHull(std::vector<glm::vec3> points, float mass, float bounciness, float friction, glm::vec3 velocity, glm::vec3 position);
+	void addWalls();
 
 	void getMotionStates(std::vector<glm::vec3> &states);
 	void getOpenGLMatrix(int index, glm::mat4 &matrix);
@@ -36,7 +36,8 @@ private:
 		btVector3 inertia,
 		btDefaultMotionState *motion,
 		btScalar bounciness,
-		btScalar friction
+		btScalar friction,
+		btVector3 velocity
 	);
 
 	btBroadphaseInterface *m_broadphase;
@@ -49,8 +50,14 @@ private:
 	std::vector<btCollisionShape *> m_shapes;
 	std::vector<btRigidBody *> m_rigidBodies;
 
-	btCollisionShape *m_wall;
-	btRigidBody *m_wallRigidBody;
+	btCollisionShape *m_wall1;
+	btCollisionShape *m_wall2;
+	btCollisionShape *m_wall3;
+	btCollisionShape *m_wall4;
+	btRigidBody *m_wallRigidBody1;
+	btRigidBody *m_wallRigidBody2;
+	btRigidBody *m_wallRigidBody3;
+	btRigidBody *m_wallRigidBody4;
 };
 
 

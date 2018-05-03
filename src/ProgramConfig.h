@@ -2,6 +2,8 @@
 #define ECE_6122_FINAL_PROJECT_CFG_H
 
 #define DEFAULT_MOVIE_FILENAME  "movie.mpeg"
+#define DEFAULT_SCENE 2
+#define DEFAULT_FRAMES (60*2)
 
 #include <cstring> // memset()
 #include <cstdio> // snprintf()
@@ -15,8 +17,9 @@ struct ProgramConfig
 	ProgramConfig()
 	{
 		raytrace = 0;
+		scene = DEFAULT_SCENE;
 		numThreads = 1;
-		stopTime_s = 7;
+		frames = DEFAULT_FRAMES;
 		verbose = 0;
 		memset(output_filename, 0, sizeof(output_filename));
 		snprintf(output_filename, sizeof(output_filename)-1, "%s", DEFAULT_MOVIE_FILENAME);
@@ -24,8 +27,9 @@ struct ProgramConfig
 
 	char output_filename[128];
 	int raytrace;
-	int numThreads;
-	int stopTime_s;
+	unsigned int scene;
+	unsigned int numThreads;
+	unsigned int frames;
 	int verbose; // If 1, means to print more messages
 };
 

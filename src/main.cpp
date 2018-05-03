@@ -24,43 +24,76 @@
 #define WINDOW_TITLE    "ECE6122 Final Project"
 
 static float fov = 45.0f; // Filed of View in degrees
-static float camx = 10.0f; // Camera location x
-static float camy = 10.0f; // Camera location y, this is the height
-static float camz = 10.0f; // Camera location z
+static float camx = 0.01f; // Camera location x
+static float camy = 20.0f; // Camera location y, this is the height
+static float camz = 0.01f; // Camera location z
+
+int verbose; // Global verbose
 
 enum class ShapeType { Box, Sphere, Cylinder, Cone, Custom };
 
-struct objMetadata
+struct SceneObject
 {
 	ShapeType type;
 	glm::vec3 position;
 	float mass;
 	float bounciness;
 	float friction;
+	glm::vec3 velocity;
 	const char *filepath;
 };
 
-static std::vector<struct objMetadata> objmeta =
+static std::vector<struct SceneObject> objmeta1 =
 {
-//	{ ShapeType::Sphere,   glm::vec3(-7.0f, +30.0f, +0.0f), 10.f, 0.6f, 0.9f, "../models/ball_simple.obj" },
-	{ ShapeType::Sphere,   glm::vec3(+0.0f, -05.0f, +0.0f), 10.f, 0.6f, 0.9f, "../models/greenball.obj" },
-	{ ShapeType::Sphere,   glm::vec3(+0.0f, +00.0f, +0.0f), 10.f, 0.6f, 0.9f, "../models/redball.obj" },
-	{ ShapeType::Custom,   glm::vec3(-8.0f, +00.0f, +0.0f), 99.f, 0.6f, 0.9f, "../models/ramp.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +02.0f, -1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +04.0f, -1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +06.0f, -1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +08.0f, -1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +10.0f, -1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +12.0f, -1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +02.0f, +1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +04.0f, +1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +06.0f, +1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +08.0f, +1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +10.0f, +1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +12.0f, +1.0f), 0.7f, 0.6f, 0.9f, "../models/cube.obj" },
+	{ ShapeType::Sphere,   glm::vec3(-7.0f, +30.0f, +0.0f), 10.f, 0.6f, 0.9f, glm::vec3(), "../models/ball_simple.obj" },
+	{ ShapeType::Custom,   glm::vec3(-8.0f, +00.0f, +0.0f), 99.f, 0.6f, 0.9f, glm::vec3(), "../models/ramp.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +02.0f, -1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +04.0f, -1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +06.0f, -1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +08.0f, -1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +10.0f, -1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +12.0f, -1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +02.0f, +1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +04.0f, +1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +06.0f, +1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +08.0f, +1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +10.0f, +1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +12.0f, +1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
 };
 
-////////////////////////////////////////////////////////
+static std::vector<struct SceneObject> objmeta2 =
+{
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballgreen.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballred.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballblue.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballyellow.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballpink.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballpurple.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballcyan.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballgreen.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballred.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballblue.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballyellow.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballpink.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballpurple.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballcyan.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballgreen.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballred.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballblue.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballyellow.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballpink.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballpurple.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballcyan.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballgreen.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballred.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballblue.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballyellow.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballpink.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballpurple.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballcyan.obj" }
+};
+
+////////////////////////////////////////////////////
 // END - GLOBAL VARIABLES FOR TEST ONLY
 ////////////////////////////////////////////////////////
 
@@ -75,15 +108,33 @@ int main(int argc, char **argv)
 	// Parse program arguments and store in ProgramConfig
 	ProgramConfig cfg;
 	ArgParser::parse_args(argc, argv, &cfg);
+	verbose = cfg.verbose;
+	std::vector<SceneObject> *objptr;
+
+	std::srand(std::time(0));
 
 	if (cfg.verbose)
 	{
 		int pad = -15;
 		printf("%*s: %s\n", pad, "Output file", cfg.output_filename);
+		printf("%*s: %u\n", pad, "Scene", cfg.scene);
 		printf("%*s: %s\n", pad, "Raytrace", cfg.raytrace ? "yes" : "no");
 		printf("%*s: %d\n", pad, "Threads", cfg.numThreads);
-		printf("%*s: %d\n", pad, "Time", cfg.stopTime_s);
+		printf("%*s: %d\n", pad, "Frames", cfg.frames);
 		printf("%*s: %s\n", pad, "Verbose", cfg.verbose ? "yes" : "no");
+	}
+
+	switch (cfg.scene)
+	{
+		case 1:
+			objptr = &objmeta1;
+			break;
+		case 2:
+			objptr = &objmeta2;
+			break;
+		default:
+			printf("Invalid scene selected\n");
+			exit(0);
 	}
 
 	Window window(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -106,35 +157,56 @@ int main(int argc, char **argv)
 
 	Object stage("../models/stage.obj");
 	stageLayer.add(&stage);
-	engine.addWall();
+	engine.addWalls();
 
 	// Load the objects from file into the layer
 	std::vector<Object *> objects;
-	for (unsigned int i = 0; i < objmeta.size(); ++i)
+	for (unsigned int i = 0; i < (*objptr).size(); ++i)
 	{
-		auto *o = new Object(objmeta[i].filepath);
-		glm::mat4 transform = glm::translate(objmeta[i].position);
+		auto *o = new Object((*objptr)[i].filepath);
+		glm::mat4 transform = glm::translate((*objptr)[i].position);
 		o->setTransform(transform);
 		modelLayer.add(o);
 		objects.push_back(o);
-		switch (objmeta[i].type)
+		switch ((*objptr)[i].type)
 		{
 			case ShapeType::Sphere:
+				if (cfg.scene == 2)
+				{
+					float multiplier;
+
+					multiplier = (std::rand() % 2 == 1) ? -1 : 1;
+					(*objptr)[i].velocity.x = std::rand() % 4 * multiplier;
+
+					multiplier = (std::rand() % 2 == 1) ? -1 : 1;
+					(*objptr)[i].velocity.z = std::rand() % 4 * multiplier;
+
+					multiplier = (std::rand() % 2 == 1) ? -1 : 1;
+					(*objptr)[i].position.x = std::rand() % 4 * multiplier;
+
+					// No multiplier, always start above ground
+					(*objptr)[i].position.y = std::rand() % 40;
+
+					multiplier = (std::rand() % 2 == 1) ? -1 : 1;
+					(*objptr)[i].position.z = std::rand() % 4 * multiplier;
+				}
 				engine.addSphere(
 					1.0f,
-					objmeta[i].mass,
-					objmeta[i].bounciness,
-					objmeta[i].friction,
-					objmeta[i].position
+					(*objptr)[i].mass,
+					(*objptr)[i].bounciness,
+					(*objptr)[i].friction,
+					(*objptr)[i].velocity,
+					(*objptr)[i].position
 				);
 				break;
 			case ShapeType::Box:
 				engine.addBox(
 					o->getSize()/2.0f, // Bullet wants half-lengths
-					objmeta[i].mass,
-					objmeta[i].bounciness,
-					objmeta[i].friction,
-					objmeta[i].position
+					(*objptr)[i].mass,
+					(*objptr)[i].bounciness,
+					(*objptr)[i].friction,
+					(*objptr)[i].velocity,
+					(*objptr)[i].position
 				);
 				break;
 			case ShapeType::Cone:
@@ -146,10 +218,11 @@ int main(int argc, char **argv)
 			case ShapeType::Custom:
 				engine.addHull(
 					o->getPositionsGlmVec3(),
-					objmeta[i].mass,
-					objmeta[i].bounciness,
-					objmeta[i].friction,
-					objmeta[i].position
+					(*objptr)[i].mass,
+					(*objptr)[i].bounciness,
+					(*objptr)[i].friction,
+					(*objptr)[i].velocity,
+					(*objptr)[i].position
 				);
 				break;
 		}
@@ -228,7 +301,8 @@ int main(int argc, char **argv)
 		shader1.enable();
 		vMatrix = glm::lookAt(
 			glm::vec3(camx, camy, camz), // Camera position
-			objects[0]->getWorldOrigin(), // Look at the ball
+//			objects[0]->getWorldOrigin(), // Look at the ball
+			glm::vec3(0.0f, 0.0f, 0.0f), // Look at
 			glm::vec3(0.0f, 1.0f, 0.0f)  // Y-axis is Up
 		);
 		shader1.setUniformMat4("vvmat", vMatrix); // "Vertexshader-View-MATrix"
@@ -239,14 +313,13 @@ int main(int argc, char **argv)
 		modelLayer.render(glm::vec3(camx, camy, camz));
 
 		/////////////////////////////// TODO Don't forget to change back
-//		if (cfg.raytrace)
-		if (1)
+		if (cfg.raytrace)
+//		if (1)
 		///////////////////////////////
 			raytracer.render(
 				glm::vec3(camx, camy, camz), // Camera position
-//				objects[0]->getWorldOrigin(), // Look at
 				glm::vec3(0.0f, 0.0f, 0.0f), // Look at
-				std::vector<Object *>{ objects[0], objects[1] }
+				objects
 			);
 
 		// Draw text last so it is on top of the other layers
@@ -261,7 +334,8 @@ int main(int argc, char **argv)
 
 		perf.incrementFrames();
 
-		window.close();
+		if (perf.getFramesTotal() > cfg.frames)
+			window.close();
 	}
 
 	for (unsigned int i = 0; i < objects.size(); ++i)

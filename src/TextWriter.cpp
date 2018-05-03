@@ -3,6 +3,8 @@
 
 #define MAXWIDTH  1024
 
+extern int verbose;
+
 static const GLchar *uniform_sampler = "sampler";
 static const GLchar *uniform_vcoord = "vcoord";
 static const GLchar *uniform_color = "inColor";
@@ -136,7 +138,8 @@ struct atlas
 			ox += g->bitmap.width + 1;
 		}
 
-		printf("Generated a %d x %d (%d kb) texture atlas\n", w, h, w * h / 1024);
+		if (verbose)
+			printf("Generated a %d x %d (%d kb) texture atlas\n", w, h, w * h / 1024);
 	}
 
 	~atlas()

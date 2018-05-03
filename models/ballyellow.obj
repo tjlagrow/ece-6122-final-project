@@ -1,6 +1,4 @@
-# Blender v2.78 (sub 0) OBJ File: 'greenball.blend'
-# www.blender.org
-mtllib greenball.mtl
+mtllib ballyellow.mtl
 o Sphere
 v 0.000000 0.923880 -0.382683
 v 0.000000 0.707107 -0.707107
@@ -244,7 +242,7 @@ vn -0.0388 -0.9800 -0.1949
 vn -0.1632 -0.5481 -0.8203
 vn -0.1915 0.1915 -0.9626
 vn -0.1098 0.8264 -0.5522
-usemtl GreenMaterial
+usemtl YellowMaterial
 s off
 f 1//1 11//1 2//1
 f 7//2 15//2 16//2

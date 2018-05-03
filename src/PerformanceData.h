@@ -11,7 +11,8 @@ public:
 	PerformanceData();
 
 	void incrementFrames();
-	const unsigned int &getFrames() const;
+	const unsigned int &getFramesCurrent() const;
+	const unsigned int &getFramesTotal() const;
 
 	void updateStats();
 
@@ -28,7 +29,8 @@ private:
 	inline double getTimeDouble();
 	inline double convertTimespecToDouble(struct timespec &time);
 
-	unsigned int m_frames;
+	unsigned int m_framesCurrent;
+	unsigned int m_framesTotal;
 	char m_strFrames[32];
 	char m_strElapsed[32];
 	char m_strFps[32];

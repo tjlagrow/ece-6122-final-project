@@ -74,10 +74,22 @@ PhysicsEngine::~PhysicsEngine()
 	for (auto &shape : m_shapes)
 		delete shape;
 
-	m_world->removeRigidBody(m_wallRigidBody);
-	delete m_wallRigidBody->getMotionState();
-	delete m_wallRigidBody;
-	delete m_wall;
+	m_world->removeRigidBody(m_wallRigidBody1);
+	delete m_wallRigidBody1->getMotionState();
+	delete m_wallRigidBody1;
+	delete m_wall1;
+	m_world->removeRigidBody(m_wallRigidBody2);
+	delete m_wallRigidBody2->getMotionState();
+	delete m_wallRigidBody2;
+	delete m_wall2;
+	m_world->removeRigidBody(m_wallRigidBody3);
+	delete m_wallRigidBody3->getMotionState();
+	delete m_wallRigidBody3;
+	delete m_wall3;
+	m_world->removeRigidBody(m_wallRigidBody4);
+	delete m_wallRigidBody4->getMotionState();
+	delete m_wallRigidBody4;
+	delete m_wall4;
 
 	m_world->removeRigidBody(m_groundRigidBody);
 	delete m_groundRigidBody->getMotionState();
@@ -110,7 +122,7 @@ void PhysicsEngine::stepSimulation(const double &deltaTime)
  * https://www.thoughtspike.com/friction-coefficients-for-bullet-physics/
  * @param position The sphere's initial position as measured from the origin
  */
-void PhysicsEngine::addSphere(float radius, float mass, float bounciness, float friction, glm::vec3 position)
+void PhysicsEngine::addSphere(float radius, float mass, float bounciness, float friction, glm::vec3 velocity, glm::vec3 position)
 {
 	btCollisionShape *shape = new btSphereShape(radius);
 	m_shapes.push_back(shape);
@@ -122,13 +134,14 @@ void PhysicsEngine::addSphere(float radius, float mass, float bounciness, float 
 	);
 
 	btVector3 inertia(0, 0, 0);
+	btVector3 linearVelocity(velocity.x, velocity.y, velocity.z);
 
 	if (bounciness < 0 || bounciness > 1)
 		bounciness = DEFAULT_BOUNCINESS;
 	if (friction < 0 || friction > 1)
 		friction = DEFAULT_FRICTION;
 
-	addObject(shape, mass, inertia, motion, bounciness, friction);
+	addObject(shape, mass, inertia, motion, bounciness, friction, linearVelocity);
 }
 
 /**
@@ -140,7 +153,7 @@ void PhysicsEngine::addSphere(float radius, float mass, float bounciness, float 
  * https://www.thoughtspike.com/friction-coefficients-for-bullet-physics/
  * @param position The box's initial position as measured by the origin
  */
-void PhysicsEngine::addBox(glm::vec3 size, float mass, float bounciness, float friction, glm::vec3 position)
+void PhysicsEngine::addBox(glm::vec3 size, float mass, float bounciness, float friction, glm::vec3 velocity, glm::vec3 position)
 {
 	btVector3 boxHalfExtents(size.x, size.y, size.z);
 
@@ -154,11 +167,12 @@ void PhysicsEngine::addBox(glm::vec3 size, float mass, float bounciness, float f
 	);
 
 	btVector3 inertia(0, 0, 0);
+	btVector3 linearVelocity(velocity.x, velocity.y, velocity.z);
 
 	if (friction < 0 || friction > 1)
 		friction = DEFAULT_FRICTION;
 
-	addObject(shape, mass, inertia, motion, bounciness, friction);
+	addObject(shape, mass, inertia, motion, bounciness, friction, linearVelocity);
 }
 
 /**
@@ -169,7 +183,7 @@ void PhysicsEngine::addBox(glm::vec3 size, float mass, float bounciness, float f
  * @param friction TODO Document
  * @param position TODO Document
  */
-void PhysicsEngine::addHull(std::vector<glm::vec3> points, float mass, float bounciness, float friction, glm::vec3 position)
+void PhysicsEngine::addHull(std::vector<glm::vec3> points, float mass, float bounciness, float friction, glm::vec3 velocity, glm::vec3 position)
 {
 	btConvexHullShape *shape = new btConvexHullShape();
 	for (unsigned int  i = 0; i < points.size(); ++i)
@@ -184,38 +198,79 @@ void PhysicsEngine::addHull(std::vector<glm::vec3> points, float mass, float bou
 	);
 
 	btVector3 inertia(0, 0, 0);
+	btVector3 linearVelocity(velocity.x, velocity.y, velocity.z);
 
 	if (friction < 0 || friction > 1)
 		friction = DEFAULT_FRICTION;
 
-	addObject(shape, mass, inertia, motion, bounciness, friction);
+	addObject(shape, mass, inertia, motion, bounciness, friction, linearVelocity);
 }
 
 /**
  * Add a wall (plane) to the physics engine
  */
-void PhysicsEngine::addWall()
+void PhysicsEngine::addWalls()
 {
 //	m_ground = new btStaticPlaneShape(btVector3(0, 1, 0), 1);
 //	btDefaultMotionState *groundMotionState = new btDefaultMotionState(
 //		btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
 
-	m_wall = new btStaticPlaneShape(btVector3(-1, 0, 0), 1);
+	m_wall1 = new btStaticPlaneShape(btVector3(-1, 0, +0), 1);
+	m_wall2 = new btStaticPlaneShape(btVector3(+1, 0, +0), 1);
+	m_wall3 = new btStaticPlaneShape(btVector3(+0, 0, -1), 1);
+	m_wall4 = new btStaticPlaneShape(btVector3(+0, 0, +1), 1);
 
-	btDefaultMotionState *wallMotionState = new btDefaultMotionState(
-		btTransform(btQuaternion(0, 0, 0, 1), btVector3(20, 0, 0)));
+	btDefaultMotionState *wallMotionState1= new btDefaultMotionState(
+		btTransform(btQuaternion(0, 0, 0, 1), btVector3(12, 0, 0)));
+	btDefaultMotionState *wallMotionState2= new btDefaultMotionState(
+		btTransform(btQuaternion(0, 0, 0, 1), btVector3(-12, 0, 0)));
+	btDefaultMotionState *wallMotionState3= new btDefaultMotionState(
+		btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 9)));
+	btDefaultMotionState *wallMotionState4= new btDefaultMotionState(
+		btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, -9)));
 
-	btRigidBody::btRigidBodyConstructionInfo wallRigidBodyCI(
+	btRigidBody::btRigidBodyConstructionInfo wallRigidBodyCI1(
 		0, // Walls have 0 mass
-		wallMotionState,
-		m_wall,
+		wallMotionState1,
+		m_wall1,
+		btVector3(0, 0, 0) // Walls havae 0 inertia
+	);
+	btRigidBody::btRigidBodyConstructionInfo wallRigidBodyCI2(
+		0, // Walls have 0 mass
+		wallMotionState2,
+		m_wall2,
+		btVector3(0, 0, 0) // Walls havae 0 inertia
+	);
+	btRigidBody::btRigidBodyConstructionInfo wallRigidBodyCI3(
+		0, // Walls have 0 mass
+		wallMotionState3,
+		m_wall3,
+		btVector3(0, 0, 0) // Walls havae 0 inertia
+	);
+	btRigidBody::btRigidBodyConstructionInfo wallRigidBodyCI4(
+		0, // Walls have 0 mass
+		wallMotionState4,
+		m_wall4,
 		btVector3(0, 0, 0) // Walls havae 0 inertia
 	);
 
-	m_wallRigidBody = new btRigidBody(wallRigidBodyCI);
-	m_wallRigidBody->setFriction(1.0);
+	m_wallRigidBody1 = new btRigidBody(wallRigidBodyCI1);
+	m_wallRigidBody1->setFriction(0.5);
+	m_wallRigidBody1->setRestitution(0.5);
+	m_wallRigidBody2 = new btRigidBody(wallRigidBodyCI2);
+	m_wallRigidBody2->setFriction(0.5);
+	m_wallRigidBody2->setRestitution(0.5);
+	m_wallRigidBody3 = new btRigidBody(wallRigidBodyCI3);
+	m_wallRigidBody3->setFriction(0.5);
+	m_wallRigidBody3->setRestitution(0.5);
+	m_wallRigidBody4 = new btRigidBody(wallRigidBodyCI4);
+	m_wallRigidBody4->setFriction(0.5);
+	m_wallRigidBody4->setRestitution(0.5);
 
-	m_world->addRigidBody(m_wallRigidBody);
+	m_world->addRigidBody(m_wallRigidBody1);
+	m_world->addRigidBody(m_wallRigidBody2);
+	m_world->addRigidBody(m_wallRigidBody3);
+	m_world->addRigidBody(m_wallRigidBody4);
 }
 
 /**
@@ -274,7 +329,8 @@ void PhysicsEngine::addObject(
 	btVector3 inertia,
 	btDefaultMotionState *motion,
 	btScalar bounciness,
-	btScalar friction)
+	btScalar friction,
+	btVector3 velocity)
 {
 	shape->calculateLocalInertia(mass, inertia);
 
@@ -287,6 +343,7 @@ void PhysicsEngine::addObject(
 	auto *rigidBody = new btRigidBody(rigidBodyCI);
 	rigidBody->setRestitution(bounciness);
 	rigidBody->setFriction(friction);
+	rigidBody->setLinearVelocity(velocity);
 
 	m_rigidBodies.push_back(rigidBody);
 	m_world->addRigidBody(rigidBody);

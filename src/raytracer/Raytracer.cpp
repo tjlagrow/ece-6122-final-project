@@ -13,10 +13,36 @@
 /* Variable tp help control maximum recursion depth.  Important for speed.
    Without a k-d tree or some type of time improvement, I usually don't go
    over 35. */
-#define MAX_RAY_DEPTH  5
+#define MAX_RAY_DEPTH  30
 
 static unsigned int imageIndex = 0;
 
+static Sphere light(
+	Vector3f(0, 0, 10000), // Origin position of light source
+	1000, // Radius
+	Vector3f(0.00, 0.00, 0.00), // Surface color
+	0, // Reflection
+	0.0, // Transparency
+	Vector3f(3) // Emission color
+);
+
+static Sphere ground(
+	Vector3f(0, 0, -60000),
+	60000,
+	Vector3f(222.0f/255.0f, 184.0f/255.0f, 135.0f/255.0f),
+	0,
+	0.0,
+	0
+);
+
+static Sphere wall(
+	Vector3f(0, 60050, 0),
+	60000,
+	Vector3f(0.3, 0.6, 0.3),
+	0,
+	0.0,
+	0
+);
 
 /**
  * Helper function for color mixing based on weight
@@ -57,7 +83,8 @@ Vector3f trace(
 	const Sphere* sphere = NULL;
 
 	// Test if this ray intersects any object in the scene
-	for (unsigned i = 0; i < spheres.size(); ++i) {
+	for (unsigned i = 0; i < spheres.size(); ++i)
+	{
 		float t0 = INFINITY;
 		float t1 = INFINITY;
 
@@ -105,7 +132,7 @@ Vector3f trace(
 		float facingRatio = -rayDirection.dot(normalOfIntersection);
 
 		/* change the color mixing value to maximize the effect */
-		float fresnelEffect = weightDistribution(pow(1 - facingRatio, 3), 1, 0.1);
+		float fresnelEffect = weightDistribution(pow(1 - facingRatio, 3), 1, 0.5);
 
 		/* since all of the vectors are already normalized, the reflection direction is computed  */
 		Vector3f reflectionDirection = rayDirection - normalOfIntersection * 2 * rayDirection.dot(normalOfIntersection);
@@ -149,7 +176,8 @@ Vector3f trace(
 						}
 					}
 				}
-				surfaceColor += sphere->surfaceColor * transmission * std::max(float(0), normalOfIntersection.dot(lightDirection)) * spheres[i].emissionColor;
+				surfaceColor += sphere->surfaceColor * transmission *
+					std::max(float(0), normalOfIntersection.dot(lightDirection)) * spheres[i].emissionColor;
 			}
 		}
 	}
@@ -188,6 +216,8 @@ Raytracer::~Raytracer()
  * is computed and then traced and finally returned with a color. If the ray
  * hits a sphere, the color of the sphere at the intersection point is
  * returned, else we return the background color.
+ * @param camPos TODO Document
+ * @param lookAt TODO Document
  * @param objects A vector of objects in the scene
  */
 void Raytracer::render(
@@ -198,6 +228,9 @@ void Raytracer::render(
 	Vector3f *pixel = &m_image[0];
 
 	std::vector<Sphere> spheres;
+	spheres.push_back(ground);
+//	spheres.push_back(wall);
+
 	for (unsigned int i = 0; i < objects.size(); ++i)
 	{
 		glm::vec3 origin = objects[i]->getWorldOrigin();
@@ -206,7 +239,7 @@ void Raytracer::render(
 		float radius = objects[i]->getSize().x / 2.0f;
 		glm::vec3 color = objects[i]->getMaterials()[1].getDiffuse();
 		Vector3f surfaceColor(color.x, color.y, color.z);
-		float reflection = 1;
+		float reflection = 1.0e-9;
 		float transparency = 0;
 		float emissionColor = 0;
 
@@ -221,26 +254,8 @@ void Raytracer::render(
 	}
 
 	// Push back light ball
-	spheres.push_back(Sphere(
-		Vector3f(4, 4, 4), // Origin position of light source
-		4, // Radius
-		Vector3f(0.00, 0.00, 0.00), // Surface color
-		0, // Reflection
-		0.0, // Transparency
-		Vector3f(3) // Emission color
-	));
-
-////////////////////////////////////////////
-	for (unsigned int i = 0; i < spheres.size(); ++i)
-	{
-		printf("[%d] Sphere at (%f, %f, %f), r=%f, color=(%f,%f,%f)\n",
-			i,
-			spheres[i].position.x, spheres[i].position.y, spheres[i].position.z,
-			spheres[i].radius,
-			spheres[i].surfaceColor.x, spheres[i].surfaceColor.y, spheres[i].surfaceColor.z
-		);
-	}
-////////////////////////////////////////////
+	light.position.z += camPos.y;
+	spheres.push_back(light);
 
 	// Loop over the row pixels in the image
 	for (unsigned y = 0; y < m_height; ++y)
@@ -254,7 +269,7 @@ void Raytracer::render(
 			Vector3f rayDirection(xx, yy, -1);
 			rayDirection.normalize();
 
-			*pixel = trace(Vector3f(camPos.x, camPos.z, camPos.y), rayDirection, spheres, 0);
+			*pixel = trace(Vector3f(0, 0, camPos.y), rayDirection, spheres, 0);
 		}
 	}
 
@@ -262,7 +277,7 @@ void Raytracer::render(
 	 * but you need to save to .ppm for window/linux
 	 */
 	char imageFilename[32];
-	snprintf(imageFilename, sizeof(imageFilename), "./image%04u.ppm", imageIndex++);
+	snprintf(imageFilename, sizeof(imageFilename), "./image%04u.ppm", imageIndex);
 	std::ofstream ppm(imageFilename, std::ios::out | std::ios::binary);
 	ppm << "P6\n" << m_width << " " << m_height << "\n255\n";
 	for (unsigned i = 0; i < m_width * m_height; ++i)
@@ -272,6 +287,7 @@ void Raytracer::render(
 			(unsigned char)(std::min(float(1), m_image[i].z) * 255);
 	}
 	ppm.close();
+	imageIndex++;
 }
 
 

@@ -14,7 +14,8 @@ PerformanceData::PerformanceData()
 	m_timeCreated = getTimespec();
 	m_timeStart = m_timeCreated;
 	m_timeNow = m_timeCreated;
-	m_frames = 0;
+	m_framesTotal = 0;
+	m_framesCurrent = 0;
 }
 
 /**
@@ -53,16 +54,26 @@ double PerformanceData::convertTimespecToDouble(struct timespec &time)
  */
 void PerformanceData::incrementFrames()
 {
-	m_frames++;
+	m_framesTotal++;
+	m_framesCurrent++;
 }
 
 /**
  * Return the number of frames
  * @return Return the number of frames
  */
-const unsigned int &PerformanceData::getFrames() const
+const unsigned int &PerformanceData::getFramesCurrent() const
 {
-	return (m_frames);
+	return (m_framesCurrent);
+}
+
+/**
+ * Return the number of frames
+ * @return Return the number of frames
+ */
+const unsigned int &PerformanceData::getFramesTotal() const
+{
+	return (m_framesTotal);
 }
 
 /**
@@ -72,7 +83,7 @@ void PerformanceData::reset()
 {
 	m_timeStart = getTimespec();
 	m_timeNow = m_timeStart;
-	m_frames = 0;
+	m_framesCurrent = 0;
 }
 
 /**
@@ -106,11 +117,11 @@ void PerformanceData::updateStats()
 	memset(m_strElapsed, 0, sizeof(m_strElapsed));
 	memset(m_strFps, 0, sizeof(m_strFps));
 	snprintf(m_strFrames, sizeof(m_strFrames), "%*s: %u",
-		pad, "frames", m_frames);
+		pad, "frames", m_framesCurrent);
 	snprintf(m_strElapsed, sizeof(m_strElapsed), "%*s: %0.3f",
 		pad, "elapsed (s)", getElapsedTimeSinceCreation());
 	snprintf(m_strFps, sizeof(m_strFps), "%*s: %0.3f",
-		pad, "frames/sec", m_frames / getElapsedTime());
+		pad, "frames/sec", m_framesCurrent / getElapsedTime());
 }
 
 /**

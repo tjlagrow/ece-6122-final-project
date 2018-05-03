@@ -8,6 +8,8 @@
 #include <fstream>
 #include <unordered_map>
 
+extern int verbose;
+
 void createMeshesFromAiScene(const aiScene *scene, Object *object);
 void createMaterialsFromAiScene(const aiScene *scene, Object *object);
 void printAiSceneInfo(const aiScene *scene);
@@ -57,7 +59,8 @@ void ObjectLoader::loadFromFile(const char *filepath, Object *object)
 	}
 
 	// Print everything about this file to the console
-	printAiSceneInfo(scene);
+	if (verbose)
+		printAiSceneInfo(scene);
 
 	createMeshesFromAiScene(scene, object);
 	createMaterialsFromAiScene(scene, object);
@@ -258,21 +261,24 @@ void createMaterialsFromAiScene(const aiScene *scene, Object *object)
 //
 //		cout << endl;
 
-		printf("name: %s\n", m.getName().c_str());
-		printf("Ns: %f\n", m.getSpecularExponent());
-		glm::vec3 v;
-		v = m.getAmbient();
-		printf("Ka: %f %f %f\n", v.x, v.y, v.z);
-		v = m.getDiffuse();
-		printf("Kd: %f %f %f\n", v.x, v.y, v.z);
-		v = m.getSpecular();
-		printf("Ks: %f %f %f\n", v.x, v.y, v.z);
-		v = m.getEmission();
-		printf("Ke: %f %f %f\n", v.x, v.y, v.z);
-		printf("shininess: %f\n", m.getShininess());
-		printf("refraction: %f\n", m.getRefraction());
-		printf("dissolve factor: %f\n", m.getDissolveFactor());
-		printf("illum: %u\n", m.getIllumination());
+		if (verbose)
+		{
+			printf("name: %s\n", m.getName().c_str());
+			printf("Ns: %f\n", m.getSpecularExponent());
+			glm::vec3 v;
+			v = m.getAmbient();
+			printf("Ka: %f %f %f\n", v.x, v.y, v.z);
+			v = m.getDiffuse();
+			printf("Kd: %f %f %f\n", v.x, v.y, v.z);
+			v = m.getSpecular();
+			printf("Ks: %f %f %f\n", v.x, v.y, v.z);
+			v = m.getEmission();
+			printf("Ke: %f %f %f\n", v.x, v.y, v.z);
+			printf("shininess: %f\n", m.getShininess());
+			printf("refraction: %f\n", m.getRefraction());
+			printf("dissolve factor: %f\n", m.getDissolveFactor());
+			printf("illum: %u\n", m.getIllumination());
+		}
 
 		object->addMaterial(m);
 	} // end of for mNumMaterials
