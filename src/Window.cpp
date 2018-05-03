@@ -124,7 +124,7 @@ void Window::update()
  * Returns whether the window is set to close or not
  * @return Returns TRUE if the window is set to close, else FALSE
  */
-bool Window::should_close() const
+bool Window::shouldClose() const
 {
 	return (glfwWindowShouldClose(m_window) == 1);
 }
@@ -209,7 +209,7 @@ void Window::cb_window_size(GLFWwindow *window, int width, int height)
  * Returns a double representing the current timestamp
  * @return
  */
-double Window::get_time()
+double Window::getTime()
 {
 	return glfwGetTime();
 }

@@ -46,19 +46,21 @@ Vector3f trace(
 	const Vector3f &rayOrigin,
 	const Vector3f &rayDirection,
 	const std::vector<Sphere> &spheres,
-	const int &depth
-)
+	const int &depth)
 {
 	/* initialize */
 	float tnear = INFINITY;
 	const Sphere* sphere = NULL;
 
 	/* find intersection of this ray with the sphere in the scene */
-	for (unsigned i = 0; i < spheres.size(); ++i) {
+	for (unsigned i = 0; i < spheres.size(); ++i)
+	{
 		float t0 = INFINITY, t1 = INFINITY;
-		if (spheres[i].intersect(rayOrigin, rayDirection, t0, t1)) {
+		if (spheres[i].intersect(rayOrigin, rayDirection, t0, t1))
+		{
 			if (t0 < 0) t0 = t1;
-			if (t0 < tnear) {
+			if (t0 < tnear)
+			{
 				tnear = t0;
 				sphere = &spheres[i];
 			}
@@ -66,7 +68,8 @@ Vector3f trace(
 	}
 
 	/* return black or background color if there is no intersection */
-	if (!sphere) {
+	if (!sphere)
+	{
 		return Vector3f(2);
 	}
 
@@ -136,39 +139,64 @@ Vector3f trace(
 	return surfaceColor + sphere->emissionColor;
 }
 
+/**
+ * Constructor
+ * @param width TODO Document
+ * @param height TODO Document
+ * @param fov TODO Document
+ */
+Raytracer::Raytracer(unsigned int width, unsigned int height, float fov)
+{
+	m_width = width;
+	m_height = height;
+	m_fov = fov;
+	m_aspectRatio = (float)width / (float)height;
+	m_invertedWidth = 1 / float(width);
+	m_invertedHeight = 1 / float(height);
+	m_angle = tan(M_PI * 0.5 * fov / 180.);
+}
 
 /**
- * This is the rendering function! A camera ray for each pixel of the image
+ * Destructor
+ */
+Raytracer::~Raytracer()
+{
+
+}
+
+/**
+ * This is the rendering function. A camera ray for each pixel of the image
  * is computed and then traced and finally returned with a color. If the ray
  * hits a sphere, the color of the sphere at the intersection point is
  * returned, else we return the background color.
  * @param spheres TODO Document
  */
-void Raytracer::render(
-	const std::vector<Sphere> &spheres,
-	unsigned int width,
-	unsigned int height,
-	float fov)
+void Raytracer::render(const std::vector<Sphere> &spheres)
 {
-	Vector3f *image = new Vector3f[width * height], *pixel = image;
-	float invertedWidth = 1 / float(width), invertedHeight = 1 / float(height);
-	float angle = tan(M_PI * 0.5 * fov / 180.);
-	float aspectRatio = width / (float) height;
+	Vector3f *image = new Vector3f[m_width * m_height];
+	Vector3f *pixel = image;
 
-	for (unsigned y = 0; y < height; ++y) {
-		for (unsigned x = 0; x < width; ++x, ++pixel) {
-			float xx = (2 * ((x + 0.5) * invertedWidth) - 1) * angle * aspectRatio;
-			float yy = (1 - 2 * ((y + 0.5) * invertedHeight)) * angle;
+	// Loop over the column pixels in the image
+	for (unsigned y = 0; y < m_height; ++y)
+	{
+		// Loop over the row pixels in the image
+		for (unsigned x = 0; x < m_width; ++x, ++pixel)
+		{
+			float xx = (2 * ((x + 0.5) * m_invertedWidth) - 1) * m_angle * m_aspectRatio;
+			float yy = (1 - 2 * ((y + 0.5) * m_invertedHeight)) * m_angle;
 			Vector3f rayDirection(xx, yy, -1);
 			rayDirection.normalize();
 			*pixel = trace(Vector3f(0), rayDirection, spheres, 0);
 		}
 	}
-	/* Save result to a pmm image!
-	   This method of saving works for mac, but you need to save to .ppm for window/linux */
+
+	/* Save result to a pmm image. This method of saving works for mac,
+	 * but you need to save to .ppm for window/linux
+	 */
 	std::ofstream ppm("./sphere_primitive_example.ppm", std::ios::out | std::ios::binary);
-	ppm << "P6\n" << width << " " << height << "\n255\n";
-	for (unsigned i = 0; i < width * height; ++i) {
+	ppm << "P6\n" << m_width << " " << m_height << "\n255\n";
+	for (unsigned i = 0; i < m_width * m_height; ++i)
+	{
 		ppm << (unsigned char)(std::min(float(1), image[i].x) * 255) <<
 			(unsigned char)(std::min(float(1), image[i].y) * 255) <<
 			(unsigned char)(std::min(float(1), image[i].z) * 255);

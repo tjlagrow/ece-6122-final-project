@@ -13,13 +13,13 @@ public:
 
 	void clear();
 	void update();
-	double get_time();
+	double getTime();
 
-	bool should_close() const;
+	bool shouldClose() const;
 
-	inline int get_width() const { return m_width; }
-	inline int get_height() const { return m_height; }
-	inline glm::vec2 get_cursor_pos() const { return m_cursor_pos; }
+	inline int getWidth() const { return m_width; }
+	inline int getHeight() const { return m_height; }
+	inline glm::vec2 getCursorPos() const { return m_cursor_pos; }
 
 private:
 

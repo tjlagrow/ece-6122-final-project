@@ -116,6 +116,9 @@ int main(int argc, char **argv)
 	// and updating the objects' vertices each frame
 	PhysicsEngine engine;
 
+	// Initialize the raytracer
+	Raytracer raytracer(window.getWidth(), window.getHeight(), fov);
+
 	Shader shader1(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH);
 
 	Layer stageLayer(&shader1);
@@ -195,10 +198,10 @@ int main(int argc, char **argv)
 	char frm_str[32] = "frames: 0";
 	char sec_str[32] = "secs:   0.000";
 	char fps_str[32] = "fps:    0.000";
-	double tnow = window.get_time();
+	double tnow = window.getTime();
 	double tnext = tnow + 1.0f;
-	float sx = 2.0f / window.get_width();
-	float sy = 2.0f / window.get_height();
+	float sx = 2.0f / window.getWidth();
+	float sy = 2.0f / window.getHeight();
 	glm::vec4 color_white(1.0f, 1.0f, 1.0f, 1.0f);
 
 ////////////////////////////////////////////////////////
@@ -218,7 +221,7 @@ int main(int argc, char **argv)
 
 	// Main loop, do everything here (render objects, update their positions,
 	// collision detection, raytracing, performance statistics, etc.)
-	while (! window.should_close())
+	while (!window.shouldClose())
 	{
 		// Clear the window's "back buffer" so
 		// we can begin drawing a new scene
@@ -226,7 +229,7 @@ int main(int argc, char **argv)
 
 		// If time has elapsed, get the diagnostic text to
 		// overlay on the screen, but don't print it out here yet
-		if ((tnow = window.get_time()) > tnext)
+		if ((tnow = window.getTime()) > tnext)
 		{
 			memset(frm_str, 0, sizeof(frm_str));
 			memset(sec_str, 0, sizeof(sec_str));
@@ -267,7 +270,7 @@ int main(int argc, char **argv)
 		stageLayer.render(glm::vec3(camx, camy, camz));
 		modelLayer.render(glm::vec3(camx, camy, camz));
 
-//		Raytracer::render({}, window.get_width(), window.get_height(), fov);
+//		raytracer.render({});
 
 		// Draw text last so it is on top of the other layers
 		tw.begin();

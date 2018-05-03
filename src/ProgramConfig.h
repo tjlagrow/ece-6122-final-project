@@ -15,7 +15,7 @@ struct ProgramConfig
 	ProgramConfig() : raytrace(0), num_threads(1), verbose(0)
 	{
 		memset(output_filename, 0, sizeof(output_filename));
-		snprintf(output_filename, strlen(DEFAULT_MOVIE_FILENAME), "%s", DEFAULT_MOVIE_FILENAME);
+		snprintf(output_filename, sizeof(output_filename)-1, "%s", DEFAULT_MOVIE_FILENAME);
 	}
 
 	char output_filename[128];
