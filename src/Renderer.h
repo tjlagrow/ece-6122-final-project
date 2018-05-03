@@ -31,12 +31,6 @@ public:
 	void flush(const glm::vec3 &eyePosition);
 
 private:
-	void calculateMeshStuff(
-		const Object *object,
-		std::vector<Vertex> &gpuVertices,
-		std::vector<GLuint> &gpuIndices,
-		std::vector<Mesh> mymesh,
-		std::vector<Material> materials);
 
 	struct MeshInfo
 	{

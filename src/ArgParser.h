@@ -34,8 +34,9 @@ public:
 		{
 			static struct option long_opts[] =
 			{
+				{ "threads", required_argument, 0, 'n' },
 				{ "raytrace", no_argument, &cfg->raytrace, 'r' },
-				{ "threads", required_argument, 0, 't' },
+				{ "time", required_argument, 0, 't' },
 				{ "verbose", no_argument, &cfg->verbose, 'v' },
 				{ "help", no_argument, 0, HELP_ARG },
 				{ 0, 0, 0, 0 }
@@ -43,23 +44,33 @@ public:
 
 			int i = 0;
 
-			c = getopt_long(argc, argv, "rt:v?", long_opts, &i);
+			c = getopt_long(argc, argv, "n:rt:v?", long_opts, &i);
 
 			if (c == -1)
 				break;
 
 			switch (c)
 			{
-				case 't': // Number of threads to use
-					cfg->num_threads = strtod(optarg, NULL);
+				case 'n': // Number of threads to use
+					cfg->numThreads = strtod(optarg, NULL);
+					break;
+				case 'r': // Enable raytracing
+					cfg->raytrace = 1;
+					break;
+				case 't': // Simulation time in seconds
+					cfg->stopTime_s = strtod(optarg, NULL);
+					break;
+				case 'v': // Print more messages
+					cfg->verbose = 1;
 					break;
 				case '?':
 				case HELP_ARG:
 					printf("Usage: %s [OPTIONS...]\n", argv[0]);
 					printf("\n");
 					printf("Options\n");
+					printf("  -n, --threads <NUM>       Number of threads to use\n");
 					printf("  -r, --raytrace            Enable raytracing\n");
-					printf("  -t, --threads <NUM>       Number of threads to use\n");
+					printf("  -t, --time <SEC>          Total simulation time in seconds\n");
 					printf("  -v, --verbose             Print more messages\n");
 					printf("  -h, --help                Print this help message and exit\n");
 					printf("\n");

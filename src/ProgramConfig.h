@@ -12,15 +12,20 @@
  */
 struct ProgramConfig
 {
-	ProgramConfig() : raytrace(0), num_threads(1), verbose(0)
+	ProgramConfig()
 	{
+		raytrace = 0;
+		numThreads = 1;
+		stopTime_s = 7;
+		verbose = 0;
 		memset(output_filename, 0, sizeof(output_filename));
 		snprintf(output_filename, sizeof(output_filename)-1, "%s", DEFAULT_MOVIE_FILENAME);
 	}
 
 	char output_filename[128];
 	int raytrace;
-	int num_threads;
+	int numThreads;
+	int stopTime_s;
 	int verbose; // If 1, means to print more messages
 };
 
