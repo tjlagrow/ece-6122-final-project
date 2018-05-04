@@ -18,12 +18,12 @@
 static unsigned int imageIndex = 0;
 
 static Sphere light(
-	Vector3f(0, 0, 10000), // Origin position of light source
-	1000, // Radius
+	Vector3f(0, 0, 100), // Origin position of light source
+	100, // Radius
 	Vector3f(0.00, 0.00, 0.00), // Surface color
 	0, // Reflection
 	0.0, // Transparency
-	Vector3f(3) // Emission color
+	Vector3f(1.5) // Emission color
 );
 
 static Sphere ground(
@@ -31,16 +31,7 @@ static Sphere ground(
 	60000,
 	Vector3f(222.0f/255.0f, 184.0f/255.0f, 135.0f/255.0f),
 	0,
-	0.0,
-	0
-);
-
-static Sphere wall(
-	Vector3f(0, 60050, 0),
-	60000,
-	Vector3f(0.3, 0.6, 0.3),
 	0,
-	0.0,
 	0
 );
 
@@ -102,7 +93,7 @@ Vector3f trace(
 	// Return black or background color if there is no intersection
 	if (! sphere)
 	{
-		return Vector3f(0.3f);
+		return Vector3f(0.7f);
 	}
 
 	Vector3f surfaceColor = 0;  // Intialize color of the object intersected by the ray
@@ -229,7 +220,6 @@ void Raytracer::render(
 
 	std::vector<Sphere> spheres;
 	spheres.push_back(ground);
-//	spheres.push_back(wall);
 
 	for (unsigned int i = 0; i < objects.size(); ++i)
 	{
@@ -239,7 +229,7 @@ void Raytracer::render(
 		float radius = objects[i]->getSize().x / 2.0f;
 		glm::vec3 color = objects[i]->getMaterials()[1].getDiffuse();
 		Vector3f surfaceColor(color.x, color.y, color.z);
-		float reflection = 1.0e-9;
+		float reflection = 1.0e-3;
 		float transparency = 0;
 		float emissionColor = 0;
 

@@ -312,15 +312,14 @@ int main(int argc, char **argv)
 		stageLayer.render(glm::vec3(camx, camy, camz));
 		modelLayer.render(glm::vec3(camx, camy, camz));
 
-		/////////////////////////////// TODO Don't forget to change back
 		if (cfg.raytrace)
-//		if (1)
-		///////////////////////////////
+		{
 			raytracer.render(
 				glm::vec3(camx, camy, camz), // Camera position
 				glm::vec3(0.0f, 0.0f, 0.0f), // Look at
 				objects
 			);
+		}
 
 		// Draw text last so it is on top of the other layers
 		tw.begin();
@@ -336,6 +335,12 @@ int main(int argc, char **argv)
 
 		if (perf.getFramesTotal() > cfg.frames)
 			window.close();
+	}
+
+	if (cfg.raytrace)
+	{
+		if (system("ffmpeg -y -framerate 60 -i image%04d.ppm movie.mpeg"))
+			printf("ERROR: Could not make movie. Run manually: 'ffmpeg -framerate 60 -i image%%04d.ppm movie.mpeg'\n");
 	}
 
 	for (unsigned int i = 0; i < objects.size(); ++i)

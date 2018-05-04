@@ -221,13 +221,13 @@ void PhysicsEngine::addWalls()
 	m_wall4 = new btStaticPlaneShape(btVector3(+0, 0, +1), 1);
 
 	btDefaultMotionState *wallMotionState1= new btDefaultMotionState(
-		btTransform(btQuaternion(0, 0, 0, 1), btVector3(12, 0, 0)));
+		btTransform(btQuaternion(0, 0, 0, 1), btVector3(11, 0, 0)));
 	btDefaultMotionState *wallMotionState2= new btDefaultMotionState(
-		btTransform(btQuaternion(0, 0, 0, 1), btVector3(-12, 0, 0)));
+		btTransform(btQuaternion(0, 0, 0, 1), btVector3(-11, 0, 0)));
 	btDefaultMotionState *wallMotionState3= new btDefaultMotionState(
-		btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 9)));
+		btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 8)));
 	btDefaultMotionState *wallMotionState4= new btDefaultMotionState(
-		btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, -9)));
+		btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, -8)));
 
 	btRigidBody::btRigidBodyConstructionInfo wallRigidBodyCI1(
 		0, // Walls have 0 mass

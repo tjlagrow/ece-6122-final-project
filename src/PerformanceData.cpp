@@ -117,7 +117,7 @@ void PerformanceData::updateStats()
 	memset(m_strElapsed, 0, sizeof(m_strElapsed));
 	memset(m_strFps, 0, sizeof(m_strFps));
 	snprintf(m_strFrames, sizeof(m_strFrames), "%*s: %u",
-		pad, "frames", m_framesCurrent);
+		pad, "frames", m_framesTotal);
 	snprintf(m_strElapsed, sizeof(m_strElapsed), "%*s: %0.3f",
 		pad, "elapsed (s)", getElapsedTimeSinceCreation());
 	snprintf(m_strFps, sizeof(m_strFps), "%*s: %0.3f",
