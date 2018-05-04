@@ -12,10 +12,6 @@
 #include <glm/gtx/transform.hpp>
 #include <iostream>
 
-////////////////////////////////////////////////////////
-// BEGIN - GLOBAL VARIABLES FOR TEST ONLY
-////////////////////////////////////////////////////////
-
 #define VERTEX_SHADER_PATH    "../shaders/vertex.glsl"
 #define FRAGMENT_SHADER_PATH  "../shaders/fragment.glsl"
 
@@ -30,8 +26,14 @@ static float camz = 0.01f; // Camera location z
 
 int verbose; // Global verbose
 
+/**
+ * TODO Abstract into a Scene class
+ */
 enum class ShapeType { Box, Sphere, Cylinder, Cone, Custom };
 
+/**
+ * TODO Abstract into a Scene class
+ */
 struct SceneObject
 {
 	ShapeType type;
@@ -43,59 +45,63 @@ struct SceneObject
 	const char *filepath;
 };
 
-static std::vector<struct SceneObject> objmeta1 =
+/**
+ * Scene 1 objects
+ * TODO Abstract into a Scene class
+ */
+static std::vector<struct SceneObject> scene1 =
 {
-	{ ShapeType::Sphere,   glm::vec3(-7.0f, +30.0f, +0.0f), 10.f, 0.6f, 0.9f, glm::vec3(), "../models/ball_simple.obj" },
+	{ ShapeType::Sphere,   glm::vec3(-7.0f, +30.0f, +0.0f), 10.f, 1.0f, 0.9f, glm::vec3(), "../models/ball_simple.obj" },
 	{ ShapeType::Custom,   glm::vec3(-8.0f, +00.0f, +0.0f), 99.f, 0.6f, 0.9f, glm::vec3(), "../models/ramp.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +02.0f, -1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +04.0f, -1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +06.0f, -1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +08.0f, -1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +10.0f, -1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +12.0f, -1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +02.0f, +1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +04.0f, +1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +06.0f, +1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +08.0f, +1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +10.0f, +1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
-	{ ShapeType::Box,      glm::vec3(+6.0f, +12.0f, +1.0f), 0.7f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +02.0f, -1.0f), 0.4f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +04.0f, -1.0f), 0.4f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +06.0f, -1.0f), 0.4f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +08.0f, -1.0f), 0.4f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +10.0f, -1.0f), 0.4f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +12.0f, -1.0f), 0.4f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +02.0f, +1.0f), 0.4f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +04.0f, +1.0f), 0.4f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +06.0f, +1.0f), 0.4f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +08.0f, +1.0f), 0.4f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +10.0f, +1.0f), 0.4f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
+	{ ShapeType::Box,      glm::vec3(+6.0f, +12.0f, +1.0f), 0.4f, 0.6f, 0.9f, glm::vec3(), "../models/cube.obj" },
 };
 
-static std::vector<struct SceneObject> objmeta2 =
+/**
+ * Scene 2 objects
+ * TODO Abstract into a Scene class
+ */
+static std::vector<struct SceneObject> scene2 =
 {
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballgreen.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballred.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballblue.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballyellow.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballpink.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballpurple.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballcyan.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballgreen.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballred.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballblue.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballyellow.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballpink.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballpurple.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballcyan.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballgreen.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballred.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballblue.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballyellow.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballpink.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballpurple.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballcyan.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballgreen.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballred.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballblue.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballyellow.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballpink.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballpurple.obj" },
-	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.7f, 0.9f, glm::vec3(), "../models/ballcyan.obj" }
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballgreen.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballred.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballblue.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballyellow.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballpink.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballpurple.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballcyan.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballgreen.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballred.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballblue.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballyellow.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballpink.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballpurple.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballcyan.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballgreen.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballred.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballblue.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballyellow.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballpink.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballpurple.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballcyan.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballgreen.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballred.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballblue.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballyellow.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballpink.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballpurple.obj" },
+	{ ShapeType::Sphere, glm::vec3(), 1.0f, 0.9f, 0.6f, glm::vec3(), "../models/ballcyan.obj" }
 };
-
-////////////////////////////////////////////////////
-// END - GLOBAL VARIABLES FOR TEST ONLY
-////////////////////////////////////////////////////////
 
 /**
  * Main program entry point
@@ -124,28 +130,11 @@ int main(int argc, char **argv)
 		printf("%*s: %s\n", pad, "Verbose", cfg.verbose ? "yes" : "no");
 	}
 
-	switch (cfg.scene)
-	{
-		case 1:
-			objptr = &objmeta1;
-			break;
-		case 2:
-			objptr = &objmeta2;
-			break;
-		default:
-			printf("Invalid scene selected\n");
-			exit(0);
-	}
-
 	Window window(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	// The text writer is used to write text onto the window
 	// It has no effect on the raytracing algorithm
 	TextWriter tw(VS_FONT_PATH, FS_FONT_PATH, TTF_PATH, 16);
-
-	// The physics engine is responsible for collision detection
-	// and updating the objects' vertices each frame
-	PhysicsEngine engine;
 
 	// Initialize the raytracer
 	Raytracer raytracer(window.getWidth(), window.getHeight(), fov, 4);
@@ -157,7 +146,31 @@ int main(int argc, char **argv)
 
 	Object stage("../models/stage.obj");
 	stageLayer.add(&stage);
-	engine.addWalls();
+
+	// The physics engine is responsible for collision detection
+	// and updating the objects' vertices each frame
+	PhysicsEngine engine;
+
+	switch (cfg.scene)
+	{
+		case 1:
+			objptr = &scene1;
+			cfg.raytrace = 0;
+			cfg.frames = 0;
+			camx = -15.0f; // Camera location x
+			camy = 5.0f; // Camera location y, this is the height
+			camz = 20.0f; // Camera location z
+			engine.addWalls(1);
+			break;
+		case 2:
+			objptr = &scene2;
+			engine.addWalls(0);
+			break;
+		default:
+			printf("Invalid scene selected\n");
+			exit(0);
+	}
+
 
 	// Load the objects from file into the layer
 	std::vector<Object *> objects;
@@ -299,10 +312,19 @@ int main(int argc, char **argv)
 		// Set the camera position by applying a "view matrix"
 		// (as part of the model-view-projection graphics scheme)
 		shader1.enable();
+		glm::vec3 lookAt;
+		switch (cfg.scene)
+		{
+			case 1:
+				lookAt = objects[0]->getWorldOrigin(); // Look at the ball
+				break;
+			case 2:
+				lookAt = glm::vec3();
+				break;
+		}
 		vMatrix = glm::lookAt(
 			glm::vec3(camx, camy, camz), // Camera position
-//			objects[0]->getWorldOrigin(), // Look at the ball
-			glm::vec3(0.0f, 0.0f, 0.0f), // Look at
+			lookAt,
 			glm::vec3(0.0f, 1.0f, 0.0f)  // Y-axis is Up
 		);
 		shader1.setUniformMat4("vvmat", vMatrix); // "Vertexshader-View-MATrix"
@@ -333,8 +355,8 @@ int main(int argc, char **argv)
 
 		perf.incrementFrames();
 
-//		if (perf.getFramesTotal() > cfg.frames)
-//			window.close();
+		if (cfg.frames > 0 && perf.getFramesTotal() > cfg.frames)
+			window.close();
 	}
 
 	if (cfg.raytrace)

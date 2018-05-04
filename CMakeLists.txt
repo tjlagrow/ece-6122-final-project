@@ -4,8 +4,8 @@ project(ece-6122-final-project)
 set(CMAKE_CXX_STANDARD 11)
 
 # Set some compiler flags (NOTE: These assume GNU C++ compiler!)
-set (CMAKE_CXX_FLAGS "-Wall -Wextra" CACHE STRING "" FORCE)
-set (CMAKE_C_FLAGS "-Wall -Wextra" CACHE STRING "" FORCE)
+set (CMAKE_CXX_FLAGS "-Wall -Wextra -O3" CACHE STRING "" FORCE)
+set (CMAKE_C_FLAGS "-Wall -Wextra -O3" CACHE STRING "" FORCE)
 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/../bin")
 

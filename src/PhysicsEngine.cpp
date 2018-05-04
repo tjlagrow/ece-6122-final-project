@@ -206,28 +206,61 @@ void PhysicsEngine::addHull(std::vector<glm::vec3> points, float mass, float bou
 	addObject(shape, mass, inertia, motion, bounciness, friction, linearVelocity);
 }
 
+void getWallMotionState(
+	int far,
+	btDefaultMotionState **wallMotionState1,
+	btDefaultMotionState **wallMotionState2,
+	btDefaultMotionState **wallMotionState3,
+	btDefaultMotionState **wallMotionState4)
+{
+	if (far)
+	{
+		*wallMotionState1 = new btDefaultMotionState(
+			btTransform(btQuaternion(0, 0, 0, 1), btVector3(20, 0, 0)));
+		*wallMotionState2 = new btDefaultMotionState(
+			btTransform(btQuaternion(0, 0, 0, 1), btVector3(-20, 0, 0)));
+		*wallMotionState3 = new btDefaultMotionState(
+			btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 20)));
+		*wallMotionState4 = new btDefaultMotionState(
+			btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, -20)));
+	}
+	else
+	{
+		*wallMotionState1 = new btDefaultMotionState(
+			btTransform(btQuaternion(0, 0, 0, 1), btVector3(10, 0, 0)));
+		*wallMotionState2 = new btDefaultMotionState(
+			btTransform(btQuaternion(0, 0, 0, 1), btVector3(-10, 0, 0)));
+		*wallMotionState3 = new btDefaultMotionState(
+			btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 8)));
+		*wallMotionState4 = new btDefaultMotionState(
+			btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, -8)));
+	}
+}
+
 /**
  * Add a wall (plane) to the physics engine
+ * @param far Get the far walls that fit scene 1 or the short walls
+ * that fit scene 2
  */
-void PhysicsEngine::addWalls()
+void PhysicsEngine::addWalls(int far)
 {
-//	m_ground = new btStaticPlaneShape(btVector3(0, 1, 0), 1);
-//	btDefaultMotionState *groundMotionState = new btDefaultMotionState(
-//		btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, -1, 0)));
-
 	m_wall1 = new btStaticPlaneShape(btVector3(-1, 0, +0), 1);
 	m_wall2 = new btStaticPlaneShape(btVector3(+1, 0, +0), 1);
 	m_wall3 = new btStaticPlaneShape(btVector3(+0, 0, -1), 1);
 	m_wall4 = new btStaticPlaneShape(btVector3(+0, 0, +1), 1);
 
-	btDefaultMotionState *wallMotionState1= new btDefaultMotionState(
-		btTransform(btQuaternion(0, 0, 0, 1), btVector3(11, 0, 0)));
-	btDefaultMotionState *wallMotionState2= new btDefaultMotionState(
-		btTransform(btQuaternion(0, 0, 0, 1), btVector3(-11, 0, 0)));
-	btDefaultMotionState *wallMotionState3= new btDefaultMotionState(
-		btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, 8)));
-	btDefaultMotionState *wallMotionState4= new btDefaultMotionState(
-		btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, -8)));
+	btDefaultMotionState *wallMotionState1;
+	btDefaultMotionState *wallMotionState2;
+	btDefaultMotionState *wallMotionState3;
+	btDefaultMotionState *wallMotionState4;
+
+	getWallMotionState(
+		far, // near = 0, far = 1
+		&wallMotionState1,
+		&wallMotionState2,
+		&wallMotionState3,
+		&wallMotionState4
+	);
 
 	btRigidBody::btRigidBodyConstructionInfo wallRigidBodyCI1(
 		0, // Walls have 0 mass

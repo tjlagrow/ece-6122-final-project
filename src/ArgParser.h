@@ -36,6 +36,7 @@ public:
 			{
 				{ "frames", required_argument, 0, 'f' },
 				{ "raytrace", no_argument, &cfg->raytrace, 'r' },
+				{ "scene", required_argument, 0, 's' },
 				{ "threads", required_argument, 0, 't' },
 				{ "verbose", no_argument, &cfg->verbose, 'v' },
 				{ "help", no_argument, 0, HELP_ARG },
@@ -44,7 +45,7 @@ public:
 
 			int i = 0;
 
-			c = getopt_long(argc, argv, "f:rt:v?", long_opts, &i);
+			c = getopt_long(argc, argv, "f:rs:t:v?", long_opts, &i);
 
 			if (c == -1)
 				break;
@@ -57,6 +58,11 @@ public:
 				case 'r': // Enable raytracing
 					cfg->raytrace = 1;
 					break;
+				case 's': // Scene
+					cfg->scene = strtoul(optarg, NULL, 10);
+					if (cfg->scene < 1 or cfg->scene > 2)
+						cfg->scene = 1;
+					break;
 				case 't': // Number of threads to use
 					cfg->numThreads = strtoul(optarg, NULL, 10);
 					break;
@@ -68,10 +74,15 @@ public:
 					printf("Usage: %s [OPTIONS...]\n", argv[0]);
 					printf("\n");
 					printf("Options\n");
-					printf("  -t, --threads <NUM>       Number of threads to use\n");
-					printf("  -r, --raytrace            Enable raytracing\n");
 					printf("  -f, --frames <NUM>        Total number of frames to simulate\n");
-					printf("  -v, --verbose             Print more messages\n");
+					printf("                            Default=unlimited for scene 1\n");
+					printf("                            Default=300 for scene 2 (raytracing)\n");
+					printf("  -t, --threads <NUM>       Number of threads to use. Default=1\n");
+					printf("  -r, --raytrace            Enable raytracing. Only supported for scene 2\n");
+					printf("  -s, --scene <1 or 2>      Scene to render.\n");
+					printf("                            Only scene 2 supports raytracing.\n");
+					printf("                            Default=1\n");
+					printf("  -v, --verbose             Print debug messages\n");
 					printf("  -h, --help                Print this help message and exit\n");
 					printf("\n");
 					printf("Report bugs to <rory.rudolph@gatech.edu>\n");

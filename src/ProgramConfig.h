@@ -2,9 +2,10 @@
 #define ECE_6122_FINAL_PROJECT_CFG_H
 
 #define DEFAULT_MOVIE_FILENAME  "movie.mpeg"
-#define DEFAULT_SCENE 2
-#define DEFAULT_FRAMES (60*2)
-#define DEFAULT_NUM_THREADS  1
+#define DEFAULT_SCENE           1
+#define DEFAULT_FPS             60
+#define DEFAULT_FRAMES          (DEFAULT_FPS * 2)
+#define DEFAULT_NUM_THREADS     1
 
 #include <cstring> // memset()
 #include <cstdio> // snprintf()
