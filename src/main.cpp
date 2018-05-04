@@ -148,7 +148,7 @@ int main(int argc, char **argv)
 	PhysicsEngine engine;
 
 	// Initialize the raytracer
-	Raytracer raytracer(window.getWidth(), window.getHeight(), fov);
+	Raytracer raytracer(window.getWidth(), window.getHeight(), fov, 4);
 
 	Shader shader1(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH);
 
@@ -333,8 +333,8 @@ int main(int argc, char **argv)
 
 		perf.incrementFrames();
 
-		if (perf.getFramesTotal() > cfg.frames)
-			window.close();
+//		if (perf.getFramesTotal() > cfg.frames)
+//			window.close();
 	}
 
 	if (cfg.raytrace)

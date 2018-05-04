@@ -4,6 +4,7 @@
 #define DEFAULT_MOVIE_FILENAME  "movie.mpeg"
 #define DEFAULT_SCENE 2
 #define DEFAULT_FRAMES (60*2)
+#define DEFAULT_NUM_THREADS  1
 
 #include <cstring> // memset()
 #include <cstdio> // snprintf()
@@ -18,7 +19,7 @@ struct ProgramConfig
 	{
 		raytrace = 0;
 		scene = DEFAULT_SCENE;
-		numThreads = 1;
+		numThreads = DEFAULT_NUM_THREADS;
 		frames = DEFAULT_FRAMES;
 		verbose = 0;
 		memset(output_filename, 0, sizeof(output_filename));

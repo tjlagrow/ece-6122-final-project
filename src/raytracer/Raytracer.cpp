@@ -9,6 +9,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtx/vector_angle.hpp>
+#include <thread>
 
 /* Variable tp help control maximum recursion depth.  Important for speed.
    Without a k-d tree or some type of time improvement, I usually don't go
@@ -182,10 +183,11 @@ Vector3f trace(
  * @param height TODO Document
  * @param fov TODO Document
  */
-Raytracer::Raytracer(unsigned int width, unsigned int height, float fov)
+Raytracer::Raytracer(unsigned int width, unsigned int height, float fov, unsigned int numThreads)
 {
 	m_width = width;
 	m_height = height;
+	m_numThreads = numThreads;
 	m_fov = fov;
 	m_aspectRatio = (float)width / (float)height;
 	m_invertedWidth = 1 / float(width);
@@ -200,6 +202,45 @@ Raytracer::Raytracer(unsigned int width, unsigned int height, float fov)
 Raytracer::~Raytracer()
 {
 	free(m_image);
+}
+
+
+void threading_func(
+	Vector3f *p,
+	const unsigned &width,
+	const unsigned &threaID,
+	unsigned int numThreads,
+	const int &numPerThread,
+	const int &extra,
+	const float &invertedWidth,
+	const float &invertedHeight,
+	const float &angle,
+	const std::vector<Sphere> &spheres,
+	const float &aspectRatio,
+	const glm::vec3 &CamPos)
+{
+	if(threaID != (numThreads-1))
+	{
+		for(unsigned y = threaID*numPerThread; y < (threaID+1)*numPerThread; ++y){
+			for(unsigned x = 0; x < width; ++x, ++p){
+				float xx = (2 * ((x + 0.5) * invertedWidth) - 1) * angle * aspectRatio;
+				float yy = (1 - 2 * ((y + 0.5) * invertedHeight)) * angle;
+				Vector3f rayDirection(xx, yy, -1);
+				rayDirection.normalize();
+				*p = trace(Vector3f(0,0, CamPos.y), rayDirection, spheres, 0);
+			}
+		}
+	}else{
+		for(unsigned y = threaID*numPerThread; y < ((threaID+1)*numPerThread)+extra; ++y){
+			for(unsigned x = 0; x < width; ++x, ++p){
+				float xx = (2 * ((x + 0.5) * invertedWidth) - 1) * angle * aspectRatio;
+				float yy = (1 - 2 * ((y + 0.5) * invertedHeight)) * angle;
+				Vector3f rayDirection(xx, yy, -1);
+				rayDirection.normalize();
+				*p = trace(Vector3f(0,0,CamPos.y), rayDirection, spheres, 0);
+			}
+		}
+	}
 }
 
 /**
@@ -247,19 +288,45 @@ void Raytracer::render(
 	light.position.z += camPos.y;
 	spheres.push_back(light);
 
-	// Loop over the row pixels in the image
-	for (unsigned y = 0; y < m_height; ++y)
+	if (m_numThreads <= 1)
 	{
-		// Loop over the column pixels in the image
-		for (unsigned x = 0; x < m_width; ++x, ++pixel)
+		// Loop over the row pixels in the image
+		for (unsigned y = 0; y < m_height; ++y)
 		{
-			float xx = (2 * ((x + 0.5) * m_invertedWidth) - 1) * m_angle * m_aspectRatio;
-			float yy = (1 - 2 * ((y + 0.5) * m_invertedHeight)) * m_angle;
+			// Loop over the column pixels in the image
+			for (unsigned x = 0; x < m_width; ++x, ++pixel)
+			{
+				float xx = (2 * ((x + 0.5) * m_invertedWidth) - 1) * m_angle * m_aspectRatio;
+				float yy = (1 - 2 * ((y + 0.5) * m_invertedHeight)) * m_angle;
 
-			Vector3f rayDirection(xx, yy, -1);
-			rayDirection.normalize();
+				Vector3f rayDirection(xx, yy, -1);
+				rayDirection.normalize();
 
-			*pixel = trace(Vector3f(0, 0, camPos.y), rayDirection, spheres, 0);
+				*pixel = trace(Vector3f(0, 0, camPos.y), rayDirection, spheres, 0);
+			}
+		}
+	}
+	else
+	{
+		std::thread threads[m_numThreads];
+		int numPerThread = m_height / m_numThreads;
+		int extra = m_height % m_numThreads;
+		for (unsigned i = 0; i < m_numThreads; ++i)
+		{
+			threads[i] = std::thread(
+				threading_func,
+				pixel + (i * numPerThread * m_width),
+				m_width,
+				i,
+				m_numThreads,
+				numPerThread,
+				extra,
+				m_invertedWidth, m_invertedHeight, m_angle, spheres, m_aspectRatio, camPos);
+		}
+
+		for (unsigned i = 0; i < m_numThreads; ++i)
+		{
+			threads[i].join();
 		}
 	}
 

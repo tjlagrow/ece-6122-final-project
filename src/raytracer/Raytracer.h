@@ -10,18 +10,20 @@
 class Raytracer
 {
 public:
-	Raytracer(unsigned int width, unsigned int height, float fov);
+	Raytracer(unsigned int width, unsigned int height, float fov, unsigned int numThreads);
 	~Raytracer();
 
 	void render(
 		glm::vec3 camPos,
 		glm::vec3 lookAt,
-		const std::vector<Object *> &objects);
+		const std::vector<Object *> &objects
+	);
 
 
 private:
 	unsigned int m_width;
 	unsigned int m_height;
+	unsigned int m_numThreads;
 	float m_fov;
 	float m_aspectRatio;
 	float m_invertedWidth;
